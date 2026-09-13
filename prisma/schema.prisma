@@ -1,0 +1,350 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  SUPERADMIN
+  ADMIN
+  LOGISTICS_MEMBER
+  STUDENT
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+
+enum EventStatus {
+  DRAFT
+  OPEN
+  CLOSED
+  COMPLETED
+  ARCHIVED
+}
+
+enum SlotStatus {
+  AVAILABLE
+  BLOCKED
+  CLOSED
+  DELETED
+}
+
+enum BookingStatus {
+  PENDING_VERIFICATION
+  CONFIRMED
+  RESCHEDULE_REQUESTED
+  RESCHEDULED
+  CANCELLED
+  CHECKED_IN
+  COMPLETED
+  NO_SHOW
+}
+
+enum NotificationStatus {
+  QUEUED
+  SENT
+  FAILED
+  READ
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  REVOKED
+}
+
+enum ServiceStatus {
+  ACTIVE
+  COMING_SOON
+  DISABLED
+}
+
+model UserProfile {
+  id                    String           @id @db.Uuid
+  email                 String           @unique @db.VarChar(320)
+  fullName              String           @db.VarChar(160)
+  contactNumber         String?          @db.VarChar(32)
+  role                  UserRole         @default(STUDENT)
+  status                AccountStatus    @default(ACTIVE)
+  thesisGroupId         String?          @db.Uuid
+  createdAt             DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime         @updatedAt @db.Timestamptz(3)
+  thesisGroup           ThesisGroup?     @relation("GroupUsers", fields: [thesisGroupId], references: [id], onDelete: SetNull)
+  representedGroup      ThesisGroup?     @relation("GroupRepresentative")
+  assignments           EventAssignment[]
+  actedBookingHistories BookingHistory[] @relation("HistoryActor")
+  checkIns              CheckIn[]
+  notifications         Notification[]
+  auditLogs             AuditLog[]       @relation("AuditActor")
+
+  @@index([role, status])
+  @@index([thesisGroupId])
+}
+
+model StaffInvitation {
+  id           String           @id @default(uuid()) @db.Uuid
+  email        String           @db.VarChar(320)
+  role         UserRole
+  tokenHash    String           @unique @db.VarChar(128)
+  status       InvitationStatus @default(PENDING)
+  expiresAt    DateTime         @db.Timestamptz(3)
+  invitedById  String           @db.Uuid
+  acceptedAt   DateTime?        @db.Timestamptz(3)
+  createdAt    DateTime         @default(now()) @db.Timestamptz(3)
+
+  @@index([email, status])
+}
+
+model ThesisGroup {
+  id                 String        @id @default(uuid()) @db.Uuid
+  name               String        @db.VarChar(120)
+  thesisTitle        String        @db.VarChar(300)
+  section            String        @db.VarChar(80)
+  program            String        @db.VarChar(120)
+  adviserName        String?       @db.VarChar(160)
+  representativeId   String        @unique @db.Uuid
+  representativeName String        @db.VarChar(160)
+  verifiedEmail      String        @db.VarChar(320)
+  contactNumber      String        @db.VarChar(32)
+  isActive           Boolean       @default(true)
+  createdAt          DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime      @updatedAt @db.Timestamptz(3)
+  representative     UserProfile   @relation("GroupRepresentative", fields: [representativeId], references: [id], onDelete: Restrict)
+  users              UserProfile[] @relation("GroupUsers")
+  members            GroupMember[]
+  bookings           Booking[]
+
+  @@index([name])
+  @@index([section, program])
+}
+
+model GroupMember {
+  id            String      @id @default(uuid()) @db.Uuid
+  thesisGroupId String      @db.Uuid
+  fullName      String      @db.VarChar(160)
+  studentNumber String      @db.VarChar(40)
+  schoolEmail   String?     @db.VarChar(320)
+  groupRole     String?     @db.VarChar(80)
+  createdAt     DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime    @updatedAt @db.Timestamptz(3)
+  thesisGroup   ThesisGroup @relation(fields: [thesisGroupId], references: [id], onDelete: Cascade)
+
+  @@unique([thesisGroupId, studentNumber])
+  @@index([studentNumber])
+}
+
+model LogisticsService {
+  id          String        @id @default(uuid()) @db.Uuid
+  slug        String        @unique @db.VarChar(80)
+  name        String        @db.VarChar(120)
+  description String        @db.VarChar(500)
+  status      ServiceStatus @default(COMING_SOON)
+  sortOrder   Int           @default(0)
+  createdAt   DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime      @updatedAt @db.Timestamptz(3)
+  events      PhotoshootEvent[]
+}
+
+model PhotoshootEvent {
+  id                     String            @id @default(uuid()) @db.Uuid
+  serviceId              String?           @db.Uuid
+  title                  String            @db.VarChar(160)
+  slug                   String            @unique @db.VarChar(120)
+  description            String            @db.VarChar(2000)
+  venue                  String            @db.VarChar(240)
+  preparationInstructions String           @db.VarChar(4000)
+  mediaDepartmentNotes   String?           @db.VarChar(4000)
+  status                 EventStatus       @default(DRAFT)
+  bookingOpensAt         DateTime           @db.Timestamptz(3)
+  bookingClosesAt        DateTime           @db.Timestamptz(3)
+  rescheduleDeadline     DateTime           @db.Timestamptz(3)
+  cancellationDeadline   DateTime           @db.Timestamptz(3)
+  slotDurationMinutes    Int                @default(20)
+  defaultSlotCapacity    Int                @default(1)
+  isPublic               Boolean            @default(false)
+  createdById            String             @db.Uuid
+  createdAt              DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt              DateTime           @updatedAt @db.Timestamptz(3)
+  service                LogisticsService?  @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  dates                  EventDate[]
+  bookings               Booking[]
+  assignments            EventAssignment[]
+
+  @@index([status, bookingOpensAt, bookingClosesAt])
+}
+
+model EventDate {
+  id        String          @id @default(uuid()) @db.Uuid
+  eventId   String          @db.Uuid
+  date      DateTime        @db.Date
+  label     String?         @db.VarChar(80)
+  isActive  Boolean         @default(true)
+  createdAt DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime        @updatedAt @db.Timestamptz(3)
+  event     PhotoshootEvent @relation(fields: [eventId], references: [id], onDelete: Restrict)
+  slots     TimeSlot[]
+
+  @@unique([eventId, date])
+  @@index([eventId, isActive])
+}
+
+model TimeSlot {
+  id              String      @id @default(uuid()) @db.Uuid
+  eventDateId     String      @db.Uuid
+  startsAt        DateTime    @db.Timestamptz(3)
+  endsAt          DateTime    @db.Timestamptz(3)
+  capacity        Int
+  reservedCount   Int         @default(0)
+  status          SlotStatus  @default(AVAILABLE)
+  blockReason     String?     @db.VarChar(500)
+  createdAt       DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime    @updatedAt @db.Timestamptz(3)
+  eventDate       EventDate   @relation(fields: [eventDateId], references: [id], onDelete: Restrict)
+  bookings        Booking[]   @relation("CurrentSlot")
+  historyEntries  BookingHistory[]
+
+  @@unique([eventDateId, startsAt])
+  @@index([eventDateId, status, startsAt])
+}
+
+model Booking {
+  id                    String         @id @default(uuid()) @db.Uuid
+  publicReference       String         @unique @db.VarChar(32)
+  idempotencyKey        String         @unique @db.VarChar(100)
+  eventId               String         @db.Uuid
+  thesisGroupId         String         @db.Uuid
+  currentSlotId         String?        @db.Uuid
+  status                BookingStatus  @default(PENDING_VERIFICATION)
+  alternativePreference String?        @db.VarChar(500)
+  schedulingConcern     String?        @db.VarChar(1000)
+  accessibilityNeed     String?        @db.VarChar(1000)
+  studentVisibleNotes   String?        @db.VarChar(1000)
+  internalNotes         String?        @db.VarChar(2000)
+  accuracyAccepted      Boolean
+  rulesAccepted         Boolean
+  notificationsAccepted Boolean
+  privacyAccepted       Boolean
+  cancelledAt           DateTime?      @db.Timestamptz(3)
+  createdAt             DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime       @updatedAt @db.Timestamptz(3)
+  event                 PhotoshootEvent @relation(fields: [eventId], references: [id], onDelete: Restrict)
+  thesisGroup           ThesisGroup    @relation(fields: [thesisGroupId], references: [id], onDelete: Restrict)
+  currentSlot           TimeSlot?      @relation("CurrentSlot", fields: [currentSlotId], references: [id], onDelete: Restrict)
+  history               BookingHistory[]
+  checkIn               CheckIn?
+
+  @@index([eventId, status])
+  @@index([thesisGroupId, status])
+  @@index([currentSlotId, status])
+}
+
+model BookingHistory {
+  id             String        @id @default(uuid()) @db.Uuid
+  bookingId      String        @db.Uuid
+  status         BookingStatus
+  timeSlotId     String?       @db.Uuid
+  actorId        String?       @db.Uuid
+  reason         String?       @db.VarChar(1000)
+  studentMessage String?       @db.VarChar(1000)
+  internalNote   String?       @db.VarChar(2000)
+  metadata       Json?
+  createdAt      DateTime      @default(now()) @db.Timestamptz(3)
+  booking        Booking       @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  timeSlot       TimeSlot?     @relation(fields: [timeSlotId], references: [id], onDelete: Restrict)
+  actor          UserProfile?  @relation("HistoryActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([bookingId, createdAt])
+}
+
+model EventAssignment {
+  id        String          @id @default(uuid()) @db.Uuid
+  eventId   String          @db.Uuid
+  userId    String          @db.Uuid
+  notes     String?         @db.VarChar(500)
+  createdAt DateTime        @default(now()) @db.Timestamptz(3)
+  event     PhotoshootEvent @relation(fields: [eventId], references: [id], onDelete: Restrict)
+  user      UserProfile     @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@unique([eventId, userId])
+  @@index([userId])
+}
+
+model CheckIn {
+  id            String      @id @default(uuid()) @db.Uuid
+  bookingId     String      @unique @db.Uuid
+  checkedInById String      @db.Uuid
+  arrivedAt     DateTime    @db.Timestamptz(3)
+  completedAt   DateTime?   @db.Timestamptz(3)
+  note          String?     @db.VarChar(1000)
+  createdAt     DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime    @updatedAt @db.Timestamptz(3)
+  booking       Booking     @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  checkedInBy   UserProfile @relation(fields: [checkedInById], references: [id], onDelete: Restrict)
+}
+
+model Announcement {
+  id          String   @id @default(uuid()) @db.Uuid
+  title       String   @db.VarChar(160)
+  body        String   @db.VarChar(3000)
+  audience    UserRole?
+  isPublic    Boolean  @default(false)
+  publishedAt DateTime? @db.Timestamptz(3)
+  expiresAt   DateTime? @db.Timestamptz(3)
+  createdById String   @db.Uuid
+  createdAt   DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([isPublic, publishedAt, expiresAt])
+}
+
+model Notification {
+  id          String             @id @default(uuid()) @db.Uuid
+  userId      String             @db.Uuid
+  type        String             @db.VarChar(80)
+  subject     String             @db.VarChar(200)
+  body        String             @db.VarChar(4000)
+  status      NotificationStatus @default(QUEUED)
+  providerId  String?            @db.VarChar(200)
+  sentAt      DateTime?          @db.Timestamptz(3)
+  readAt      DateTime?          @db.Timestamptz(3)
+  failureCode String?            @db.VarChar(120)
+  createdAt   DateTime           @default(now()) @db.Timestamptz(3)
+  user        UserProfile        @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([userId, status, createdAt])
+}
+
+model AuditLog {
+  id             String       @id @default(uuid()) @db.Uuid
+  actorId        String?      @db.Uuid
+  action         String       @db.VarChar(100)
+  targetType     String       @db.VarChar(80)
+  targetId       String       @db.VarChar(100)
+  previousValues Json?
+  newValues      Json?
+  reason         String?      @db.VarChar(1000)
+  ipHash         String?      @db.VarChar(128)
+  createdAt      DateTime     @default(now()) @db.Timestamptz(3)
+  actor          UserProfile? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([targetType, targetId, createdAt])
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+}
+
+model SystemSetting {
+  key         String   @id @db.VarChar(100)
+  value       Json
+  description String?  @db.VarChar(500)
+  isPublic    Boolean  @default(false)
+  updatedById String?  @db.Uuid
+  createdAt   DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(3)
+}
