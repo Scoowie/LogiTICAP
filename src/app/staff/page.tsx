@@ -74,27 +74,38 @@ export default async function OperationsDashboard() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="eyebrow">Staff portal</p>
-          <h1 className="mt-2 text-3xl font-black text-[#102a43]">
+          <h1 className="neo-display mt-5 text-4xl text-black sm:text-6xl">
             Operations dashboard
           </h1>
-          <p className="muted mt-2">
+          <p className="mt-5 max-w-3xl border-l-8 border-black bg-[#FFD93D] p-3 font-bold">
             Photoshoot scheduling and attendance at a glance.
           </p>
         </div>
         <Status>Live database totals</Status>
       </div>
       <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {metrics.map(([label, value]) => (
-          <Card key={label}>
-            <p className="muted text-sm font-semibold">{label}</p>
-            <p className="mt-2 text-3xl font-black text-[#183f63]">{value}</p>
+        {metrics.map(([label, value], index) => (
+          <Card
+            key={label}
+            className={
+              index % 3 === 0
+                ? "bg-[#FFD93D]!"
+                : index % 3 === 1
+                  ? "bg-[#C4B5FD]!"
+                  : "bg-white!"
+            }
+          >
+            <p className="text-xs font-black tracking-widest uppercase">
+              {label}
+            </p>
+            <p className="mt-3 text-4xl font-black text-black">{value}</p>
           </Card>
         ))}
       </div>
       <Card className="mt-6">
         <h2 className="text-lg font-bold">Recent administrative activity</h2>
         {recent.length ? (
-          <ul className="mt-3 divide-y divide-[#d6dee6]">
+          <ul className="mt-4 divide-y-3 divide-black">
             {recent.map((item) => (
               <li
                 key={item.id}

@@ -8,9 +8,12 @@ export default async function PortalLayout({
 }) {
   const actor = await requireActor();
   return (
-    <div className="min-h-screen lg:flex">
+    <div className="min-h-screen bg-[#FFFDF5] lg:flex">
       <PortalNav role={actor.role} name={actor.fullName} />
-      <main id="main-content" className="min-w-0 flex-1 p-4 sm:p-7 lg:p-9">
+      <main
+        id="main-content"
+        className="neo-grid min-w-0 flex-1 p-4 pb-12 sm:p-8 lg:p-10"
+      >
         {children}
       </main>
     </div>

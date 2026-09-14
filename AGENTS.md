@@ -28,7 +28,11 @@ This repository is TLMS, the official TICAP Logistics portal. Phase 1 is the cyb
 - Use fixed enums/statuses. Do not accept roles from public registration metadata.
 - Display user dates in `Asia/Manila`; store timezone-aware instants.
 - Use semantic labels/headings/tables, visible focus, screen-reader status/error text, keyboard-operable controls, confirmation for disruptive actions, and overflow-safe responsive layouts.
-- Use replaceable CSS brand tokens; do not invent official logos, colors, dates, contacts, or policies.
+- The active UI system is neo-brutalist. Keep its canonical color, border, shadow, focus, texture, and motion tokens in `src/app/globals.css`; do not scatter alternative palettes through feature code.
+- Use locally bundled Space Grotesk, `Button`, `Card`, `Status`, `EmptyState`, `.neo-btn`, `.neo-input`, and `.neo-panel` before creating a one-off visual primitive.
+- Neo-brutalist surfaces use sharp corners, pure-black borders, zero-blur offset shadows, cream/red/yellow/violet color blocks, bold typography, and fast mechanical interactions. Pill rounding is reserved for badges.
+- Preserve restrained rotation and visual density in operational forms and tables. Decorative motion must respect `prefers-reduced-motion`, and all controls remain at least 44px tall.
+- The TL lettermark remains a replaceable placeholder; do not invent official logos, dates, contacts, or policies.
 - Preserve unrelated user changes. Never commit secrets or use destructive Git commands.
 
 ## Role hierarchy

@@ -4,21 +4,21 @@ export function Brand() {
   return (
     <Link
       href="/"
-      className="flex items-center gap-3"
+      className="group flex items-center gap-3"
       aria-label="TICAP Logistics home"
     >
       <span
-        className="grid size-11 place-items-center rounded-md border-2 border-[#d6a72d] bg-[#183f63] text-xs font-black text-white"
+        className="relative grid size-12 place-items-center rounded-full border border-[#dbc98f] bg-[#153f6f] font-[Cinzel] text-xs font-bold tracking-wider text-[#f3ead2] shadow-[0_5px_15px_rgba(33,29,24,.24),inset_0_0_0_3px_#153f6f,inset_0_0_0_4px_#b69a5e] transition-shadow duration-200 group-hover:shadow-[0_0_18px_rgba(182,154,94,.4)]"
         aria-hidden="true"
       >
         TL
       </span>
       <span>
-        <span className="block text-base font-black tracking-tight text-white">
+        <span className="block font-[Cinzel] text-lg leading-none font-semibold tracking-[.04em] text-[#f3ead2] uppercase">
           TICAP Logistics
         </span>
-        <span className="block text-[.68rem] font-semibold tracking-wide text-[#d9e6ef]">
-          Centralized Scheduling and Logistics Services
+        <span className="mt-1 block max-w-48 text-[.6rem] leading-tight font-semibold tracking-[.14em] text-[#dbc98f] uppercase">
+          Centralized scheduling + logistics
         </span>
       </span>
     </Link>

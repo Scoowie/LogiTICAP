@@ -13,8 +13,7 @@ export function ThesisGroupForm() {
     createThesisGroup,
     initialState,
   );
-  const inputClass =
-    "mt-1 min-h-11 w-full rounded-md border border-[#9eacb9] bg-white px-3 text-sm";
+  const inputClass = "neo-input mt-1";
 
   return (
     <form action={formAction} className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -22,7 +21,7 @@ export function ThesisGroupForm() {
         <p
           id="group-form-error"
           role="alert"
-          className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-800 sm:col-span-2"
+          className="border-3 border-black bg-[#FF6B6B] p-3 text-sm font-bold shadow-[4px_4px_0_0_#000] sm:col-span-2"
         >
           {state.error}
         </p>
@@ -71,7 +70,10 @@ export function ThesisGroupForm() {
         />
       </label>
       {[1, 2, 3].map((number) => (
-        <fieldset key={number} className="rounded-md border p-4 sm:col-span-2">
+        <fieldset
+          key={number}
+          className="border-3 border-black bg-[#FFFDF5] p-4 sm:col-span-2"
+        >
           <legend className="px-1 text-sm font-bold">
             Group member {number}
             {number > 1 ? " (optional)" : ""}
@@ -112,7 +114,7 @@ export function ThesisGroupForm() {
       <button
         disabled={pending}
         aria-describedby={state.error ? "group-form-error" : undefined}
-        className="min-h-11 rounded-md bg-[#183f63] px-5 font-bold text-white disabled:cursor-wait disabled:opacity-70 sm:col-span-2"
+        className="neo-btn disabled:cursor-wait disabled:opacity-70 sm:col-span-2"
       >
         {pending ? "Creating group…" : "Create group"}
       </button>

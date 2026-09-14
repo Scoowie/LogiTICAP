@@ -85,10 +85,8 @@ const sections: Record<
   },
 };
 
-const inputClass =
-  "mt-1 min-h-11 w-full rounded-md border border-[#9eacb9] bg-white px-3 text-sm";
-const buttonClass =
-  "min-h-10 rounded-md bg-[#183f63] px-4 text-sm font-bold text-white hover:bg-[#102a43]";
+const inputClass = "neo-input mt-1";
+const buttonClass = "neo-btn";
 
 export default async function StaffSection({
   params,
@@ -230,8 +228,12 @@ export default async function StaffSection({
   return (
     <div className="mx-auto max-w-7xl">
       <p className="eyebrow">Staff portal</p>
-      <h1 className="mt-2 text-3xl font-black text-[#102a43]">{meta.title}</h1>
-      <p className="muted mt-2">{meta.intro}</p>
+      <h1 className="neo-display mt-5 text-4xl text-black sm:text-6xl">
+        {meta.title}
+      </h1>
+      <p className="mt-5 max-w-4xl border-l-8 border-black bg-[#FFD93D] p-3 font-bold">
+        {meta.intro}
+      </p>
       <div className="mt-7 space-y-6">
         {section === "events" && (
           <>
@@ -418,7 +420,7 @@ export default async function StaffSection({
                             {date.slots.map((slot) => (
                               <tr
                                 key={slot.id}
-                                className="border-b border-[#e3e8ed]"
+                                className="border-b-2 border-black"
                               >
                                 <td className="p-2">
                                   {formatManilaDateTime(slot.startsAt)}
@@ -471,7 +473,7 @@ export default async function StaffSection({
                                     </button>
                                   </form>
                                   <details className="mt-2">
-                                    <summary className="cursor-pointer font-semibold text-[#183f63]">
+                                    <summary className="cursor-pointer font-black text-black uppercase">
                                       Edit or delete
                                     </summary>
                                     <form
@@ -528,7 +530,7 @@ export default async function StaffSection({
                                         className="min-h-9 min-w-0 rounded border px-2"
                                       />
                                       <ConfirmButton
-                                        className="min-h-9 rounded border border-red-700 px-3 font-bold text-red-800"
+                                        className="neo-btn neo-btn--danger"
                                         message="Remove this empty slot from all schedules?"
                                       >
                                         Delete
@@ -659,7 +661,7 @@ export default async function StaffSection({
                             <button
                               name="action"
                               value="no-show"
-                              className="min-h-10 rounded-md border border-amber-700 px-4 text-sm font-bold text-amber-800"
+                              className="neo-btn neo-btn--secondary"
                             >
                               No-show
                             </button>
@@ -814,7 +816,7 @@ export default async function StaffSection({
                 ["unbooked", "Groups without bookings"],
                 ["changes", "Cancellation and rescheduling report"],
               ].map(([key, label]) => (
-                <div key={key} className="rounded-md border p-4">
+                <div key={key} className="neo-panel bg-white p-4">
                   <h3 className="font-semibold">{label}</h3>
                   <div className="mt-3 flex gap-2">
                     <Link
@@ -834,11 +836,11 @@ export default async function StaffSection({
               ))}
             </div>
             {hasPermission(actor.role, "exports:restricted") && (
-              <div className="mt-4 rounded-md border border-amber-300 bg-amber-50 p-4">
-                <h3 className="font-bold text-amber-900">
+              <div className="neo-panel mt-6 bg-[#FFD93D] p-4">
+                <h3 className="font-black text-black uppercase">
                   Restricted contact list
                 </h3>
-                <p className="mt-1 text-sm text-amber-800">
+                <p className="mt-2 text-sm font-bold text-black">
                   Contains personal contact data. Every download is audited.
                 </p>
                 <div className="mt-3 flex gap-2">
@@ -978,7 +980,7 @@ export default async function StaffSection({
                                   ? "suspend"
                                   : "activate"
                               }
-                              className="min-h-10 rounded border border-red-700 px-3 font-bold text-red-800"
+                              className="neo-btn neo-btn--danger"
                               message={`${user.status === "ACTIVE" ? "Suspend" : "Activate"} this account?`}
                             >
                               {user.status === "ACTIVE"
@@ -1224,10 +1226,10 @@ function BookingTable({
                         "RESCHEDULED",
                       ].includes(booking.status) ? (
                         <details>
-                          <summary className="cursor-pointer font-bold text-[#183f63]">
+                          <summary className="cursor-pointer font-black text-black uppercase">
                             Change booking
                           </summary>
-                          <div className="mt-3 grid w-80 gap-3 rounded-md border bg-white p-3">
+                          <div className="neo-panel mt-3 grid w-80 gap-3 bg-white p-3">
                             <form
                               action={administrativelyChangeBooking}
                               className="grid gap-2"
@@ -1296,7 +1298,7 @@ function BookingTable({
                               <ConfirmButton
                                 name="action"
                                 value="cancel"
-                                className="min-h-10 rounded border border-red-700 px-3 font-bold text-red-800"
+                                className="neo-btn neo-btn--danger"
                                 message="Cancel this booking and restore its slot capacity?"
                               >
                                 Cancel booking

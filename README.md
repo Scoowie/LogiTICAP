@@ -7,6 +7,7 @@ TLMS is the official logistics portal for a college cybersecurity organization. 
 ## Stack
 
 - Next.js App Router, React, strict TypeScript, Tailwind CSS
+- Locally bundled Space Grotesk and a centralized responsive neo-brutalist design system
 - Supabase Authentication and hosted PostgreSQL
 - Prisma ORM with the PostgreSQL driver adapter
 - Zod runtime validation; native accessible forms compatible with progressive enhancement

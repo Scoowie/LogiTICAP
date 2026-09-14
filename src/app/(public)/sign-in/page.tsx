@@ -7,20 +7,20 @@ export default async function SignInPage({
 }) {
   const query = await searchParams;
   return (
-    <div className="container-page py-14">
-      <div className="card mx-auto max-w-lg p-6 sm:p-8">
+    <div className="neo-dots min-h-[70vh] border-b-8 border-black py-14 sm:py-20">
+      <div className="card mx-auto w-[calc(100%_-_1.25rem)] max-w-lg rotate-1 bg-[#FFFDF5]! p-6 sm:p-9">
         <p className="eyebrow">Secure access</p>
-        <h1 className="mt-2 text-3xl font-black text-[#102a43]">
+        <h1 className="neo-display mt-6 text-5xl text-black">
           Sign in to TLMS
         </h1>
-        <p className="muted mt-3 text-sm leading-6">
+        <p className="mt-5 border-l-4 border-black bg-[#FFD93D] p-3 text-sm leading-6 font-bold">
           Enter your verified email. Supabase will send a one-time magic link;
           TLMS never stores your password.
         </p>
         {query.sent && (
           <p
             role="status"
-            className="mt-5 rounded-md bg-emerald-50 p-3 text-sm font-semibold text-emerald-800"
+            className="mt-5 border-3 border-black bg-[#72E6A0] p-3 text-sm font-bold shadow-[4px_4px_0_0_#000]"
           >
             Check your email for a secure sign-in link.
           </p>
@@ -28,7 +28,7 @@ export default async function SignInPage({
         {query.error && (
           <p
             role="alert"
-            className="mt-5 rounded-md bg-red-50 p-3 text-sm font-semibold text-red-800"
+            className="mt-5 border-3 border-black bg-[#FF6B6B] p-3 text-sm font-bold shadow-[4px_4px_0_0_#000]"
           >
             The sign-in request could not be completed. Verify the address or
             try again later.
@@ -51,18 +51,15 @@ export default async function SignInPage({
               autoComplete="email"
               required
               maxLength={320}
-              className="mt-2 min-h-11 w-full rounded-md border border-[#9eacb9] bg-white px-3"
+              className="neo-input mt-2"
               placeholder="name@school.edu"
             />
           </div>
-          <button
-            className="min-h-11 w-full rounded-md bg-[#183f63] px-5 font-bold text-white hover:bg-[#102a43]"
-            type="submit"
-          >
+          <button className="neo-btn w-full" type="submit">
             Send magic link
           </button>
         </form>
-        <p className="muted mt-5 text-xs">
+        <p className="mt-6 border-t-3 border-black pt-4 text-xs font-bold">
           By continuing, you use the identity provider configured by TICAP.
           Privileged roles cannot be selected during sign-in.
         </p>

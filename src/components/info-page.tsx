@@ -12,13 +12,15 @@ export function InfoPage({
   children: React.ReactNode;
 }) {
   return (
-    <div className="container-page py-12 sm:py-16">
+    <div className="container-page py-12 sm:py-20">
       <p className="eyebrow">{eyebrow}</p>
-      <h1 className="mt-2 max-w-3xl text-3xl font-black tracking-tight text-[#102a43] sm:text-4xl">
+      <h1 className="hex-display mt-5 max-w-4xl text-4xl sm:text-6xl">
         {title}
       </h1>
-      <p className="muted mt-4 max-w-3xl text-lg leading-8">{intro}</p>
-      <div className="mt-8 grid gap-5">{children}</div>
+      <p className="mt-6 max-w-3xl border-l-2 border-[#b69a5e] bg-[#f3ead2]/70 p-4 text-lg leading-relaxed text-[#4c3a27]">
+        {intro}
+      </p>
+      <div className="mt-10 grid gap-8">{children}</div>
     </div>
   );
 }
@@ -32,8 +34,12 @@ export function TextCard({
 }) {
   return (
     <Card>
-      <h2 className="text-lg font-bold text-[#183f63]">{title}</h2>
-      <div className="muted mt-2 text-sm leading-6">{children}</div>
+      <h2 className="text-xl font-semibold tracking-wide text-[#4c3a27]">
+        {title}
+      </h2>
+      <div className="mt-3 text-sm leading-6 text-[#615848]">
+        {children}
+      </div>
     </Card>
   );
 }
