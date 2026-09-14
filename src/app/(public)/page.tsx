@@ -5,6 +5,7 @@ import {
   ClipboardCheck,
   Compass,
   Diamond,
+  MessageSquareText,
   PackageOpen,
   School,
   Sparkles,
@@ -33,10 +34,12 @@ export default async function Home() {
     }),
   ]);
   const services = [
-    [School, "Room Reservations", "I"],
-    [PackageOpen, "Equipment Requests", "II"],
-    [CalendarDays, "Event Logistics", "III"],
-    [ClipboardCheck, "Gate Pass & Documents", "IV"],
+    [Camera, "Thesis Photoshoot Scheduling", "I", "Available now"],
+    [School, "Room Reservations", "II", "Coming soon"],
+    [PackageOpen, "Equipment Requests", "III", "Coming soon"],
+    [CalendarDays, "Event Logistics", "IV", "Coming soon"],
+    [ClipboardCheck, "Gate Pass & Documents", "V", "Coming soon"],
+    [MessageSquareText, "General Logistics Concerns", "VI", "Coming soon"],
   ] as const;
 
   return (
@@ -52,21 +55,22 @@ export default async function Home() {
         />
         <div className="container-page relative grid items-center gap-12 py-16 lg:grid-cols-[1.15fr_.85fr] lg:py-24">
           <div className="text-center lg:text-left">
-            <p className="eyebrow">Official TICAP logistics portal</p>
+            <p className="eyebrow">TICAP Logistics Department</p>
             <h1 className="hex-display mt-6 text-[clamp(3rem,7vw,6.5rem)] text-[#4c3a27]">
-              Centralized
-              <span className="block text-[#153f6f]">Scheduling</span>
+              Logistics,
+              <span className="block text-[#153f6f]">Coordinated</span>
             </h1>
             <div className="hex-rule mx-auto my-6 max-w-md lg:mx-0">
               <span />
             </div>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-[#3c342a] sm:text-xl lg:mx-0">
-              A secure academy registry for thesis-group photoshoot schedules,
-              preparation notices, and official logistics coordination.
+              The central portal for TICAP logistics services, operational
+              schedules, department notices, and secure coordination across the
+              college community.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
-              <Button href="/portal/booking" className="w-full sm:w-auto">
-                Book a photoshoot
+              <Button href="/services" className="w-full sm:w-auto">
+                Explore services
               </Button>
               <Button
                 href="/schedule"
@@ -89,10 +93,10 @@ export default async function Home() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="font-[Cinzel] text-xs tracking-[.18em] text-[#dbc98f] uppercase">
-                    Current activity
+                    Current department service
                   </p>
                   <h2 className="mt-2 font-[Cinzel] text-xl text-[#f3ead2]">
-                    {event?.title ?? "Awaiting the next dispatch"}
+                    {event?.title ?? "Thesis Photoshoot Scheduling"}
                   </h2>
                 </div>
                 <Status tone={event ? "success" : "warning"}>
@@ -107,7 +111,7 @@ export default async function Home() {
                   <dd className="mt-1 font-semibold">
                     {event
                       ? formatManilaDateTime(event.bookingClosesAt)
-                      : "Published with the next event"}
+                      : "The next schedule will be published here"}
                   </dd>
                 </div>
                 <div className="border-l border-[#b69a5e] pl-4">
@@ -120,7 +124,7 @@ export default async function Home() {
                 </div>
                 <div className="flex items-center gap-3 rounded-lg border border-[#806837] bg-[#211d18]/40 p-3">
                   <Check className="size-5 shrink-0 text-[#dbc98f]" />
-                  <dd>Private group information remains protected.</dd>
+                  <dd>Official coordination records remain protected.</dd>
                 </div>
               </dl>
             </div>
@@ -131,10 +135,10 @@ export default async function Home() {
       <section className="border-b border-[#806837] bg-[#4c3a27] text-[#f3ead2]">
         <div className="container-page grid grid-cols-2 divide-x divide-[#806837] sm:grid-cols-4">
           {[
-            "Verified identity",
-            "Capacity protected",
-            "Manila time",
-            "Private by design",
+            "Central coordination",
+            "Secure records",
+            "Clear schedules",
+            "Accountable service",
           ].map((item) => (
             <p
               key={item}
@@ -149,9 +153,9 @@ export default async function Home() {
 
       <section className="container-page py-16 sm:py-24">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="eyebrow">The reservation registry</p>
+          <p className="eyebrow">The department at work</p>
           <h2 className="hex-display mt-5 text-4xl sm:text-5xl">
-            A clear path from group to gallery
+            One desk for clearer logistics
           </h2>
           <div className="hex-rule mx-auto mt-6 max-w-sm">
             <span />
@@ -162,20 +166,20 @@ export default async function Home() {
             [
               CalendarDays,
               "I",
-              "Choose a schedule",
-              "Only active dates and capacity-backed time slots are offered.",
+              "Plan with clarity",
+              "Find active services, published schedules, requirements, and deadlines in one dependable place.",
             ],
             [
               ClipboardCheck,
               "II",
-              "Confirm securely",
-              "Availability is verified by the server before a booking is recorded.",
+              "Coordinate securely",
+              "Identity, availability, permissions, and private records are verified before an operation is confirmed.",
             ],
             [
-              Camera,
+              Compass,
               "III",
-              "Arrive prepared",
-              "Venue details, deadlines, instructions, and updates remain in one record.",
+              "Stay informed",
+              "Department notices, venue details, instructions, and service updates remain easy to find and follow.",
             ],
           ].map(([Icon, number, title, copy]) => {
             const Glyph = Icon as typeof CalendarDays;
@@ -240,15 +244,20 @@ export default async function Home() {
       </section>
 
       <section className="container-page py-16 sm:py-24">
-        <p className="eyebrow">Future services</p>
+        <p className="eyebrow">Department services</p>
         <h2 className="hex-display mt-5 max-w-4xl text-4xl sm:text-5xl">
-          The logistics directory is expanding
+          A growing home for TICAP logistics
         </h2>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map(([Icon, label, number], index) => (
+        <p className="muted mt-5 max-w-3xl text-lg leading-relaxed">
+          Photoshoot scheduling is the first active digital service. Additional
+          department workflows will be introduced only when they are ready for
+          official use.
+        </p>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map(([Icon, label, number, availability], index) => (
             <article
               key={label}
-              className={`hex-banner rounded-xl p-5 ${index === 1 ? "bg-[#8e261c]" : index === 2 ? "bg-[#5d2782]" : index === 3 ? "bg-[#806837]" : ""}`}
+              className={`hex-banner rounded-xl p-5 ${index === 1 ? "bg-[#8e261c]" : index === 2 ? "bg-[#5d2782]" : index === 3 ? "bg-[#806837]" : index >= 4 ? "bg-[#334735]" : ""}`}
             >
               <div className="flex items-center justify-between">
                 <Icon className="size-8 stroke-[1.5]" />
@@ -258,7 +267,7 @@ export default async function Home() {
               </div>
               <h3 className="mt-8 text-lg text-[#f3ead2]">{label}</h3>
               <p className="mt-2 text-xs font-semibold tracking-wider text-[#f3ead2]/80 uppercase">
-                Coming soon
+                {availability}
               </p>
             </article>
           ))}
