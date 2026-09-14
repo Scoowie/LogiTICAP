@@ -131,7 +131,7 @@ Unit tests cover the permission hierarchy, staff restrictions, student resource 
 
 ## Current Phase 1 limitations
 
-- The normalized models and secured actions implement the booking core, group creation, event/slot generation, attendance, role changes, notifications, audit records, and exports. Some administrative editors (invitation delivery, announcement/settings editing, event edits, on-behalf booking, and UI wrappers for reschedule/cancel) need their final screens even though their domain/security foundations exist.
+- The normalized models and secured actions implement the booking core, group creation, event/slot generation, attendance, role changes and invitations, assignments, announcements/settings, notifications, audit records, and exports. A richer event edit form and staff “book on behalf” flow remain follow-up screens even though their domain/security foundations exist.
 - Public schedule and announcements use safe empty states until database-backed publication views are enabled.
 - Rate limiting is process-local in development; bot protection is an integration point.
 - Email is sent inline after booking; background retries/reminders are not scheduled.

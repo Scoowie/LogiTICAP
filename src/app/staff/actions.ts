@@ -12,6 +12,7 @@ import { getDb } from "@/lib/db";
 import { safeText, uuid } from "@/lib/validation";
 import { getEmailProvider } from "@/lib/email";
 import { cancelBooking, rescheduleBooking } from "@/lib/booking-service";
+import { notifyBookingChange } from "@/lib/booking-notifications";
 
 const eventSchema = z
   .object({
@@ -545,6 +546,10 @@ export async function administrativelyChangeBooking(form: FormData) {
   };
   if (action === "reschedule") await rescheduleBooking(actor, payload);
   else await cancelBooking(actor, payload);
+  await notifyBookingChange(
+    payload.bookingId as string,
+    action === "reschedule" ? "RESCHEDULED" : "CANCELLED",
+  );
   revalidatePath("/staff/bookings");
   revalidatePath("/staff");
 }

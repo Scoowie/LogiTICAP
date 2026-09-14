@@ -4,7 +4,8 @@ import { formatManilaDateTime } from "@/lib/date";
 import { getDb } from "@/lib/db";
 import { getEmailProvider } from "@/lib/email";
 
-type ChangeType = "RESCHEDULED" | "CANCELLED" | "SCHEDULE_CHANGE" | "VENUE_CHANGE" | "REMINDER";
+type ChangeType =
+  "RESCHEDULED" | "CANCELLED" | "SCHEDULE_CHANGE" | "VENUE_CHANGE" | "REMINDER";
 
 export async function notifyBookingChange(bookingId: string, type: ChangeType) {
   const db = getDb();
@@ -45,7 +46,8 @@ export async function notifyBookingChange(bookingId: string, type: ChangeType) {
       where: { id: notification.id },
       data: {
         status: "FAILED",
-        failureCode: error instanceof Error ? error.name.slice(0, 120) : "UNKNOWN",
+        failureCode:
+          error instanceof Error ? error.name.slice(0, 120) : "UNKNOWN",
       },
     });
   }

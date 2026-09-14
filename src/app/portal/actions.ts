@@ -13,6 +13,7 @@ import {
 import { getDb } from "@/lib/db";
 import { getEmailProvider } from "@/lib/email";
 import { getRateLimiter } from "@/lib/rate-limit";
+import { notifyBookingChange } from "@/lib/booking-notifications";
 import { thesisGroupSchema } from "@/lib/validation";
 
 export async function createThesisGroup(form: FormData) {
@@ -163,6 +164,10 @@ export async function manageOwnBooking(form: FormData) {
   if (action === "reschedule") await rescheduleBooking(actor, payload);
   else if (action === "cancel") await cancelBooking(actor, payload);
   else throw new Error("Invalid booking action.");
+  await notifyBookingChange(
+    payload.bookingId as string,
+    action === "reschedule" ? "RESCHEDULED" : "CANCELLED",
+  );
   revalidatePath("/portal", "layout");
   redirect(`/portal/booking?changed=${action}`);
 }
