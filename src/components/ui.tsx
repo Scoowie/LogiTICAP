@@ -40,6 +40,31 @@ export function Card({
   );
 }
 
+export function WorkspaceHeader({
+  eyebrow,
+  title,
+  intro,
+  aside,
+}: {
+  eyebrow: string;
+  title: React.ReactNode;
+  intro: string;
+  aside?: React.ReactNode;
+}) {
+  return (
+    <header className="hex-workspace-header">
+      <div className="relative flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="eyebrow">{eyebrow}</p>
+          <h1 className="hex-display mt-4 text-4xl sm:text-5xl">{title}</h1>
+          <p className="hex-workspace-intro">{intro}</p>
+        </div>
+        {aside && <div className="shrink-0">{aside}</div>}
+      </div>
+    </header>
+  );
+}
+
 export function Status({
   children,
   tone = "info",

@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { Card, EmptyState, Status } from "@/components/ui";
+import { Card, EmptyState, Status, WorkspaceHeader } from "@/components/ui";
 import { ConfirmButton } from "@/components/confirm-button";
 import { ThesisGroupForm } from "@/components/thesis-group-form";
 import { getDb } from "@/lib/db";
@@ -131,11 +131,12 @@ export default async function StudentSection({
   const inputClass = "hex-input mt-1";
   return (
     <div className="mx-auto max-w-5xl">
-      <p className="eyebrow">Student portal</p>
-      <h1 className="hex-display mt-5 text-4xl sm:text-5xl">{title}</h1>
-      <p className="mt-5 max-w-3xl border-l-2 border-[#b69a5e] bg-[#f3ead2]/80 p-3 text-[#4c3a27]">
-        {intro}
-      </p>
+      <WorkspaceHeader
+        eyebrow="Student services"
+        title={title}
+        intro={intro}
+        aside={<Status>Student portal</Status>}
+      />
       <div className="mt-7">
         {section === "profile" && (
           <Card>

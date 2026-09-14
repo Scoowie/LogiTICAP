@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { Card, EmptyState, Status } from "@/components/ui";
+import { Card, EmptyState, Status, WorkspaceHeader } from "@/components/ui";
 import { formatManilaDateTime } from "@/lib/date";
 import { getDb } from "@/lib/db";
 import { requireActor } from "@/lib/auth/session";
@@ -27,13 +27,12 @@ export default async function PortalDashboard() {
     : null;
   return (
     <div className="mx-auto max-w-6xl">
-      <p className="eyebrow">Student portal</p>
-      <h1 className="hex-display mt-5 text-4xl sm:text-5xl">
-        Welcome, {actor.fullName}
-      </h1>
-      <p className="mt-5 max-w-3xl border-l-2 border-[#b69a5e] bg-[#f3ead2]/80 p-3 text-[#4c3a27]">
-        Your current photoshoot schedule, deadlines, and preparation details.
-      </p>
+      <WorkspaceHeader
+        eyebrow="Student services"
+        title={<>Welcome, {actor.fullName}</>}
+        intro="Your current photoshoot schedule, deadlines, and preparation details."
+        aside={<Status>Student portal</Status>}
+      />
       <div className="mt-7">
         {booking ? (
           <Card className="border-t-4 border-t-[#153f6f]! bg-[#fbf6e8]!">

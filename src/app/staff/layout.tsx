@@ -10,11 +10,11 @@ export default async function StaffLayout({
   const actor = await requireActor();
   if (actor.role === "STUDENT") redirect("/portal");
   return (
-    <div className="min-h-screen bg-[#fbf6e8] lg:flex">
+    <div className="hex-workspace min-h-screen lg:flex">
       <PortalNav role={actor.role} name={actor.fullName} />
       <main
         id="main-content"
-        className="hex-diagram min-w-0 flex-1 p-4 pb-12 sm:p-8 lg:p-10"
+        className="hex-workspace-main min-w-0 flex-1 p-4 pb-12 sm:p-8 lg:p-10"
       >
         {children}
       </main>

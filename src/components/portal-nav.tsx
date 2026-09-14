@@ -1,65 +1,206 @@
 "use client";
 
 import Link from "next/link";
+import {
+  Bell,
+  BookOpenCheck,
+  Boxes,
+  CalendarRange,
+  Camera,
+  CircleHelp,
+  Clock3,
+  Crown,
+  FileChartColumn,
+  LayoutDashboard,
+  Megaphone,
+  ScanLine,
+  ScrollText,
+  Settings2,
+  ShieldCheck,
+  UserRound,
+  UserRoundCog,
+  UsersRound,
+  type LucideIcon,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Brand } from "@/components/brand";
-import type { AppRole } from "@/lib/auth/permissions";
+import {
+  hasPermission,
+  type AppRole,
+  type Permission,
+} from "@/lib/auth/permissions";
 
-const studentLinks = [
-  ["Dashboard", "/portal"],
-  ["My Profile", "/portal/profile"],
-  ["My Thesis Group", "/portal/group"],
-  ["My Photoshoot Booking", "/portal/booking"],
-  ["Notifications", "/portal/notifications"],
-  ["Logistics Services", "/portal/services"],
-  ["Help", "/portal/help"],
+type NavItem = {
+  label: string;
+  href: string;
+  icon: LucideIcon;
+  permission?: Permission;
+};
+
+const studentLinks: NavItem[] = [
+  { label: "Dashboard", href: "/portal", icon: LayoutDashboard },
+  { label: "My Profile", href: "/portal/profile", icon: UserRound },
+  { label: "My Thesis Group", href: "/portal/group", icon: UsersRound },
+  { label: "My Photoshoot Booking", href: "/portal/booking", icon: Camera },
+  { label: "Notifications", href: "/portal/notifications", icon: Bell },
+  { label: "Logistics Services", href: "/portal/services", icon: Boxes },
+  { label: "Help", href: "/portal/help", icon: CircleHelp },
 ];
-const staffLinks = [
-  ["Operations dashboard", "/staff"],
-  ["Photoshoot Events", "/staff/events"],
-  ["Dates & Time Slots", "/staff/schedule"],
-  ["Bookings", "/staff/bookings"],
-  ["Thesis Groups", "/staff/groups"],
-  ["Check-In", "/staff/check-in"],
-  ["Staff Assignments", "/staff/assignments"],
-  ["Announcements", "/staff/announcements"],
-  ["Reports & Exports", "/staff/reports"],
-  ["Users & Roles", "/staff/users"],
-  ["Audit Logs", "/staff/audit"],
-  ["System Settings", "/staff/settings"],
+
+const staffLinks: NavItem[] = [
+  { label: "Operations Dashboard", href: "/staff", icon: LayoutDashboard },
+  {
+    label: "Photoshoot Events",
+    href: "/staff/events",
+    icon: Camera,
+    permission: "events:manage",
+  },
+  {
+    label: "Dates & Time Slots",
+    href: "/staff/schedule",
+    icon: Clock3,
+    permission: "events:manage",
+  },
+  {
+    label: "Bookings",
+    href: "/staff/bookings",
+    icon: BookOpenCheck,
+    permission: "bookings:manage",
+  },
+  {
+    label: "Thesis Groups",
+    href: "/staff/groups",
+    icon: UsersRound,
+    permission: "bookings:manage",
+  },
+  {
+    label: "Check-In",
+    href: "/staff/check-in",
+    icon: ScanLine,
+    permission: "checkin:manage",
+  },
+  {
+    label: "Staff Assignments",
+    href: "/staff/assignments",
+    icon: CalendarRange,
+    permission: "assignments:manage",
+  },
+  {
+    label: "Announcements",
+    href: "/staff/announcements",
+    icon: Megaphone,
+    permission: "announcements:manage",
+  },
+  {
+    label: "Reports & Exports",
+    href: "/staff/reports",
+    icon: FileChartColumn,
+    permission: "exports:standard",
+  },
+  {
+    label: "Users & Roles",
+    href: "/staff/users",
+    icon: UserRoundCog,
+    permission: "users:manage",
+  },
+  {
+    label: "Audit Logs",
+    href: "/staff/audit",
+    icon: ScrollText,
+    permission: "audit:view",
+  },
+  {
+    label: "System Settings",
+    href: "/staff/settings",
+    icon: Settings2,
+    permission: "settings:manage",
+  },
 ];
+
+const rolePresentation: Record<
+  AppRole,
+  { label: string; descriptor: string; icon: LucideIcon; className: string }
+> = {
+  SUPERADMIN: {
+    label: "Superadmin",
+    descriptor: "System authority",
+    icon: Crown,
+    className: "hex-role-card--superadmin",
+  },
+  ADMIN: {
+    label: "Administrator",
+    descriptor: "Operations command",
+    icon: ShieldCheck,
+    className: "hex-role-card--admin",
+  },
+  LOGISTICS_MEMBER: {
+    label: "Logistics Member",
+    descriptor: "Field operations",
+    icon: Boxes,
+    className: "hex-role-card--member",
+  },
+  STUDENT: {
+    label: "Student",
+    descriptor: "Student services",
+    icon: UserRound,
+    className: "hex-role-card--student",
+  },
+};
 
 export function PortalNav({ role, name }: { role: AppRole; name: string }) {
-  const links = role === "STUDENT" ? studentLinks : staffLinks;
+  const links =
+    role === "STUDENT"
+      ? studentLinks
+      : staffLinks.filter(
+          (link) => !link.permission || hasPermission(role, link.permission),
+        );
   const pathname = usePathname();
+  const presentation = rolePresentation[role];
+  const RoleIcon = presentation.icon;
+
   return (
-    <aside className="hex-conservatory border-b border-[#806837] text-[#f3ead2] lg:min-h-screen lg:w-72 lg:shrink-0 lg:border-r lg:border-b-0">
-      <div className="p-4 lg:p-5">
+    <aside className="hex-sidebar lg:min-h-screen lg:w-72 lg:shrink-0">
+      <div className="relative p-4 lg:sticky lg:top-0 lg:p-5">
         <Brand />
-        <div className="mt-6 rounded-lg border border-[#806837] bg-[#292923]/75 p-3 shadow-[inset_0_1px_0_rgba(219,201,143,.18)]">
-          <p className="truncate font-[Cinzel] text-sm font-semibold text-[#f3ead2]">
-            {name}
-          </p>
-          <p className="mt-1 text-xs font-semibold tracking-[.12em] text-[#dbc98f] uppercase">
-            {role.replaceAll("_", " ")}
-          </p>
+        <div
+          className={`hex-role-card mt-6 ${presentation.className}`}
+          aria-label={`${presentation.label} account`}
+        >
+          <span className="hex-role-seal" aria-hidden="true">
+            <RoleIcon className="size-5" />
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate font-[Cinzel] text-sm font-semibold text-[#f3ead2]">
+              {name}
+            </span>
+            <span className="mt-1 block text-[.65rem] font-semibold tracking-[.14em] text-[#dbc98f] uppercase">
+              {presentation.label} · {presentation.descriptor}
+            </span>
+          </span>
         </div>
+        <p className="mt-6 hidden px-3 text-[.62rem] font-bold tracking-[.18em] text-[#dbc98f]/70 uppercase lg:block">
+          Logistics registry
+        </p>
+        <nav
+          aria-label="Portal navigation"
+          className="mt-4 flex gap-2 overflow-x-auto pb-1 lg:block lg:space-y-1 lg:overflow-visible"
+        >
+          {links.map(({ label, href, icon: Icon }) => {
+            const active = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={`hex-portal-link ${active ? "hex-portal-link--active" : ""}`}
+              >
+                <Icon aria-hidden="true" className="size-4 shrink-0" />
+                <span>{label}</span>
+              </Link>
+            );
+          })}
+        </nav>
       </div>
-      <nav
-        aria-label="Portal navigation"
-        className="flex gap-2 overflow-x-auto px-3 pb-4 lg:block lg:space-y-1"
-      >
-        {links.map(([label, href]) => (
-          <Link
-            key={href}
-            href={href}
-            aria-current={pathname === href ? "page" : undefined}
-            className={`block min-h-11 rounded-md border-l-2 px-3 py-2.5 font-[Cinzel] text-[.69rem] font-semibold tracking-[.07em] whitespace-nowrap uppercase transition-colors duration-150 ${pathname === href ? "border-[#dbc98f] bg-[#4c3a27] text-[#dbc98f] shadow-[inset_0_0_0_1px_rgba(219,201,143,.12)]" : "border-transparent text-[#f3ead2] hover:bg-[#4c3a27]/75 hover:text-[#dbc98f]"}`}
-          >
-            {label}
-          </Link>
-        ))}
-      </nav>
     </aside>
   );
 }

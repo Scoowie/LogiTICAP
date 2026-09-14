@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Card, EmptyState, Status } from "@/components/ui";
+import { Card, EmptyState, Status, WorkspaceHeader } from "@/components/ui";
 import { ConfirmButton } from "@/components/confirm-button";
 import { hasPermission, type Permission } from "@/lib/auth/permissions";
 import { requireActor } from "@/lib/auth/session";
@@ -227,11 +227,18 @@ export default async function StaffSection({
 
   return (
     <div className="mx-auto max-w-7xl">
-      <p className="eyebrow">Staff portal</p>
-      <h1 className="hex-display mt-5 text-4xl sm:text-5xl">{meta.title}</h1>
-      <p className="mt-5 max-w-4xl border-l-2 border-[#b69a5e] bg-[#f3ead2]/80 p-3 text-[#4c3a27]">
-        {meta.intro}
-      </p>
+      <WorkspaceHeader
+        eyebrow={
+          actor.role === "SUPERADMIN"
+            ? "Superadmin command"
+            : actor.role === "ADMIN"
+              ? "Administration"
+              : "Field operations"
+        }
+        title={meta.title}
+        intro={meta.intro}
+        aside={<Status>{actor.role.replaceAll("_", " ")}</Status>}
+      />
       <div className="mt-7 space-y-6">
         {section === "events" && (
           <>

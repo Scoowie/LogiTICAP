@@ -1,9 +1,9 @@
-import { Card, Status } from "@/components/ui";
+import { Card, Status, WorkspaceHeader } from "@/components/ui";
 import { getDb } from "@/lib/db";
 import { requireActor } from "@/lib/auth/session";
 
 export default async function OperationsDashboard() {
-  await requireActor();
+  const actor = await requireActor();
   const db = getDb();
   const todayStart = new Date();
   todayStart.setUTCHours(16, 0, 0, 0);
@@ -71,18 +71,18 @@ export default async function OperationsDashboard() {
   ];
   return (
     <div className="mx-auto max-w-7xl">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="eyebrow">Staff portal</p>
-          <h1 className="hex-display mt-5 text-4xl sm:text-5xl">
-            Operations dashboard
-          </h1>
-          <p className="mt-5 max-w-3xl border-l-2 border-[#b69a5e] bg-[#f3ead2]/80 p-3 text-[#4c3a27]">
-            Photoshoot scheduling and attendance at a glance.
-          </p>
-        </div>
-        <Status>Live database totals</Status>
-      </div>
+      <WorkspaceHeader
+        eyebrow={
+          actor.role === "SUPERADMIN"
+            ? "Superadmin command"
+            : actor.role === "ADMIN"
+              ? "Administration"
+              : "Field operations"
+        }
+        title="Operations dashboard"
+        intro="Photoshoot scheduling, attendance, and logistics operations at a glance."
+        aside={<Status>Live database totals</Status>}
+      />
       <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.map(([label, value], index) => (
           <Card
