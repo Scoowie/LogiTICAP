@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 import { Prisma } from "@/generated/prisma/client";
 import { writeAudit } from "@/lib/audit";
 import { requireActor } from "@/lib/auth/session";
@@ -16,7 +17,36 @@ import { getRateLimiter } from "@/lib/rate-limit";
 import { notifyBookingChange } from "@/lib/booking-notifications";
 import { thesisGroupSchema } from "@/lib/validation";
 
-export async function createThesisGroup(form: FormData) {
+export type ThesisGroupActionState = { error: string | null };
+
+function groupValidationMessage(error: z.ZodError) {
+  const fieldLabels: Record<string, string> = {
+    name: "Group name",
+    thesisTitle: "Thesis title",
+    section: "Section",
+    program: "Program",
+    adviserName: "Adviser",
+    representativeName: "Representative name",
+    contactNumber: "Contact number",
+    fullName: "full name",
+    studentNumber: "student number",
+    schoolEmail: "school email",
+  };
+  const messages = error.issues.map((issue) => {
+    if (issue.path[0] === "members" && typeof issue.path[1] === "number") {
+      const field = String(issue.path[2] ?? "details");
+      return `Group member ${issue.path[1] + 1} ${fieldLabels[field] ?? field}: ${issue.message}`;
+    }
+    const field = String(issue.path[0] ?? "Form");
+    return `${fieldLabels[field] ?? field}: ${issue.message}`;
+  });
+  return [...new Set(messages)].join("; ");
+}
+
+export async function createThesisGroup(
+  _previousState: ThesisGroupActionState,
+  form: FormData,
+): Promise<ThesisGroupActionState> {
   const actor = await requireActor();
   if (actor.role !== "STUDENT" || actor.thesisGroupId)
     throw new Error("A group is already linked to this account.");
@@ -38,16 +68,13 @@ export async function createThesisGroup(form: FormData) {
         studentNumber: memberNumbers[index],
         schoolEmail: memberEmails[index] || undefined,
       }))
-      .filter(
-        (member) =>
-          typeof member.fullName === "string" &&
-          member.fullName.trim().length > 0,
+      .filter((member) =>
+        [member.fullName, member.studentNumber, member.schoolEmail].some(
+          (value) => typeof value === "string" && value.trim().length > 0,
+        ),
       ),
   });
-  if (!parsed.success)
-    throw new Error(
-      parsed.error.issues.map((issue) => issue.message).join("; "),
-    );
+  if (!parsed.success) return { error: groupValidationMessage(parsed.error) };
   const input = parsed.data;
   const db = getDb();
   await db.$transaction(

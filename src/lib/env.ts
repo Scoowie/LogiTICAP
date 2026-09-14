@@ -6,13 +6,20 @@ const publicSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
 });
 
+const optionalString = (schema: z.ZodString) =>
+  z.preprocess(
+    (value) =>
+      typeof value === "string" && value.trim() === "" ? undefined : value,
+    schema.optional(),
+  );
+
 const serverSchema = publicSchema.extend({
   DATABASE_URL: z.string().min(1),
   DIRECT_URL: z.string().min(1),
-  RESEND_API_KEY: z.string().min(1).optional(),
-  EMAIL_FROM: z.string().min(3).optional(),
-  RATE_LIMIT_REDIS_URL: z.string().url().optional(),
-  BOT_PROTECTION_SECRET: z.string().min(8).optional(),
+  RESEND_API_KEY: optionalString(z.string().min(1)),
+  EMAIL_FROM: optionalString(z.string().min(3)),
+  RATE_LIMIT_REDIS_URL: optionalString(z.string().url()),
+  BOT_PROTECTION_SECRET: optionalString(z.string().min(8)),
 });
 
 function parse<T extends z.ZodType>(

@@ -1,10 +1,11 @@
 import { notFound, redirect } from "next/navigation";
 import { Card, EmptyState, Status } from "@/components/ui";
 import { ConfirmButton } from "@/components/confirm-button";
+import { ThesisGroupForm } from "@/components/thesis-group-form";
 import { getDb } from "@/lib/db";
 import { requireActor } from "@/lib/auth/session";
 import { formatManilaDateTime } from "@/lib/date";
-import { createThesisGroup, manageOwnBooking, submitBooking } from "../actions";
+import { manageOwnBooking, submitBooking } from "../actions";
 
 const content = {
   profile: [
@@ -193,116 +194,7 @@ export default async function StudentSection({
                 Your verified sign-in email will be used for the representative.
                 Additional members can be added after initial setup.
               </p>
-              <form
-                action={createThesisGroup}
-                className="mt-5 grid gap-4 sm:grid-cols-2"
-              >
-                <label className="text-sm font-bold">
-                  Group name or identifier
-                  <input
-                    name="name"
-                    required
-                    maxLength={120}
-                    className={inputClass}
-                  />
-                </label>
-                <label className="text-sm font-bold">
-                  Program
-                  <input
-                    name="program"
-                    required
-                    maxLength={120}
-                    className={inputClass}
-                  />
-                </label>
-                <label className="text-sm font-bold sm:col-span-2">
-                  Thesis title
-                  <input
-                    name="thesisTitle"
-                    required
-                    maxLength={300}
-                    className={inputClass}
-                  />
-                </label>
-                <label className="text-sm font-bold">
-                  Section
-                  <input
-                    name="section"
-                    required
-                    maxLength={80}
-                    className={inputClass}
-                  />
-                </label>
-                <label className="text-sm font-bold">
-                  Adviser (optional)
-                  <input
-                    name="adviserName"
-                    maxLength={160}
-                    className={inputClass}
-                  />
-                </label>
-                <label className="text-sm font-bold">
-                  Representative full name
-                  <input
-                    name="representativeName"
-                    required
-                    maxLength={160}
-                    className={inputClass}
-                  />
-                </label>
-                <label className="text-sm font-bold">
-                  Contact number
-                  <input
-                    name="contactNumber"
-                    required
-                    maxLength={32}
-                    className={inputClass}
-                  />
-                </label>
-                {[1, 2, 3].map((number) => (
-                  <fieldset
-                    key={number}
-                    className="rounded-md border p-4 sm:col-span-2"
-                  >
-                    <legend className="px-1 text-sm font-bold">
-                      Group member {number}
-                      {number > 1 ? " (optional)" : ""}
-                    </legend>
-                    <div className="grid gap-3 sm:grid-cols-3">
-                      <label className="text-sm">
-                        Full name
-                        <input
-                          name="memberName"
-                          required={number === 1}
-                          maxLength={160}
-                          className={inputClass}
-                        />
-                      </label>
-                      <label className="text-sm">
-                        Student number
-                        <input
-                          name="memberNumber"
-                          required={number === 1}
-                          maxLength={40}
-                          className={inputClass}
-                        />
-                      </label>
-                      <label className="text-sm">
-                        School email
-                        <input
-                          name="memberEmail"
-                          type="email"
-                          maxLength={320}
-                          className={inputClass}
-                        />
-                      </label>
-                    </div>
-                  </fieldset>
-                ))}
-                <button className="min-h-11 rounded-md bg-[#183f63] px-5 font-bold text-white sm:col-span-2">
-                  Create group
-                </button>
-              </form>
+              <ThesisGroupForm />
             </Card>
           ))}
         {section === "booking" &&

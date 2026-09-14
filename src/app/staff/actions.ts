@@ -93,13 +93,33 @@ export async function createEvent(form: FormData) {
           createdById: actor.id,
         },
       });
+      await tx.eventDate.createMany({
+        data: input.dates.map((date) => ({
+          eventId: event.id,
+          date: new Date(`${date}T00:00:00Z`),
+        })),
+      });
+      const eventDates = await tx.eventDate.findMany({
+        where: { eventId: event.id },
+        select: { id: true, date: true },
+      });
+      const eventDateIds = new Map(
+        eventDates.map((eventDate) => [
+          eventDate.date.toISOString().slice(0, 10),
+          eventDate.id,
+        ]),
+      );
+      const slots: Prisma.TimeSlotCreateManyInput[] = [];
       for (const date of input.dates) {
-        const eventDate = await tx.eventDate.create({
-          data: { eventId: event.id, date: new Date(`${date}T00:00:00Z`) },
-        });
+        const eventDateId = eventDateIds.get(date);
+        if (!eventDateId)
+          throw new Error(
+            "Failed to create an event date for slot generation.",
+          );
+        const dayEndsAt = manila(date, input.endTime);
         for (
           let cursor = manila(date, input.startTime);
-          cursor < manila(date, input.endTime);
+          cursor < dayEndsAt;
           cursor = new Date(
             cursor.getTime() + input.slotDurationMinutes * 60_000,
           )
@@ -107,17 +127,16 @@ export async function createEvent(form: FormData) {
           const end = new Date(
             cursor.getTime() + input.slotDurationMinutes * 60_000,
           );
-          if (end > manila(date, input.endTime)) break;
-          await tx.timeSlot.create({
-            data: {
-              eventDateId: eventDate.id,
-              startsAt: cursor,
-              endsAt: end,
-              capacity: input.capacity,
-            },
+          if (end > dayEndsAt) break;
+          slots.push({
+            eventDateId,
+            startsAt: cursor,
+            endsAt: end,
+            capacity: input.capacity,
           });
         }
       }
+      if (slots.length > 0) await tx.timeSlot.createMany({ data: slots });
       await writeAudit(tx, {
         actorId: actor.id,
         action: "event.created",
@@ -127,10 +146,14 @@ export async function createEvent(form: FormData) {
           title: event.title,
           dates: input.dates,
           slotDurationMinutes: input.slotDurationMinutes,
+          slotCount: slots.length,
         },
       });
     },
-    { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
+    {
+      isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+      timeout: 15_000,
+    },
   );
   revalidatePath("/staff/events");
   revalidatePath("/staff/schedule");

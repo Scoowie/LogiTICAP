@@ -53,6 +53,28 @@ describe("runtime validation", () => {
       }).success,
     ).toBe(false);
   });
+  it("reports one clear error for a blank member student number", () => {
+    const result = thesisGroupSchema.safeParse({
+      name: "G-1",
+      thesisTitle: "Security",
+      section: "A",
+      program: "Cybersecurity",
+      representativeName: "Representative",
+      verifiedEmail: "student@example.edu",
+      contactNumber: "+63 900 000 0000",
+      members: [{ fullName: "Member", studentNumber: "" }],
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues).toEqual([
+        expect.objectContaining({
+          path: ["members", 0, "studentNumber"],
+          message: "Enter a student number",
+        }),
+      ]);
+    }
+  });
   it("restricts export report and format values", () => {
     expect(
       exportQuerySchema.safeParse({ report: "contacts", format: "xlsx" })

@@ -11,10 +11,15 @@ export const safeText = (max: number) => z.string().trim().min(1).max(max);
 
 export const groupMemberSchema = z.object({
   fullName: safeText(160),
-  studentNumber: safeText(40).regex(
-    /^[A-Za-z0-9-]+$/,
-    "Use letters, numbers, and hyphens only",
-  ),
+  studentNumber: z
+    .string()
+    .trim()
+    .min(1, "Enter a student number")
+    .max(40)
+    .refine(
+      (value) => value.length === 0 || /^[A-Za-z0-9-]+$/.test(value),
+      "Use letters, numbers, and hyphens only",
+    ),
   schoolEmail: z.email().max(320).optional().or(z.literal("")),
   groupRole: z.string().trim().max(80).optional(),
 });
