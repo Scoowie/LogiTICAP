@@ -37,9 +37,7 @@ export function TextCard({
       <h2 className="text-xl font-semibold tracking-wide text-[#4c3a27]">
         {title}
       </h2>
-      <div className="mt-3 text-sm leading-6 text-[#615848]">
-        {children}
-      </div>
+      <div className="mt-3 text-sm leading-6 text-[#615848]">{children}</div>
     </Card>
   );
 }

@@ -34,9 +34,7 @@ export default async function SchedulePage() {
           <Card key={event.id}>
             <div className="flex flex-wrap justify-between gap-3">
               <div>
-                <h2 className="text-2xl font-black tracking-tight text-black uppercase">
-                  {event.title}
-                </h2>
+                <h2 className="text-2xl text-[#4c3a27]">{event.title}</h2>
                 <p className="muted mt-1 text-sm">
                   {event.venue} · Booking closes{" "}
                   {formatManilaDateTime(event.bookingClosesAt)}
@@ -46,7 +44,7 @@ export default async function SchedulePage() {
             </div>
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               {event.dates.map((date) => (
-                <section key={date.id} className="neo-panel bg-[#FFD93D] p-4">
+                <section key={date.id} className="hex-panel bg-[#f3ead2] p-4">
                   <h3 className="font-bold">
                     {date.date.toLocaleDateString("en-PH", {
                       timeZone: "UTC",

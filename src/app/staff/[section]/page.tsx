@@ -85,8 +85,8 @@ const sections: Record<
   },
 };
 
-const inputClass = "neo-input mt-1";
-const buttonClass = "neo-btn";
+const inputClass = "hex-input mt-1";
+const buttonClass = "hex-btn";
 
 export default async function StaffSection({
   params,
@@ -228,10 +228,8 @@ export default async function StaffSection({
   return (
     <div className="mx-auto max-w-7xl">
       <p className="eyebrow">Staff portal</p>
-      <h1 className="neo-display mt-5 text-4xl text-black sm:text-6xl">
-        {meta.title}
-      </h1>
-      <p className="mt-5 max-w-4xl border-l-8 border-black bg-[#FFD93D] p-3 font-bold">
+      <h1 className="hex-display mt-5 text-4xl sm:text-5xl">{meta.title}</h1>
+      <p className="mt-5 max-w-4xl border-l-2 border-[#b69a5e] bg-[#f3ead2]/80 p-3 text-[#4c3a27]">
         {meta.intro}
       </p>
       <div className="mt-7 space-y-6">
@@ -420,7 +418,7 @@ export default async function StaffSection({
                             {date.slots.map((slot) => (
                               <tr
                                 key={slot.id}
-                                className="border-b-2 border-black"
+                                className="border-b border-[#b69a5e]"
                               >
                                 <td className="p-2">
                                   {formatManilaDateTime(slot.startsAt)}
@@ -473,7 +471,7 @@ export default async function StaffSection({
                                     </button>
                                   </form>
                                   <details className="mt-2">
-                                    <summary className="cursor-pointer font-black text-black uppercase">
+                                    <summary className="cursor-pointer font-semibold text-[#4c3a27]">
                                       Edit or delete
                                     </summary>
                                     <form
@@ -530,7 +528,7 @@ export default async function StaffSection({
                                         className="min-h-9 min-w-0 rounded border px-2"
                                       />
                                       <ConfirmButton
-                                        className="neo-btn neo-btn--danger"
+                                        className="hex-btn hex-btn--danger"
                                         message="Remove this empty slot from all schedules?"
                                       >
                                         Delete
@@ -661,7 +659,7 @@ export default async function StaffSection({
                             <button
                               name="action"
                               value="no-show"
-                              className="neo-btn neo-btn--secondary"
+                              className="hex-btn hex-btn--secondary"
                             >
                               No-show
                             </button>
@@ -816,7 +814,7 @@ export default async function StaffSection({
                 ["unbooked", "Groups without bookings"],
                 ["changes", "Cancellation and rescheduling report"],
               ].map(([key, label]) => (
-                <div key={key} className="neo-panel bg-white p-4">
+                <div key={key} className="hex-panel bg-[#fbf6e8] p-4">
                   <h3 className="font-semibold">{label}</h3>
                   <div className="mt-3 flex gap-2">
                     <Link
@@ -836,11 +834,9 @@ export default async function StaffSection({
               ))}
             </div>
             {hasPermission(actor.role, "exports:restricted") && (
-              <div className="neo-panel mt-6 bg-[#FFD93D] p-4">
-                <h3 className="font-black text-black uppercase">
-                  Restricted contact list
-                </h3>
-                <p className="mt-2 text-sm font-bold text-black">
+              <div className="hex-panel mt-6 bg-[#f3ead2] p-4">
+                <h3 className="text-[#4c3a27]">Restricted contact list</h3>
+                <p className="mt-2 text-sm font-semibold text-[#4c3a27]">
                   Contains personal contact data. Every download is audited.
                 </p>
                 <div className="mt-3 flex gap-2">
@@ -980,7 +976,7 @@ export default async function StaffSection({
                                   ? "suspend"
                                   : "activate"
                               }
-                              className="neo-btn neo-btn--danger"
+                              className="hex-btn hex-btn--danger"
                               message={`${user.status === "ACTIVE" ? "Suspend" : "Activate"} this account?`}
                             >
                               {user.status === "ACTIVE"
@@ -1226,10 +1222,10 @@ function BookingTable({
                         "RESCHEDULED",
                       ].includes(booking.status) ? (
                         <details>
-                          <summary className="cursor-pointer font-black text-black uppercase">
+                          <summary className="cursor-pointer font-semibold text-[#4c3a27]">
                             Change booking
                           </summary>
-                          <div className="neo-panel mt-3 grid w-80 gap-3 bg-white p-3">
+                          <div className="hex-panel mt-3 grid w-80 gap-3 bg-[#fbf6e8] p-3">
                             <form
                               action={administrativelyChangeBooking}
                               className="grid gap-2"
@@ -1298,7 +1294,7 @@ function BookingTable({
                               <ConfirmButton
                                 name="action"
                                 value="cancel"
-                                className="neo-btn neo-btn--danger"
+                                className="hex-btn hex-btn--danger"
                                 message="Cancel this booking and restore its slot capacity?"
                               >
                                 Cancel booking

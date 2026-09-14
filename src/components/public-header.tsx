@@ -1,10 +1,6 @@
-"use client";
-
 import Link from "next/link";
 import { Menu } from "lucide-react";
-import { usePathname } from "next/navigation";
 import { Brand } from "@/components/brand";
-import { Button } from "@/components/ui";
 
 const links = [
   ["Services", "/services"],
@@ -16,43 +12,49 @@ const links = [
 ];
 
 export function PublicHeader() {
-  const pathname = usePathname();
   return (
-    <header className="relative z-40 border-b border-[#b69a5e] bg-[#292923]/98 shadow-[0_6px_24px_rgba(33,29,24,.18)]">
-      <div className="container-page flex min-h-20 items-center justify-between gap-5 py-3">
+    <header className="sticky top-0 z-40 border-b border-[#b69a5e] bg-[#292923]/98 shadow-[0_6px_24px_rgba(33,29,24,.18)] backdrop-blur-md">
+      <div className="container-page flex min-h-20 items-center gap-4 py-3">
         <Brand />
-        <nav aria-label="Public navigation" className="hidden items-center gap-1 lg:flex">
+        <nav
+          aria-label="Public navigation"
+          className="ml-auto hidden items-center gap-0.5 rounded-lg border border-[#806837]/70 bg-[#211d18]/35 p-1 xl:flex"
+        >
           {links.map(([label, href]) => (
-            <Link
-              className={`relative min-h-11 px-3 py-3 font-[Cinzel] text-[.7rem] font-semibold tracking-[.09em] whitespace-nowrap text-[#f3ead2] uppercase transition-colors duration-150 hover:text-[#dbc98f] ${pathname === href ? "text-[#dbc98f] after:absolute after:right-3 after:bottom-1 after:left-3 after:h-px after:bg-[#dbc98f]" : ""}`}
-              key={href}
-              href={href}
-              aria-current={pathname === href ? "page" : undefined}
-            >
+            <Link className="hex-header-link" key={href} href={href}>
               {label}
             </Link>
           ))}
         </nav>
-        <Button href="/sign-in" variant="secondary" className="hidden lg:inline-flex">
-          Sign in
-        </Button>
-        <details className="relative lg:hidden">
-          <summary className="grid size-11 cursor-pointer list-none place-items-center rounded-lg border border-[#b69a5e] bg-[#4c3a27] text-[#f3ead2]">
+        <div className="ml-2 hidden xl:block">
+          <Link href="/sign-in" className="hex-btn hex-header-action">
+            Sign in
+          </Link>
+        </div>
+        <details className="group relative ml-auto xl:hidden">
+          <summary className="grid size-11 cursor-pointer list-none place-items-center rounded-lg border border-[#b69a5e] bg-[#4c3a27] text-[#f3ead2] shadow-[inset_0_1px_0_rgba(255,255,255,.12)] transition-colors hover:bg-[#765636] [&::-webkit-details-marker]:hidden">
             <Menu aria-hidden="true" className="size-5" />
-            <span className="sr-only">Open navigation</span>
+            <span className="sr-only">Toggle navigation menu</span>
           </summary>
-          <nav aria-label="Mobile navigation" className="absolute top-14 right-0 grid w-72 gap-1 rounded-xl border border-[#b69a5e] bg-[#292923] p-3 shadow-[0_18px_45px_rgba(15,18,16,.4)]">
+          <nav
+            aria-label="Mobile navigation"
+            className="absolute top-14 right-0 grid w-[min(20rem,calc(100vw-1.25rem))] gap-1 rounded-xl border border-[#b69a5e] bg-[#292923] p-3 shadow-[0_18px_45px_rgba(15,18,16,.4)]"
+          >
             {links.map(([label, href]) => (
               <Link
-                className={`min-h-11 rounded-md border-l-2 px-4 py-3 font-[Cinzel] text-xs font-semibold tracking-wider text-[#f3ead2] uppercase ${pathname === href ? "border-[#dbc98f] bg-[#4c3a27] text-[#dbc98f]" : "border-transparent hover:bg-[#4c3a27]"}`}
+                className="hex-header-link w-full justify-start"
                 key={href}
                 href={href}
-                aria-current={pathname === href ? "page" : undefined}
               >
                 {label}
               </Link>
             ))}
-            <Button href="/sign-in">Sign in</Button>
+            <Link
+              href="/sign-in"
+              className="hex-btn hex-header-action mt-1 w-full"
+            >
+              Sign in
+            </Link>
           </nav>
         </details>
       </div>

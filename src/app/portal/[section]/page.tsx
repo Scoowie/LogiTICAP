@@ -128,14 +128,12 @@ export default async function StudentSection({
           take: 20,
         })
       : [];
-  const inputClass = "neo-input mt-1";
+  const inputClass = "hex-input mt-1";
   return (
     <div className="mx-auto max-w-5xl">
       <p className="eyebrow">Student portal</p>
-      <h1 className="neo-display mt-5 text-4xl text-black sm:text-6xl">
-        {title}
-      </h1>
-      <p className="mt-5 max-w-3xl border-l-8 border-black bg-[#FFD93D] p-3 font-bold">
+      <h1 className="hex-display mt-5 text-4xl sm:text-5xl">{title}</h1>
+      <p className="mt-5 max-w-3xl border-l-2 border-[#b69a5e] bg-[#f3ead2]/80 p-3 text-[#4c3a27]">
         {intro}
       </p>
       <div className="mt-7">
@@ -179,7 +177,7 @@ export default async function StudentSection({
                 </div>
               </dl>
               <ul
-                className="mt-5 divide-y-3 divide-black"
+                className="mt-5 divide-y divide-[#b69a5e]/40"
                 aria-label="Group members"
               >
                 {group.members.map((member) => (
@@ -262,7 +260,7 @@ export default async function StudentSection({
                     <ConfirmButton
                       name="action"
                       value="reschedule"
-                      className="neo-btn"
+                      className="hex-btn"
                       message="Move this booking to the selected schedule?"
                     >
                       Reschedule booking
@@ -289,7 +287,7 @@ export default async function StudentSection({
                     <ConfirmButton
                       name="action"
                       value="cancel"
-                      className="neo-btn neo-btn--danger"
+                      className="hex-btn hex-btn--danger"
                       message="Cancel this booking? Its current slot will be released."
                     >
                       Cancel booking
@@ -305,7 +303,7 @@ export default async function StudentSection({
             </EmptyState>
           ) : openEvents.length ? (
             <Card>
-              <ol className="mb-8 grid gap-2 text-xs font-black text-black uppercase sm:grid-cols-5">
+              <ol className="mb-8 grid gap-2 text-xs font-semibold tracking-wide text-[#4c3a27] uppercase sm:grid-cols-5">
                 <li>1 Identity verified</li>
                 <li>2 Group confirmed</li>
                 <li>3 Choose event/date</li>
@@ -315,7 +313,7 @@ export default async function StudentSection({
               {query.confirmed && (
                 <p
                   role="status"
-                  className="mb-5 border-3 border-black bg-[#72E6A0] p-3 font-bold text-black shadow-[4px_4px_0_0_#000]"
+                  className="mb-5 rounded-lg border border-[#3f6848] bg-[#e0eadf] p-3 font-semibold text-[#294a31]"
                 >
                   Booking confirmed: {query.confirmed}
                 </p>
@@ -378,7 +376,7 @@ export default async function StudentSection({
                     className={`${inputClass} min-h-20 py-2`}
                   />
                 </label>
-                <fieldset className="space-y-3 border-3 border-black bg-[#FFD93D] p-4">
+                <fieldset className="space-y-3 bg-[#f3ead2] p-4">
                   <legend className="px-1 font-bold">
                     Required acknowledgements
                   </legend>
@@ -408,7 +406,7 @@ export default async function StudentSection({
                     </label>
                   ))}
                 </fieldset>
-                <button className="neo-btn">Confirm booking</button>
+                <button className="hex-btn">Confirm booking</button>
               </form>
             </Card>
           ) : (

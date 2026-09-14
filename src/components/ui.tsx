@@ -23,7 +23,7 @@ export function Button({
       href={href}
     >
       {children}
-      <ArrowRight aria-hidden="true" className="size-4 stroke-[3]" />
+      <ArrowRight aria-hidden="true" className="size-4 stroke-[2]" />
     </Link>
   );
 }
@@ -73,13 +73,14 @@ export function EmptyState({
 }) {
   return (
     <div className="hex-diagram rounded-xl border border-[#b69a5e] bg-[#fbf6e8] p-8 text-center shadow-[0_12px_35px_rgba(33,29,24,.14)] sm:p-12">
-      <Compass aria-hidden="true" className="mx-auto mb-4 size-11 stroke-[1.5] text-[#806837]" />
+      <Compass
+        aria-hidden="true"
+        className="mx-auto mb-4 size-11 stroke-[1.5] text-[#806837]"
+      />
       <h2 className="text-xl font-semibold tracking-wide text-[#4c3a27]">
         {title}
       </h2>
-      <p className="mx-auto mt-3 max-w-xl text-sm text-[#615848]">
-        {children}
-      </p>
+      <p className="mx-auto mt-3 max-w-xl text-sm text-[#615848]">{children}</p>
     </div>
   );
 }

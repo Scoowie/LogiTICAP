@@ -74,10 +74,10 @@ export default async function OperationsDashboard() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="eyebrow">Staff portal</p>
-          <h1 className="neo-display mt-5 text-4xl text-black sm:text-6xl">
+          <h1 className="hex-display mt-5 text-4xl sm:text-5xl">
             Operations dashboard
           </h1>
-          <p className="mt-5 max-w-3xl border-l-8 border-black bg-[#FFD93D] p-3 font-bold">
+          <p className="mt-5 max-w-3xl border-l-2 border-[#b69a5e] bg-[#f3ead2]/80 p-3 text-[#4c3a27]">
             Photoshoot scheduling and attendance at a glance.
           </p>
         </div>
@@ -88,24 +88,28 @@ export default async function OperationsDashboard() {
           <Card
             key={label}
             className={
-              index % 3 === 0
-                ? "bg-[#FFD93D]!"
-                : index % 3 === 1
-                  ? "bg-[#C4B5FD]!"
-                  : "bg-white!"
+              index % 4 === 0
+                ? "border-t-4 border-t-[#153f6f]! bg-[#fbf6e8]!"
+                : index % 4 === 1
+                  ? "border-t-4 border-t-[#8e261c]! bg-[#fbf6e8]!"
+                  : index % 4 === 2
+                    ? "border-t-4 border-t-[#5d2782]! bg-[#fbf6e8]!"
+                    : "border-t-4 border-t-[#d5a938]! bg-[#fbf6e8]!"
             }
           >
-            <p className="text-xs font-black tracking-widest uppercase">
+            <p className="text-xs font-semibold tracking-[.12em] text-[#615848] uppercase">
               {label}
             </p>
-            <p className="mt-3 text-4xl font-black text-black">{value}</p>
+            <p className="mt-3 font-[Cinzel] text-4xl font-semibold text-[#4c3a27]">
+              {value}
+            </p>
           </Card>
         ))}
       </div>
       <Card className="mt-6">
         <h2 className="text-lg font-bold">Recent administrative activity</h2>
         {recent.length ? (
-          <ul className="mt-4 divide-y-3 divide-black">
+          <ul className="mt-4 divide-y divide-[#b69a5e]/40">
             {recent.map((item) => (
               <li
                 key={item.id}

@@ -6,18 +6,27 @@ import { Brand } from "@/components/brand";
 import type { AppRole } from "@/lib/auth/permissions";
 
 const studentLinks = [
-  ["Dashboard", "/portal"], ["My Profile", "/portal/profile"],
-  ["My Thesis Group", "/portal/group"], ["My Photoshoot Booking", "/portal/booking"],
-  ["Notifications", "/portal/notifications"], ["Logistics Services", "/portal/services"],
+  ["Dashboard", "/portal"],
+  ["My Profile", "/portal/profile"],
+  ["My Thesis Group", "/portal/group"],
+  ["My Photoshoot Booking", "/portal/booking"],
+  ["Notifications", "/portal/notifications"],
+  ["Logistics Services", "/portal/services"],
   ["Help", "/portal/help"],
 ];
 const staffLinks = [
-  ["Operations dashboard", "/staff"], ["Photoshoot Events", "/staff/events"],
-  ["Dates & Time Slots", "/staff/schedule"], ["Bookings", "/staff/bookings"],
-  ["Thesis Groups", "/staff/groups"], ["Check-In", "/staff/check-in"],
-  ["Staff Assignments", "/staff/assignments"], ["Announcements", "/staff/announcements"],
-  ["Reports & Exports", "/staff/reports"], ["Users & Roles", "/staff/users"],
-  ["Audit Logs", "/staff/audit"], ["System Settings", "/staff/settings"],
+  ["Operations dashboard", "/staff"],
+  ["Photoshoot Events", "/staff/events"],
+  ["Dates & Time Slots", "/staff/schedule"],
+  ["Bookings", "/staff/bookings"],
+  ["Thesis Groups", "/staff/groups"],
+  ["Check-In", "/staff/check-in"],
+  ["Staff Assignments", "/staff/assignments"],
+  ["Announcements", "/staff/announcements"],
+  ["Reports & Exports", "/staff/reports"],
+  ["Users & Roles", "/staff/users"],
+  ["Audit Logs", "/staff/audit"],
+  ["System Settings", "/staff/settings"],
 ];
 
 export function PortalNav({ role, name }: { role: AppRole; name: string }) {
@@ -28,11 +37,18 @@ export function PortalNav({ role, name }: { role: AppRole; name: string }) {
       <div className="p-4 lg:p-5">
         <Brand />
         <div className="mt-6 rounded-lg border border-[#806837] bg-[#292923]/75 p-3 shadow-[inset_0_1px_0_rgba(219,201,143,.18)]">
-          <p className="truncate font-[Cinzel] text-sm font-semibold text-[#f3ead2]">{name}</p>
-          <p className="mt-1 text-xs font-semibold tracking-[.12em] text-[#dbc98f] uppercase">{role.replaceAll("_", " ")}</p>
+          <p className="truncate font-[Cinzel] text-sm font-semibold text-[#f3ead2]">
+            {name}
+          </p>
+          <p className="mt-1 text-xs font-semibold tracking-[.12em] text-[#dbc98f] uppercase">
+            {role.replaceAll("_", " ")}
+          </p>
         </div>
       </div>
-      <nav aria-label="Portal navigation" className="flex gap-2 overflow-x-auto px-3 pb-4 lg:block lg:space-y-1">
+      <nav
+        aria-label="Portal navigation"
+        className="flex gap-2 overflow-x-auto px-3 pb-4 lg:block lg:space-y-1"
+      >
         {links.map(([label, href]) => (
           <Link
             key={href}

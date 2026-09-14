@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== "production") {
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  allowedDevOrigins: ["192.168.56.1"],
   async headers() {
     return [
       {

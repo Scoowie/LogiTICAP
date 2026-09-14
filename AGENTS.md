@@ -28,10 +28,10 @@ This repository is TLMS, the official TICAP Logistics portal. Phase 1 is the cyb
 - Use fixed enums/statuses. Do not accept roles from public registration metadata.
 - Display user dates in `Asia/Manila`; store timezone-aware instants.
 - Use semantic labels/headings/tables, visible focus, screen-reader status/error text, keyboard-operable controls, confirmation for disruptive actions, and overflow-safe responsive layouts.
-- The active UI system is neo-brutalist. Keep its canonical color, border, shadow, focus, texture, and motion tokens in `src/app/globals.css`; do not scatter alternative palettes through feature code.
-- Use locally bundled Space Grotesk, `Button`, `Card`, `Status`, `EmptyState`, `.neo-btn`, `.neo-input`, and `.neo-panel` before creating a one-off visual primitive.
-- Neo-brutalist surfaces use sharp corners, pure-black borders, zero-blur offset shadows, cream/red/yellow/violet color blocks, bold typography, and fast mechanical interactions. Pill rounding is reserved for badges.
-- Preserve restrained rotation and visual density in operational forms and tables. Decorative motion must respect `prefers-reduced-motion`, and all controls remain at least 44px tall.
+- The active UI system is Hextech Arcane Academia. Keep its canonical ivory, bronze, gold, sky, forest, and banner tokens in `src/app/globals.css`; do not scatter alternative palettes through feature code.
+- Use locally bundled Cinzel for ceremonial display text and Source Sans 3 for interfaces. Prefer `Button`, `Card`, `Status`, `EmptyState`, `.hex-btn`, `.hex-input`, and `.hex-panel` before creating one-off primitives.
+- Public pages use the brighter Sky-Citadel atmosphere; authenticated operational pages use the restrained Conservatory atmosphere. Use fine metallic borders, soft depth, archival surfaces, and crisp operational typography—never hard black offset shadows or sticker rotation.
+- Decorative motifs must remain secondary to content, respect `prefers-reduced-motion`, and all controls must remain at least 44px tall.
 - The TL lettermark remains a replaceable placeholder; do not invent official logos, dates, contacts, or policies.
 - Preserve unrelated user changes. Never commit secrets or use destructive Git commands.
 
@@ -64,3 +64,13 @@ UI visibility is never authorization. Add both permission and row/resource tests
 - Review every cascade. Do not cascade-delete bookings, histories, attendance, assignments, or audits.
 - Test permissions, isolation, staff restrictions, duplicates, full slots, concurrency, rescheduling ordering, cancellation capacity, deadlines, record-ID manipulation, export authorization, and Zod schemas.
 - Before handoff run install, Prisma generation, lint, typecheck, tests, and production build. Report external checks honestly when credentials prevent them.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

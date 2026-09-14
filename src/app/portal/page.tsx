@@ -28,19 +28,19 @@ export default async function PortalDashboard() {
   return (
     <div className="mx-auto max-w-6xl">
       <p className="eyebrow">Student portal</p>
-      <h1 className="neo-display mt-5 text-4xl text-black sm:text-6xl">
+      <h1 className="hex-display mt-5 text-4xl sm:text-5xl">
         Welcome, {actor.fullName}
       </h1>
-      <p className="mt-5 max-w-3xl border-l-8 border-black bg-[#FFD93D] p-3 font-bold">
+      <p className="mt-5 max-w-3xl border-l-2 border-[#b69a5e] bg-[#f3ead2]/80 p-3 text-[#4c3a27]">
         Your current photoshoot schedule, deadlines, and preparation details.
       </p>
       <div className="mt-7">
         {booking ? (
-          <Card className="rotate-[.3deg] bg-[#FFFDF5]!">
+          <Card className="border-t-4 border-t-[#153f6f]! bg-[#fbf6e8]!">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="eyebrow">Current booking</p>
-                <h2 className="mt-3 text-2xl font-black tracking-tight uppercase">
+                <h2 className="mt-3 text-2xl text-[#4c3a27]">
                   {booking.event.title}
                 </h2>
               </div>
@@ -66,9 +66,9 @@ export default async function PortalDashboard() {
                 <dd className="muted mt-1">{booking.event.venue}</dd>
               </div>
             </dl>
-            <div className="mt-6 border-4 border-black bg-[#C4B5FD] p-4 text-sm shadow-[4px_4px_0_0_#000]">
-              <h3 className="font-black uppercase">Preparation instructions</h3>
-              <p className="mt-2 font-bold whitespace-pre-wrap">
+            <div className="mt-6 rounded-lg border border-[#806837] bg-[#f3ead2] p-4 text-sm">
+              <h3 className="text-[#4c3a27]">Preparation instructions</h3>
+              <p className="mt-2 whitespace-pre-wrap">
                 {booking.event.preparationInstructions}
               </p>
             </div>
@@ -89,14 +89,14 @@ export default async function PortalDashboard() {
       </div>
       <div className="mt-6 grid gap-5 md:grid-cols-2">
         <Card>
-          <h2 className="font-black text-black uppercase">Deadlines</h2>
+          <h2 className="text-[#4c3a27]">Deadlines</h2>
           <p className="muted mt-2 text-sm">
             Your event-specific booking, rescheduling, and cancellation
             deadlines appear with the active booking.
           </p>
         </Card>
         <Card>
-          <h2 className="font-black text-black uppercase">Announcements</h2>
+          <h2 className="text-[#4c3a27]">Announcements</h2>
           <p className="muted mt-2 text-sm">
             No relevant announcements at this time.
           </p>
