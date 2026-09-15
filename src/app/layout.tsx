@@ -2,8 +2,12 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "TICAP Logistics", template: "%s | TICAP Logistics" },
-  description: "Centralized Scheduling and Logistics Services for TICAP.",
+  title: {
+    default: "Unofficial TICAP Logistics Portal",
+    template: "%s | Unofficial TICAP Logistics Portal",
+  },
+  description:
+    "An unofficial scheduling and logistics portal prototype for TICAP.",
 };
 
 export const viewport: Viewport = {

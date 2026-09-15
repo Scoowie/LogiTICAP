@@ -2,7 +2,7 @@
 
 **TICAP Logistics (TLMS)** — _Centralized Scheduling and Logistics Services_
 
-TLMS is the official logistics portal for a college cybersecurity organization. Phase 1 provides thesis-group photoshoot event configuration, capacity-safe scheduling, attendance operations, notifications, auditing, and role-aware exports. Room reservations, equipment requests, event logistics, gate-pass/document tracking, and general concerns are intentionally represented only as Coming Soon services.
+TLMS is an unofficial logistics portal prototype for a college cybersecurity organization. Phase 1 provides thesis-group photoshoot event configuration, capacity-safe scheduling, attendance operations, notifications, auditing, and role-aware exports. Room reservations, equipment requests, event logistics, gate-pass/document tracking, and general concerns are intentionally represented only as Coming Soon services.
 
 ## Stack
 

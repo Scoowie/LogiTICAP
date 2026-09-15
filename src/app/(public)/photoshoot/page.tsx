@@ -5,7 +5,7 @@ export default function PhotoshootPage() {
     <InfoPage
       eyebrow="Photoshoot"
       title="Thesis group photoshoot information"
-      intro="The official event dates, venue, deadlines, capacity, and preparation instructions are configured by TICAP Logistics and shown when an event is published."
+      intro="Published event dates, venue, deadlines, capacity, and preparation instructions are configured by authorized Logistics staff and shown when an event is available."
     >
       <div className="grid gap-5 md:grid-cols-3">
         <TextCard title="Before booking">

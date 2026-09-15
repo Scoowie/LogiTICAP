@@ -55,7 +55,7 @@ export default async function Home() {
         />
         <div className="container-page relative grid items-center gap-12 py-16 lg:grid-cols-[1.15fr_.85fr] lg:py-24">
           <div className="text-center lg:text-left">
-            <p className="eyebrow">TICAP Logistics Department</p>
+            <p className="eyebrow">Unofficial TICAP Logistics Portal</p>
             <h1 className="hex-display mt-6 text-[clamp(3rem,7vw,6.5rem)] text-[#4c3a27]">
               Logistics,
               <span className="block text-[#153f6f]">Coordinated</span>
@@ -64,9 +64,9 @@ export default async function Home() {
               <span />
             </div>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-[#3c342a] sm:text-xl lg:mx-0">
-              The central portal for TICAP logistics services, operational
-              schedules, department notices, and secure coordination across the
-              college community.
+              An unofficial portal prototype for TICAP logistics services,
+              operational schedules, department notices, and secure coordination
+              across the college community.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
               <Button href="/services" className="w-full sm:w-auto">
@@ -124,7 +124,7 @@ export default async function Home() {
                 </div>
                 <div className="flex items-center gap-3 rounded-lg border border-[#806837] bg-[#211d18]/40 p-3">
                   <Check className="size-5 shrink-0 text-[#dbc98f]" />
-                  <dd>Official coordination records remain protected.</dd>
+                  <dd>Private coordination records remain protected.</dd>
                 </div>
               </dl>
             </div>
@@ -211,8 +211,8 @@ export default async function Home() {
               Current announcements
             </h2>
             <p className="mt-4 max-w-md leading-relaxed text-[#f3ead2]/80">
-              Official notices for students and logistics personnel, published
-              from the operations desk.
+              Published notices for students and logistics personnel from the
+              operations desk.
             </p>
           </div>
           <Card className="bg-[#fbf6e8]!">
@@ -250,8 +250,8 @@ export default async function Home() {
         </h2>
         <p className="muted mt-5 max-w-3xl text-lg leading-relaxed">
           Photoshoot scheduling is the first active digital service. Additional
-          department workflows will be introduced only when they are ready for
-          official use.
+          department workflows will be introduced only when they are ready and
+          approved for organizational use.
         </p>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map(([Icon, label, number, availability], index) => (

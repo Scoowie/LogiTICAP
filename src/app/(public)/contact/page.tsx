@@ -5,7 +5,7 @@ export default function ContactPage() {
     <InfoPage
       eyebrow="Contact Logistics"
       title="Get help from the TICAP Logistics team"
-      intro="Official contact details can be published through system settings once confirmed. No unverified address or account is included in this repository."
+      intro="Verified contact details can be published through system settings once confirmed. No unverified address or account is included in this repository."
     >
       <TextCard title="Before contacting Logistics">
         <p>

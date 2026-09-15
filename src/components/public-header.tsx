@@ -68,7 +68,7 @@ export function PublicFooter() {
       <div className="container-page flex flex-col gap-4 py-10 text-sm sm:flex-row sm:items-end sm:justify-between">
         <p>© TICAP Logistics Management System</p>
         <p className="border-l border-[#b69a5e] pl-3 font-[Cinzel] text-xs tracking-wider text-[#dbc98f] uppercase">
-          Official college organization portal
+          Unofficial TICAP Logistics portal
         </p>
       </div>
     </footer>
