@@ -13,6 +13,7 @@ import { safeText, uuid } from "@/lib/validation";
 import { getEmailProvider } from "@/lib/email";
 import { cancelBooking, rescheduleBooking } from "@/lib/booking-service";
 import { notifyBookingChange } from "@/lib/booking-notifications";
+import { appOrigin } from "@/lib/env";
 
 const eventSchema = z
   .object({
@@ -513,7 +514,7 @@ export async function inviteStaff(form: FormData) {
     return created;
   });
   try {
-    const origin = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const origin = appOrigin();
     await getEmailProvider().send({
       to: invitation.email,
       subject: "TICAP Logistics staff invitation",

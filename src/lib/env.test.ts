@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { serverEnv } from "@/lib/env";
+import { appOrigin, serverEnv } from "@/lib/env";
 
 const requiredEnvironment = {
   NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co",
@@ -46,5 +46,24 @@ describe("serverEnv", () => {
     vi.stubEnv("RATE_LIMIT_REDIS_URL", "not-a-url");
 
     expect(() => serverEnv()).toThrow(/RATE_LIMIT_REDIS_URL: Invalid URL/);
+  });
+});
+
+describe("appOrigin", () => {
+  it("normalizes a configured public URL to its origin", () => {
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://portal.example.edu/sign-in/");
+    expect(appOrigin()).toBe("https://portal.example.edu");
+  });
+
+  it("rejects localhost links in production", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "http://localhost:3000");
+    expect(() => appOrigin()).toThrow(/cannot point to localhost/);
+  });
+
+  it("uses localhost only as a development default", () => {
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "");
+    expect(appOrigin()).toBe("http://localhost:3000");
   });
 });

@@ -51,6 +51,35 @@ export function publicEnv() {
   );
 }
 
+/**
+ * Returns the canonical public origin used in links sent outside the app.
+ * Production must be explicitly configured so an email can never point at a
+ * developer's localhost server.
+ */
+export function appOrigin() {
+  const configured = process.env.NEXT_PUBLIC_APP_URL?.trim();
+  if (!configured) {
+    if (process.env.NODE_ENV === "production")
+      throw new Error("NEXT_PUBLIC_APP_URL is required in production.");
+    return "http://localhost:3000";
+  }
+  let origin: URL;
+  try {
+    origin = new URL(configured);
+  } catch {
+    throw new Error("NEXT_PUBLIC_APP_URL must be a valid URL.");
+  }
+  if (
+    process.env.NODE_ENV === "production" &&
+    ["localhost", "127.0.0.1", "::1"].includes(origin.hostname)
+  ) {
+    throw new Error(
+      "NEXT_PUBLIC_APP_URL cannot point to localhost in production.",
+    );
+  }
+  return origin.origin;
+}
+
 export function serverEnv() {
   return parse(serverSchema, process.env, "server");
 }

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { getRateLimiter } from "@/lib/rate-limit";
 import { signInSchema } from "@/lib/validation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { appOrigin } from "@/lib/env";
 
 export async function requestMagicLink(formData: FormData) {
   const parsed = signInSchema.safeParse({
@@ -17,7 +18,7 @@ export async function requestMagicLink(formData: FormData) {
   if (!(await getRateLimiter().consume(key, 5, 15 * 60_000)))
     redirect("/sign-in?error=rate-limited");
   const supabase = await createSupabaseServerClient();
-  const origin = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const origin = appOrigin();
   const { error } = await supabase.auth.signInWithOtp({
     email: parsed.data.email,
     options: {
