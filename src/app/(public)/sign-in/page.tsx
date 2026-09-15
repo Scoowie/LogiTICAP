@@ -6,6 +6,12 @@ export default async function SignInPage({
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const query = await searchParams;
+  const errorMessage =
+    query.error === "rate-limited"
+      ? "Too many sign-in links were requested. Wait 15 minutes, then request one new link."
+      : query.error === "invalid"
+        ? "Enter a valid email address and try again."
+        : "The identity provider could not send the sign-in link. Check the Supabase email provider, redirect allow-list, and rate-limit logs.";
   return (
     <div className="hex-sky min-h-[70vh] border-b border-[#b69a5e] py-14 sm:py-20">
       <div className="card mx-auto w-[calc(100%_-_1.25rem)] max-w-lg border-t-4 border-t-[#153f6f]! bg-[#fbf6e8]! p-6 sm:p-9">
@@ -28,8 +34,7 @@ export default async function SignInPage({
             role="alert"
             className="mt-5 rounded-lg border border-[#8e261c] bg-[#f1d9d3] p-3 text-sm font-semibold text-[#712018]"
           >
-            The sign-in request could not be completed. Verify the address or
-            try again later.
+            {errorMessage}
           </p>
         )}
         <form action={requestMagicLink} className="mt-6 space-y-5">

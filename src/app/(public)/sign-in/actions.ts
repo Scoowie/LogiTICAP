@@ -25,6 +25,15 @@ export async function requestMagicLink(formData: FormData) {
       emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(parsed.data.next)}`,
     },
   });
-  if (error) redirect("/sign-in?error=unavailable");
+  if (error) {
+    console.error("[auth.magic-link.failed]", {
+      code: error.code,
+      status: error.status,
+      name: error.name,
+    });
+    if (error.status === 429 || error.code?.includes("rate_limit"))
+      redirect("/sign-in?error=rate-limited");
+    redirect("/sign-in?error=unavailable");
+  }
   redirect("/sign-in?sent=1");
 }
