@@ -29,6 +29,14 @@ export default async function SignInPage({
             Check your email for a secure sign-in link.
           </p>
         )}
+        {query["signed-out"] && (
+          <p
+            role="status"
+            className="mt-5 rounded-lg border border-[#3f6848] bg-[#e0eadf] p-3 text-sm font-semibold text-[#294a31]"
+          >
+            You have been signed out on all devices.
+          </p>
+        )}
         {query.error && (
           <p
             role="alert"

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   bookingSchema,
+  eventCreationSchema,
   exportQuerySchema,
   thesisGroupSchema,
 } from "./validation";
@@ -13,6 +14,41 @@ const ids = {
 };
 
 describe("runtime validation", () => {
+  const event = {
+    title: "Thesis photoshoot",
+    description: "Official thesis group photoshoot schedule.",
+    venue: "TICAP Hall",
+    preparationInstructions: "Arrive ten minutes early.",
+    bookingOpensAt: "2026-10-01T08:00",
+    bookingClosesAt: "2026-10-15T17:00",
+    rescheduleDeadline: "2026-10-14T17:00",
+    cancellationDeadline: "2026-10-14T17:00",
+    slotDurationMinutes: 20,
+    capacity: 1,
+    startTime: "08:00",
+    endTime: "17:00",
+  };
+
+  it("allows one event date while rejecting an event without dates", () => {
+    expect(
+      eventCreationSchema.safeParse({ ...event, dates: ["2026-10-20"] })
+        .success,
+    ).toBe(true);
+    expect(
+      eventCreationSchema.safeParse({
+        ...event,
+        dates: ["2026-10-20", "2026-10-21"],
+      }).success,
+    ).toBe(true);
+    expect(eventCreationSchema.safeParse({ ...event, dates: [] }).success).toBe(
+      false,
+    );
+    expect(
+      eventCreationSchema.safeParse({ ...event, dates: ["20 October 2026"] })
+        .success,
+    ).toBe(false);
+  });
+
   it("requires every booking acknowledgement", () => {
     expect(
       bookingSchema.safeParse({

@@ -9,6 +9,33 @@ export const phone = z
   .regex(/^[+()\-\s0-9]+$/, "Enter a valid contact number");
 export const safeText = (max: number) => z.string().trim().min(1).max(max);
 
+const manilaLocalDateTime = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}T([01]\d|2[0-3]):[0-5]\d$/);
+
+export const eventCreationSchema = z
+  .object({
+    title: safeText(160),
+    description: safeText(2000),
+    venue: safeText(240),
+    preparationInstructions: safeText(4000),
+    bookingOpensAt: manilaLocalDateTime,
+    bookingClosesAt: manilaLocalDateTime,
+    rescheduleDeadline: manilaLocalDateTime,
+    cancellationDeadline: manilaLocalDateTime,
+    slotDurationMinutes: z.coerce.number().int().min(5).max(480),
+    capacity: z.coerce.number().int().min(1).max(100),
+    dates: z.array(z.iso.date()).min(1).max(30),
+    startTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
+    endTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
+  })
+  .refine(
+    (value) =>
+      new Date(`${value.bookingOpensAt}:00+08:00`) <
+      new Date(`${value.bookingClosesAt}:00+08:00`),
+    { message: "Booking must open before it closes" },
+  );
+
 export const groupMemberSchema = z.object({
   fullName: safeText(160),
   studentNumber: z

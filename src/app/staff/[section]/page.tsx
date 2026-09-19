@@ -26,7 +26,7 @@ const sections: Record<
   { title: string; intro: string; permission?: Permission }
 > = {
   events: {
-    title: "Photoshoot Events",
+    title: "Events",
     intro: "Create and manage configurable photoshoot activities.",
     permission: "events:manage",
   },
@@ -245,8 +245,8 @@ export default async function StaffSection({
             <Card>
               <h2 className="text-lg font-bold">Create photoshoot event</h2>
               <p className="muted mt-1 text-sm">
-                Starts as a draft. Enter at least two tentative dates; slots are
-                generated in Philippine Time.
+                Starts as a draft. Enter one required date and an optional
+                second date; slots are generated in Philippine Time.
               </p>
               <form
                 action={createEvent}
@@ -334,13 +334,8 @@ export default async function StaffSection({
                   />
                 </label>
                 <label className="text-sm font-bold">
-                  Tentative date 2
-                  <input
-                    className={inputClass}
-                    type="date"
-                    name="dates"
-                    required
-                  />
+                  Tentative date 2 (optional)
+                  <input className={inputClass} type="date" name="dates" />
                 </label>
                 <label className="text-sm font-bold">
                   Daily start
@@ -1136,7 +1131,7 @@ function EventList({
       ))}
     </div>
   ) : (
-    <EmptyState title="No photoshoot events">
+    <EmptyState title="No events">
       Create the first configurable event when dates and venue are ready.
     </EmptyState>
   );

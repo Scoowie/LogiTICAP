@@ -9,42 +9,11 @@ import { writeAudit } from "@/lib/audit";
 import { requirePermission } from "@/lib/auth/session";
 import { canAssignRole, ROLES } from "@/lib/auth/permissions";
 import { getDb } from "@/lib/db";
-import { safeText, uuid } from "@/lib/validation";
+import { eventCreationSchema, safeText, uuid } from "@/lib/validation";
 import { getEmailProvider } from "@/lib/email";
 import { cancelBooking, rescheduleBooking } from "@/lib/booking-service";
 import { notifyBookingChange } from "@/lib/booking-notifications";
 import { appOrigin } from "@/lib/env";
-
-const eventSchema = z
-  .object({
-    title: safeText(160),
-    description: safeText(2000),
-    venue: safeText(240),
-    preparationInstructions: safeText(4000),
-    bookingOpensAt: z
-      .string()
-      .regex(/^\d{4}-\d{2}-\d{2}T([01]\d|2[0-3]):[0-5]\d$/),
-    bookingClosesAt: z
-      .string()
-      .regex(/^\d{4}-\d{2}-\d{2}T([01]\d|2[0-3]):[0-5]\d$/),
-    rescheduleDeadline: z
-      .string()
-      .regex(/^\d{4}-\d{2}-\d{2}T([01]\d|2[0-3]):[0-5]\d$/),
-    cancellationDeadline: z
-      .string()
-      .regex(/^\d{4}-\d{2}-\d{2}T([01]\d|2[0-3]):[0-5]\d$/),
-    slotDurationMinutes: z.coerce.number().int().min(5).max(480),
-    capacity: z.coerce.number().int().min(1).max(100),
-    dates: z.array(z.iso.date()).min(2).max(30),
-    startTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
-    endTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
-  })
-  .refine(
-    (v) => localManila(v.bookingOpensAt) < localManila(v.bookingClosesAt),
-    {
-      message: "Booking must open before it closes",
-    },
-  );
 
 function formStrings(form: FormData, key: string) {
   return form
@@ -60,7 +29,7 @@ function localManila(value: string) {
 
 export async function createEvent(form: FormData) {
   const actor = await requirePermission("events:manage");
-  const parsed = eventSchema.safeParse({
+  const parsed = eventCreationSchema.safeParse({
     ...Object.fromEntries(form),
     dates: formStrings(form, "dates"),
   });
@@ -342,10 +311,10 @@ export async function changeEventStatus(form: FormData) {
     if (!event) throw new Error("Event not found.");
     if (
       input.status === "OPEN" &&
-      (event.dates.length < 2 ||
+      (event.dates.length < 1 ||
         event.dates.some((date) => date._count.slots === 0))
     )
-      throw new Error("An open event requires at least two dates with slots.");
+      throw new Error("An open event requires at least one date with slots.");
     await tx.photoshootEvent.update({
       where: { id: event.id },
       data: { status: input.status, isPublic: input.status === "OPEN" },

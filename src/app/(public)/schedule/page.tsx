@@ -2,6 +2,7 @@ import { InfoPage } from "@/components/info-page";
 import { Card, EmptyState, Status } from "@/components/ui";
 import { formatManilaDateTime } from "@/lib/date";
 import { getDb } from "@/lib/db";
+import { getPublicSlotAvailability } from "@/lib/schedule-availability";
 
 export const dynamic = "force-dynamic";
 
@@ -11,10 +12,15 @@ export default async function SchedulePage() {
     where: { status: "OPEN", isPublic: true, bookingClosesAt: { gte: now } },
     include: {
       dates: {
-        where: { isActive: true },
+        where: {
+          isActive: true,
+          slots: {
+            some: { status: { not: "DELETED" }, startsAt: { gt: now } },
+          },
+        },
         include: {
           slots: {
-            where: { status: "AVAILABLE", startsAt: { gt: now } },
+            where: { status: { not: "DELETED" }, startsAt: { gt: now } },
             orderBy: { startsAt: "asc" },
           },
         },
@@ -26,7 +32,7 @@ export default async function SchedulePage() {
   return (
     <InfoPage
       eyebrow="Public schedule"
-      title="Photoshoot availability overview"
+      title="Events and Schedule Overview"
       intro="Only aggregate availability is public. Group names, student names, contacts, and private booking details are never displayed here."
     >
       {events.length ? (
@@ -52,15 +58,32 @@ export default async function SchedulePage() {
                     })}
                   </h3>
                   <dl className="mt-3 grid gap-2 text-sm">
-                    {date.slots.map((slot) => (
-                      <div key={slot.id} className="flex justify-between gap-3">
-                        <dt>{formatManilaDateTime(slot.startsAt)}</dt>
-                        <dd className="font-semibold">
-                          {Math.max(0, slot.capacity - slot.reservedCount)}{" "}
-                          available
-                        </dd>
-                      </div>
-                    ))}
+                    {date.slots.map((slot) => {
+                      const availability = getPublicSlotAvailability(slot);
+                      return (
+                        <div
+                          key={slot.id}
+                          className={`flex min-h-12 items-center justify-between gap-3 rounded-lg border px-3 py-2 ${
+                            availability.available
+                              ? "border-[#3f6848] bg-[#e0eadf]"
+                              : "border-[#8e261c] bg-[#f1d9d3]"
+                          }`}
+                        >
+                          <dt>{formatManilaDateTime(slot.startsAt)}</dt>
+                          <dd>
+                            <Status
+                              tone={
+                                availability.available ? "success" : "danger"
+                              }
+                            >
+                              {availability.available
+                                ? `${availability.remaining} available`
+                                : "Unavailable"}
+                            </Status>
+                          </dd>
+                        </div>
+                      );
+                    })}
                   </dl>
                 </section>
               ))}

@@ -70,12 +70,13 @@ export function Status({
   tone = "info",
 }: {
   children: React.ReactNode;
-  tone?: "info" | "success" | "warning";
+  tone?: "info" | "success" | "warning" | "danger";
 }) {
   const styles = {
     info: "border-[#286f9c] bg-[#d8eef7] text-[#184d6b]",
     success: "border-[#3f6848] bg-[#e0eadf] text-[#294a31]",
     warning: "border-[#bb7a22] bg-[#f3e4c6] text-[#70430d]",
+    danger: "border-[#8e261c] bg-[#f1d9d3] text-[#712018]",
   };
   return (
     <span

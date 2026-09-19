@@ -17,6 +17,7 @@ import {
   ScrollText,
   Settings2,
   ShieldCheck,
+  LogOut,
   UserRound,
   UserRoundCog,
   UsersRound,
@@ -24,6 +25,7 @@ import {
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Brand } from "@/components/brand";
+import { signOut } from "@/app/auth/actions";
 import {
   hasPermission,
   type AppRole,
@@ -50,7 +52,7 @@ const studentLinks: NavItem[] = [
 const staffLinks: NavItem[] = [
   { label: "Operations Dashboard", href: "/staff", icon: LayoutDashboard },
   {
-    label: "Photoshoot Events",
+    label: "Events",
     href: "/staff/events",
     icon: Camera,
     permission: "events:manage",
@@ -200,6 +202,12 @@ export function PortalNav({ role, name }: { role: AppRole; name: string }) {
             );
           })}
         </nav>
+        <form action={signOut} className="mt-4">
+          <button type="submit" className="hex-portal-link min-h-11 w-full">
+            <LogOut aria-hidden="true" className="size-4 shrink-0" />
+            <span>Sign out</span>
+          </button>
+        </form>
       </div>
     </aside>
   );
