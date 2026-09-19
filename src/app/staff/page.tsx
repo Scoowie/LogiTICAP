@@ -5,6 +5,7 @@ import { requireActor } from "@/lib/auth/session";
 export default async function OperationsDashboard() {
   const actor = await requireActor();
   const db = getDb();
+  const now = new Date();
   const todayStart = new Date();
   todayStart.setUTCHours(16, 0, 0, 0);
   todayStart.setUTCDate(todayStart.getUTCDate() - 1);
@@ -34,11 +35,30 @@ export default async function OperationsDashboard() {
     db.booking.count({ where: { status: "NO_SHOW" } }),
     db.timeSlot.aggregate({
       _sum: { capacity: true, reservedCount: true },
-      where: { status: "AVAILABLE" },
+      where: {
+        status: "AVAILABLE",
+        startsAt: { gt: now },
+        eventDate: {
+          isActive: true,
+          event: {
+            status: "OPEN",
+            bookingClosesAt: { gte: now },
+          },
+        },
+      },
     }),
-    db.$queryRaw<
-      Array<{ count: bigint }>
-    >`SELECT COUNT(*) AS count FROM "TimeSlot" WHERE status = 'AVAILABLE' AND "reservedCount" >= capacity`,
+    db.$queryRaw<Array<{ count: bigint }>>`SELECT COUNT(*) AS count
+      FROM "TimeSlot" AS slot
+      INNER JOIN "EventDate" AS event_date
+        ON event_date.id = slot."eventDateId"
+      INNER JOIN "PhotoshootEvent" AS event
+        ON event.id = event_date."eventId"
+      WHERE slot.status = 'AVAILABLE'
+        AND slot."reservedCount" >= slot.capacity
+        AND slot."startsAt" > ${now}
+        AND event_date."isActive" = true
+        AND event.status = 'OPEN'
+        AND event."bookingClosesAt" >= ${now}`,
     db.booking.count({
       where: {
         currentSlot: { startsAt: { gte: todayStart, lt: todayEnd } },
