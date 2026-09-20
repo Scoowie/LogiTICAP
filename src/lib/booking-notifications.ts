@@ -35,7 +35,7 @@ export async function notifyBookingChange(bookingId: string, type: ChangeType) {
     const sent = await getEmailProvider().send({
       to: booking.thesisGroup.verifiedEmail,
       subject: `${subjects[type]} · ${booking.publicReference}`,
-      text: `${subjects[type]}. Reference: ${booking.publicReference}. Sign in to TLMS for private details.`,
+      text: `${subjects[type]}. Reference: ${booking.publicReference}. Log in to TLMS for private details.`,
     });
     await db.notification.update({
       where: { id: notification.id },

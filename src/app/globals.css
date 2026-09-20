@@ -301,6 +301,16 @@ tbody tr:hover {
   transform: translateY(-1px);
 }
 
+.hex-header-action.hex-header-action--primary {
+  color: var(--hex-ivory) !important;
+  background: var(--hex-banner-blue) !important;
+}
+
+.hex-header-action.hex-header-action--primary:hover {
+  color: var(--hex-paper) !important;
+  background: #24527f !important;
+}
+
 .hex-header-action:active {
   background: var(--hex-parchment) !important;
   box-shadow: inset 0 2px 4px rgb(33 29 24 / 18%);

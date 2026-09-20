@@ -467,7 +467,7 @@ export default async function StudentSection({
             <h2 className="font-bold">Need assistance?</h2>
             <p className="muted mt-2 text-sm">
               Contact a verified TICAP Logistics channel published by your
-              organization. Never share a password, magic link, or
+              organization. Never share a password, verification link, or
               authentication token.
             </p>
           </Card>

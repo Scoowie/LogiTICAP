@@ -31,7 +31,7 @@ async function main() {
       const profile = await tx.userProfile.findUnique({ where: { email } });
       if (!profile)
         throw new Error(
-          "No UserProfile exists for that verified Supabase user. Sign in once before running bootstrap.",
+          "No UserProfile exists for that verified Supabase user. Complete onboarding before running bootstrap.",
         );
       await tx.userProfile.update({
         where: { id: profile.id },

@@ -1,0 +1,5 @@
+ALTER TABLE "UserProfile"
+ADD COLUMN "firstName" VARCHAR(60),
+ADD COLUMN "middleName" VARCHAR(80),
+ADD COLUMN "lastName" VARCHAR(80),
+ADD COLUMN "suffix" VARCHAR(20);

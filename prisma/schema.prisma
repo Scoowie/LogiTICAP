@@ -67,37 +67,41 @@ enum ServiceStatus {
 }
 
 model UserProfile {
-  id                    String           @id @db.Uuid
-  email                 String           @unique @db.VarChar(320)
-  fullName              String           @db.VarChar(160)
-  contactNumber         String?          @db.VarChar(32)
-  role                  UserRole         @default(STUDENT)
-  status                AccountStatus    @default(ACTIVE)
-  thesisGroupId         String?          @db.Uuid
-  createdAt             DateTime         @default(now()) @db.Timestamptz(3)
-  updatedAt             DateTime         @updatedAt @db.Timestamptz(3)
-  thesisGroup           ThesisGroup?     @relation("GroupUsers", fields: [thesisGroupId], references: [id], onDelete: SetNull)
-  representedGroup      ThesisGroup?     @relation("GroupRepresentative")
+  id                    String            @id @db.Uuid
+  email                 String            @unique @db.VarChar(320)
+  firstName             String?           @db.VarChar(60)
+  middleName            String?           @db.VarChar(80)
+  lastName              String?           @db.VarChar(80)
+  suffix                String?           @db.VarChar(20)
+  fullName              String            @db.VarChar(160)
+  contactNumber         String?           @db.VarChar(32)
+  role                  UserRole          @default(STUDENT)
+  status                AccountStatus     @default(ACTIVE)
+  thesisGroupId         String?           @db.Uuid
+  createdAt             DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime          @updatedAt @db.Timestamptz(3)
+  thesisGroup           ThesisGroup?      @relation("GroupUsers", fields: [thesisGroupId], references: [id], onDelete: SetNull)
+  representedGroup      ThesisGroup?      @relation("GroupRepresentative")
   assignments           EventAssignment[]
-  actedBookingHistories BookingHistory[] @relation("HistoryActor")
+  actedBookingHistories BookingHistory[]  @relation("HistoryActor")
   checkIns              CheckIn[]
   notifications         Notification[]
-  auditLogs             AuditLog[]       @relation("AuditActor")
+  auditLogs             AuditLog[]        @relation("AuditActor")
 
   @@index([role, status])
   @@index([thesisGroupId])
 }
 
 model StaffInvitation {
-  id           String           @id @default(uuid()) @db.Uuid
-  email        String           @db.VarChar(320)
-  role         UserRole
-  tokenHash    String           @unique @db.VarChar(128)
-  status       InvitationStatus @default(PENDING)
-  expiresAt    DateTime         @db.Timestamptz(3)
-  invitedById  String           @db.Uuid
-  acceptedAt   DateTime?        @db.Timestamptz(3)
-  createdAt    DateTime         @default(now()) @db.Timestamptz(3)
+  id          String           @id @default(uuid()) @db.Uuid
+  email       String           @db.VarChar(320)
+  role        UserRole
+  tokenHash   String           @unique @db.VarChar(128)
+  status      InvitationStatus @default(PENDING)
+  expiresAt   DateTime         @db.Timestamptz(3)
+  invitedById String           @db.Uuid
+  acceptedAt  DateTime?        @db.Timestamptz(3)
+  createdAt   DateTime         @default(now()) @db.Timestamptz(3)
 
   @@index([email, status])
 }
@@ -141,41 +145,41 @@ model GroupMember {
 }
 
 model LogisticsService {
-  id          String        @id @default(uuid()) @db.Uuid
-  slug        String        @unique @db.VarChar(80)
-  name        String        @db.VarChar(120)
-  description String        @db.VarChar(500)
-  status      ServiceStatus @default(COMING_SOON)
-  sortOrder   Int           @default(0)
-  createdAt   DateTime      @default(now()) @db.Timestamptz(3)
-  updatedAt   DateTime      @updatedAt @db.Timestamptz(3)
+  id          String            @id @default(uuid()) @db.Uuid
+  slug        String            @unique @db.VarChar(80)
+  name        String            @db.VarChar(120)
+  description String            @db.VarChar(500)
+  status      ServiceStatus     @default(COMING_SOON)
+  sortOrder   Int               @default(0)
+  createdAt   DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime          @updatedAt @db.Timestamptz(3)
   events      PhotoshootEvent[]
 }
 
 model PhotoshootEvent {
-  id                     String            @id @default(uuid()) @db.Uuid
-  serviceId              String?           @db.Uuid
-  title                  String            @db.VarChar(160)
-  slug                   String            @unique @db.VarChar(120)
-  description            String            @db.VarChar(2000)
-  venue                  String            @db.VarChar(240)
-  preparationInstructions String           @db.VarChar(4000)
-  mediaDepartmentNotes   String?           @db.VarChar(4000)
-  status                 EventStatus       @default(DRAFT)
-  bookingOpensAt         DateTime           @db.Timestamptz(3)
-  bookingClosesAt        DateTime           @db.Timestamptz(3)
-  rescheduleDeadline     DateTime           @db.Timestamptz(3)
-  cancellationDeadline   DateTime           @db.Timestamptz(3)
-  slotDurationMinutes    Int                @default(20)
-  defaultSlotCapacity    Int                @default(1)
-  isPublic               Boolean            @default(false)
-  createdById            String             @db.Uuid
-  createdAt              DateTime           @default(now()) @db.Timestamptz(3)
-  updatedAt              DateTime           @updatedAt @db.Timestamptz(3)
-  service                LogisticsService?  @relation(fields: [serviceId], references: [id], onDelete: SetNull)
-  dates                  EventDate[]
-  bookings               Booking[]
-  assignments            EventAssignment[]
+  id                      String            @id @default(uuid()) @db.Uuid
+  serviceId               String?           @db.Uuid
+  title                   String            @db.VarChar(160)
+  slug                    String            @unique @db.VarChar(120)
+  description             String            @db.VarChar(2000)
+  venue                   String            @db.VarChar(240)
+  preparationInstructions String            @db.VarChar(4000)
+  mediaDepartmentNotes    String?           @db.VarChar(4000)
+  status                  EventStatus       @default(DRAFT)
+  bookingOpensAt          DateTime          @db.Timestamptz(3)
+  bookingClosesAt         DateTime          @db.Timestamptz(3)
+  rescheduleDeadline      DateTime          @db.Timestamptz(3)
+  cancellationDeadline    DateTime          @db.Timestamptz(3)
+  slotDurationMinutes     Int               @default(20)
+  defaultSlotCapacity     Int               @default(1)
+  isPublic                Boolean           @default(false)
+  createdById             String            @db.Uuid
+  createdAt               DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt               DateTime          @updatedAt @db.Timestamptz(3)
+  service                 LogisticsService? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  dates                   EventDate[]
+  bookings                Booking[]
+  assignments             EventAssignment[]
 
   @@index([status, bookingOpensAt, bookingClosesAt])
 }
@@ -196,47 +200,47 @@ model EventDate {
 }
 
 model TimeSlot {
-  id              String      @id @default(uuid()) @db.Uuid
-  eventDateId     String      @db.Uuid
-  startsAt        DateTime    @db.Timestamptz(3)
-  endsAt          DateTime    @db.Timestamptz(3)
-  capacity        Int
-  reservedCount   Int         @default(0)
-  status          SlotStatus  @default(AVAILABLE)
-  blockReason     String?     @db.VarChar(500)
-  createdAt       DateTime    @default(now()) @db.Timestamptz(3)
-  updatedAt       DateTime    @updatedAt @db.Timestamptz(3)
-  eventDate       EventDate   @relation(fields: [eventDateId], references: [id], onDelete: Restrict)
-  bookings        Booking[]   @relation("CurrentSlot")
-  historyEntries  BookingHistory[]
+  id             String           @id @default(uuid()) @db.Uuid
+  eventDateId    String           @db.Uuid
+  startsAt       DateTime         @db.Timestamptz(3)
+  endsAt         DateTime         @db.Timestamptz(3)
+  capacity       Int
+  reservedCount  Int              @default(0)
+  status         SlotStatus       @default(AVAILABLE)
+  blockReason    String?          @db.VarChar(500)
+  createdAt      DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime         @updatedAt @db.Timestamptz(3)
+  eventDate      EventDate        @relation(fields: [eventDateId], references: [id], onDelete: Restrict)
+  bookings       Booking[]        @relation("CurrentSlot")
+  historyEntries BookingHistory[]
 
   @@unique([eventDateId, startsAt])
   @@index([eventDateId, status, startsAt])
 }
 
 model Booking {
-  id                    String         @id @default(uuid()) @db.Uuid
-  publicReference       String         @unique @db.VarChar(32)
-  idempotencyKey        String         @unique @db.VarChar(100)
-  eventId               String         @db.Uuid
-  thesisGroupId         String         @db.Uuid
-  currentSlotId         String?        @db.Uuid
-  status                BookingStatus  @default(PENDING_VERIFICATION)
-  alternativePreference String?        @db.VarChar(500)
-  schedulingConcern     String?        @db.VarChar(1000)
-  accessibilityNeed     String?        @db.VarChar(1000)
-  studentVisibleNotes   String?        @db.VarChar(1000)
-  internalNotes         String?        @db.VarChar(2000)
+  id                    String           @id @default(uuid()) @db.Uuid
+  publicReference       String           @unique @db.VarChar(32)
+  idempotencyKey        String           @unique @db.VarChar(100)
+  eventId               String           @db.Uuid
+  thesisGroupId         String           @db.Uuid
+  currentSlotId         String?          @db.Uuid
+  status                BookingStatus    @default(PENDING_VERIFICATION)
+  alternativePreference String?          @db.VarChar(500)
+  schedulingConcern     String?          @db.VarChar(1000)
+  accessibilityNeed     String?          @db.VarChar(1000)
+  studentVisibleNotes   String?          @db.VarChar(1000)
+  internalNotes         String?          @db.VarChar(2000)
   accuracyAccepted      Boolean
   rulesAccepted         Boolean
   notificationsAccepted Boolean
   privacyAccepted       Boolean
-  cancelledAt           DateTime?      @db.Timestamptz(3)
-  createdAt             DateTime       @default(now()) @db.Timestamptz(3)
-  updatedAt             DateTime       @updatedAt @db.Timestamptz(3)
-  event                 PhotoshootEvent @relation(fields: [eventId], references: [id], onDelete: Restrict)
-  thesisGroup           ThesisGroup    @relation(fields: [thesisGroupId], references: [id], onDelete: Restrict)
-  currentSlot           TimeSlot?      @relation("CurrentSlot", fields: [currentSlotId], references: [id], onDelete: Restrict)
+  cancelledAt           DateTime?        @db.Timestamptz(3)
+  createdAt             DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime         @updatedAt @db.Timestamptz(3)
+  event                 PhotoshootEvent  @relation(fields: [eventId], references: [id], onDelete: Restrict)
+  thesisGroup           ThesisGroup      @relation(fields: [thesisGroupId], references: [id], onDelete: Restrict)
+  currentSlot           TimeSlot?        @relation("CurrentSlot", fields: [currentSlotId], references: [id], onDelete: Restrict)
   history               BookingHistory[]
   checkIn               CheckIn?
 
@@ -290,16 +294,16 @@ model CheckIn {
 }
 
 model Announcement {
-  id          String   @id @default(uuid()) @db.Uuid
-  title       String   @db.VarChar(160)
-  body        String   @db.VarChar(3000)
+  id          String    @id @default(uuid()) @db.Uuid
+  title       String    @db.VarChar(160)
+  body        String    @db.VarChar(3000)
   audience    UserRole?
-  isPublic    Boolean  @default(false)
+  isPublic    Boolean   @default(false)
   publishedAt DateTime? @db.Timestamptz(3)
   expiresAt   DateTime? @db.Timestamptz(3)
-  createdById String   @db.Uuid
-  createdAt   DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt   DateTime @updatedAt @db.Timestamptz(3)
+  createdById String    @db.Uuid
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime  @updatedAt @db.Timestamptz(3)
 
   @@index([isPublic, publishedAt, expiresAt])
 }

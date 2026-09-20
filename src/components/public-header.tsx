@@ -26,9 +26,18 @@ export function PublicHeader() {
             </Link>
           ))}
         </nav>
-        <div className="ml-2 hidden xl:block">
-          <Link href="/sign-in" className="hex-btn hex-header-action">
-            Sign in
+        <div className="ml-2 hidden items-center gap-2 xl:flex">
+          <Link
+            href="/login"
+            className="hex-btn hex-btn--secondary hex-header-action"
+          >
+            Log in
+          </Link>
+          <Link
+            href="/onboarding"
+            className="hex-btn hex-header-action hex-header-action--primary"
+          >
+            Create account
           </Link>
         </div>
         <details className="group relative ml-auto xl:hidden">
@@ -50,10 +59,16 @@ export function PublicHeader() {
               </Link>
             ))}
             <Link
-              href="/sign-in"
-              className="hex-btn hex-header-action mt-1 w-full"
+              href="/login"
+              className="hex-btn hex-btn--secondary hex-header-action mt-1 w-full"
             >
-              Sign in
+              Log in
+            </Link>
+            <Link
+              href="/onboarding"
+              className="hex-btn hex-header-action hex-header-action--primary w-full"
+            >
+              Create account
             </Link>
           </nav>
         </details>

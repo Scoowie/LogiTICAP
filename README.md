@@ -68,8 +68,8 @@ The application intentionally reports a clear environment-validation error if a 
 
 1. Create a Supabase project and retain the project URL and anon/publishable key for the `NEXT_PUBLIC_*` variables.
 2. Copy the pooled connection string to `DATABASE_URL`; copy the direct/session connection string to `DIRECT_URL`. Percent-encode special characters in passwords.
-3. In Authentication, enable email magic links (or verified-email OTP). Configure the production Site URL and allow `/auth/callback` for local and deployed redirect origins.
-4. Customize Supabase authentication email content and SMTP for institutional delivery. Authentication mail is owned by Supabase; application transactional mail is owned by the email abstraction/Resend.
+3. In Authentication, enable email/password authentication and require email confirmation. Configure a minimum password length of 12 with uppercase, lowercase, number, and symbol requirements. Set the production Site URL and allow `/auth/callback` for local and deployed redirect origins.
+4. Configure the confirmation and password-recovery templates and production SMTP for institutional delivery. Authentication mail is owned by Supabase; application transactional mail is owned by the email abstraction/Resend.
 5. Apply `npm run db:deploy`. Confirm the migration revoked `anon`/`authenticated` access and that protected tables are not exposed by the Data API.
 6. Do not place service-role keys or database URLs in `NEXT_PUBLIC_*` variables.
 
@@ -94,7 +94,7 @@ The included process-memory rate limiter is suitable only for local development 
 
 There is no public seed route and no hardcoded account.
 
-1. Configure Supabase, migrate, and have the intended Logistics Head complete one verified magic-link sign-in. This creates a `STUDENT` profile only.
+1. Configure Supabase, migrate, and have the intended Logistics Head complete verified onboarding. This creates a `STUDENT` profile only.
 2. In a trusted local/admin shell, set `DIRECT_URL`, `BOOTSTRAP_SUPERADMIN_EMAIL` to that exact verified email, and `BOOTSTRAP_CONFIRM=CREATE_INITIAL_SUPERADMIN`.
 3. Run `npm run bootstrap:superadmin`.
 4. Remove both `BOOTSTRAP_*` variables immediately.
@@ -103,7 +103,7 @@ The script refuses to run if any superadmin already exists, if confirmation is a
 
 ## Email
 
-Supabase sends auth/magic-link mail. TLMS uses `EmailProvider` for booking confirmation and is structured for reschedule, cancellation, schedule/venue change, and reminder templates. With `RESEND_API_KEY` and `EMAIL_FROM`, it uses Resend. In non-production without those values it logs only recipient, subject, and a generated message ID—not private message content. Production refuses to silently use the logger.
+Supabase sends account-confirmation and password-recovery mail. TLMS uses `EmailProvider` for booking confirmation and is structured for reschedule, cancellation, schedule/venue change, and reminder templates. With `RESEND_API_KEY` and `EMAIL_FROM`, it uses Resend. In non-production without those values it logs only recipient, subject, and a generated message ID—not private message content. Production refuses to silently use the logger.
 
 Add and verify the sender domain in Resend, place keys in Vercel server environment variables, and configure institutional DNS records. A durable job queue/retry scheduler is a recommended follow-up for reminders and transient failures.
 
@@ -128,7 +128,7 @@ Unit tests cover the permission hierarchy, staff restrictions, student resource 
 4. Use `npm run build` as the build command. Prisma Client generation should run in CI (`npm run db:generate`) before build.
 5. Add the Vercel origin to Supabase Auth redirect allow-lists and set `NEXT_PUBLIC_APP_URL`.
 6. Configure Resend’s verified sender and a shared rate-limit provider.
-7. Verify security headers, magic-link cookies, mobile/desktop layouts, exports, and least-privilege database grants in the deployed environment.
+7. Verify security headers, authentication cookies, confirmation/recovery links, mobile/desktop layouts, exports, and least-privilege database grants in the deployed environment.
 
 ## Current Phase 1 limitations
 

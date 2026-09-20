@@ -487,7 +487,7 @@ export async function inviteStaff(form: FormData) {
     await getEmailProvider().send({
       to: invitation.email,
       subject: "TICAP Logistics staff invitation",
-      text: `You have been invited to TICAP Logistics. Use your verified email to sign in at ${origin}/sign-in. This invitation expires in seven days.`,
+      text: `You have been invited to TICAP Logistics. If you are new, create an account with this exact email at ${origin}/onboarding. If you already have an account, log in at ${origin}/login. The staff role will be applied only after the email is verified. This invitation expires in seven days.`,
     });
   } catch {
     /* The invitation remains visible for an authorized resend workflow. */

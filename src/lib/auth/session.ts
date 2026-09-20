@@ -34,7 +34,7 @@ export const getActor = cache(async (): Promise<Actor | null> => {
 
 export async function requireActor(): Promise<Actor> {
   const actor = await getActor();
-  if (!actor) redirect("/sign-in?next=/portal");
+  if (!actor) redirect("/login?next=/portal");
   return actor;
 }
 

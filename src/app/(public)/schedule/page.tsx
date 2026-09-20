@@ -93,7 +93,7 @@ export default async function SchedulePage() {
       ) : (
         <EmptyState title="No schedule has been published">
           Authorized staff can publish configurable photoshoot dates and
-          time-slot availability. Sign in to make or manage a reservation when
+          time-slot availability. Log in to make or manage a reservation when
           booking opens.
         </EmptyState>
       )}

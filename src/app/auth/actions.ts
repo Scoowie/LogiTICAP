@@ -9,5 +9,5 @@ export async function signOut() {
 
   if (error) throw new Error("Unable to sign out. Please try again.");
 
-  redirect("/sign-in?signed-out=1");
+  redirect("/login?signed-out=1");
 }

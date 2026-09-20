@@ -27,6 +27,10 @@ export type AggregateUserProfile = {
 export type UserProfileMinAggregateOutputType = {
   id: string | null
   email: string | null
+  firstName: string | null
+  middleName: string | null
+  lastName: string | null
+  suffix: string | null
   fullName: string | null
   contactNumber: string | null
   role: $Enums.UserRole | null
@@ -39,6 +43,10 @@ export type UserProfileMinAggregateOutputType = {
 export type UserProfileMaxAggregateOutputType = {
   id: string | null
   email: string | null
+  firstName: string | null
+  middleName: string | null
+  lastName: string | null
+  suffix: string | null
   fullName: string | null
   contactNumber: string | null
   role: $Enums.UserRole | null
@@ -51,6 +59,10 @@ export type UserProfileMaxAggregateOutputType = {
 export type UserProfileCountAggregateOutputType = {
   id: number
   email: number
+  firstName: number
+  middleName: number
+  lastName: number
+  suffix: number
   fullName: number
   contactNumber: number
   role: number
@@ -65,6 +77,10 @@ export type UserProfileCountAggregateOutputType = {
 export type UserProfileMinAggregateInputType = {
   id?: true
   email?: true
+  firstName?: true
+  middleName?: true
+  lastName?: true
+  suffix?: true
   fullName?: true
   contactNumber?: true
   role?: true
@@ -77,6 +93,10 @@ export type UserProfileMinAggregateInputType = {
 export type UserProfileMaxAggregateInputType = {
   id?: true
   email?: true
+  firstName?: true
+  middleName?: true
+  lastName?: true
+  suffix?: true
   fullName?: true
   contactNumber?: true
   role?: true
@@ -89,6 +109,10 @@ export type UserProfileMaxAggregateInputType = {
 export type UserProfileCountAggregateInputType = {
   id?: true
   email?: true
+  firstName?: true
+  middleName?: true
+  lastName?: true
+  suffix?: true
   fullName?: true
   contactNumber?: true
   role?: true
@@ -174,6 +198,10 @@ export type UserProfileGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type UserProfileGroupByOutputType = {
   id: string
   email: string
+  firstName: string | null
+  middleName: string | null
+  lastName: string | null
+  suffix: string | null
   fullName: string
   contactNumber: string | null
   role: $Enums.UserRole
@@ -207,6 +235,10 @@ export type UserProfileWhereInput = {
   NOT?: Prisma.UserProfileWhereInput | Prisma.UserProfileWhereInput[]
   id?: Prisma.UuidFilter<"UserProfile"> | string
   email?: Prisma.StringFilter<"UserProfile"> | string
+  firstName?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  middleName?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  lastName?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  suffix?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   fullName?: Prisma.StringFilter<"UserProfile"> | string
   contactNumber?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   role?: Prisma.EnumUserRoleFilter<"UserProfile"> | $Enums.UserRole
@@ -226,6 +258,10 @@ export type UserProfileWhereInput = {
 export type UserProfileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  firstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  middleName?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
+  suffix?: Prisma.SortOrderInput | Prisma.SortOrder
   fullName?: Prisma.SortOrder
   contactNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -248,6 +284,10 @@ export type UserProfileWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.UserProfileWhereInput | Prisma.UserProfileWhereInput[]
   OR?: Prisma.UserProfileWhereInput[]
   NOT?: Prisma.UserProfileWhereInput | Prisma.UserProfileWhereInput[]
+  firstName?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  middleName?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  lastName?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  suffix?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   fullName?: Prisma.StringFilter<"UserProfile"> | string
   contactNumber?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   role?: Prisma.EnumUserRoleFilter<"UserProfile"> | $Enums.UserRole
@@ -267,6 +307,10 @@ export type UserProfileWhereUniqueInput = Prisma.AtLeast<{
 export type UserProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  firstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  middleName?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
+  suffix?: Prisma.SortOrderInput | Prisma.SortOrder
   fullName?: Prisma.SortOrder
   contactNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -285,6 +329,10 @@ export type UserProfileScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserProfileScalarWhereWithAggregatesInput | Prisma.UserProfileScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"UserProfile"> | string
   email?: Prisma.StringWithAggregatesFilter<"UserProfile"> | string
+  firstName?: Prisma.StringNullableWithAggregatesFilter<"UserProfile"> | string | null
+  middleName?: Prisma.StringNullableWithAggregatesFilter<"UserProfile"> | string | null
+  lastName?: Prisma.StringNullableWithAggregatesFilter<"UserProfile"> | string | null
+  suffix?: Prisma.StringNullableWithAggregatesFilter<"UserProfile"> | string | null
   fullName?: Prisma.StringWithAggregatesFilter<"UserProfile"> | string
   contactNumber?: Prisma.StringNullableWithAggregatesFilter<"UserProfile"> | string | null
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"UserProfile"> | $Enums.UserRole
@@ -297,6 +345,10 @@ export type UserProfileScalarWhereWithAggregatesInput = {
 export type UserProfileCreateInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -315,6 +367,10 @@ export type UserProfileCreateInput = {
 export type UserProfileUncheckedCreateInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -333,6 +389,10 @@ export type UserProfileUncheckedCreateInput = {
 export type UserProfileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -351,6 +411,10 @@ export type UserProfileUpdateInput = {
 export type UserProfileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -369,6 +433,10 @@ export type UserProfileUncheckedUpdateInput = {
 export type UserProfileCreateManyInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -381,6 +449,10 @@ export type UserProfileCreateManyInput = {
 export type UserProfileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -392,6 +464,10 @@ export type UserProfileUpdateManyMutationInput = {
 export type UserProfileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -404,6 +480,10 @@ export type UserProfileUncheckedUpdateManyInput = {
 export type UserProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  middleName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  suffix?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   contactNumber?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -416,6 +496,10 @@ export type UserProfileCountOrderByAggregateInput = {
 export type UserProfileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  middleName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  suffix?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   contactNumber?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -428,6 +512,10 @@ export type UserProfileMaxOrderByAggregateInput = {
 export type UserProfileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  middleName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  suffix?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
   contactNumber?: Prisma.SortOrder
   role?: Prisma.SortOrder
@@ -610,6 +698,10 @@ export type UserProfileUpdateOneWithoutAuditLogsNestedInput = {
 export type UserProfileCreateWithoutRepresentedGroupInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -627,6 +719,10 @@ export type UserProfileCreateWithoutRepresentedGroupInput = {
 export type UserProfileUncheckedCreateWithoutRepresentedGroupInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -649,6 +745,10 @@ export type UserProfileCreateOrConnectWithoutRepresentedGroupInput = {
 export type UserProfileCreateWithoutThesisGroupInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -666,6 +766,10 @@ export type UserProfileCreateWithoutThesisGroupInput = {
 export type UserProfileUncheckedCreateWithoutThesisGroupInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -704,6 +808,10 @@ export type UserProfileUpdateToOneWithWhereWithoutRepresentedGroupInput = {
 export type UserProfileUpdateWithoutRepresentedGroupInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -721,6 +829,10 @@ export type UserProfileUpdateWithoutRepresentedGroupInput = {
 export type UserProfileUncheckedUpdateWithoutRepresentedGroupInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -757,6 +869,10 @@ export type UserProfileScalarWhereInput = {
   NOT?: Prisma.UserProfileScalarWhereInput | Prisma.UserProfileScalarWhereInput[]
   id?: Prisma.UuidFilter<"UserProfile"> | string
   email?: Prisma.StringFilter<"UserProfile"> | string
+  firstName?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  middleName?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  lastName?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  suffix?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   fullName?: Prisma.StringFilter<"UserProfile"> | string
   contactNumber?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   role?: Prisma.EnumUserRoleFilter<"UserProfile"> | $Enums.UserRole
@@ -769,6 +885,10 @@ export type UserProfileScalarWhereInput = {
 export type UserProfileCreateWithoutActedBookingHistoriesInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -786,6 +906,10 @@ export type UserProfileCreateWithoutActedBookingHistoriesInput = {
 export type UserProfileUncheckedCreateWithoutActedBookingHistoriesInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -819,6 +943,10 @@ export type UserProfileUpdateToOneWithWhereWithoutActedBookingHistoriesInput = {
 export type UserProfileUpdateWithoutActedBookingHistoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -836,6 +964,10 @@ export type UserProfileUpdateWithoutActedBookingHistoriesInput = {
 export type UserProfileUncheckedUpdateWithoutActedBookingHistoriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -853,6 +985,10 @@ export type UserProfileUncheckedUpdateWithoutActedBookingHistoriesInput = {
 export type UserProfileCreateWithoutAssignmentsInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -870,6 +1006,10 @@ export type UserProfileCreateWithoutAssignmentsInput = {
 export type UserProfileUncheckedCreateWithoutAssignmentsInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -903,6 +1043,10 @@ export type UserProfileUpdateToOneWithWhereWithoutAssignmentsInput = {
 export type UserProfileUpdateWithoutAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -920,6 +1064,10 @@ export type UserProfileUpdateWithoutAssignmentsInput = {
 export type UserProfileUncheckedUpdateWithoutAssignmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -937,6 +1085,10 @@ export type UserProfileUncheckedUpdateWithoutAssignmentsInput = {
 export type UserProfileCreateWithoutCheckInsInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -954,6 +1106,10 @@ export type UserProfileCreateWithoutCheckInsInput = {
 export type UserProfileUncheckedCreateWithoutCheckInsInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -987,6 +1143,10 @@ export type UserProfileUpdateToOneWithWhereWithoutCheckInsInput = {
 export type UserProfileUpdateWithoutCheckInsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -1004,6 +1164,10 @@ export type UserProfileUpdateWithoutCheckInsInput = {
 export type UserProfileUncheckedUpdateWithoutCheckInsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -1021,6 +1185,10 @@ export type UserProfileUncheckedUpdateWithoutCheckInsInput = {
 export type UserProfileCreateWithoutNotificationsInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -1038,6 +1206,10 @@ export type UserProfileCreateWithoutNotificationsInput = {
 export type UserProfileUncheckedCreateWithoutNotificationsInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -1071,6 +1243,10 @@ export type UserProfileUpdateToOneWithWhereWithoutNotificationsInput = {
 export type UserProfileUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -1088,6 +1264,10 @@ export type UserProfileUpdateWithoutNotificationsInput = {
 export type UserProfileUncheckedUpdateWithoutNotificationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -1105,6 +1285,10 @@ export type UserProfileUncheckedUpdateWithoutNotificationsInput = {
 export type UserProfileCreateWithoutAuditLogsInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -1122,6 +1306,10 @@ export type UserProfileCreateWithoutAuditLogsInput = {
 export type UserProfileUncheckedCreateWithoutAuditLogsInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -1155,6 +1343,10 @@ export type UserProfileUpdateToOneWithWhereWithoutAuditLogsInput = {
 export type UserProfileUpdateWithoutAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -1172,6 +1364,10 @@ export type UserProfileUpdateWithoutAuditLogsInput = {
 export type UserProfileUncheckedUpdateWithoutAuditLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -1189,6 +1385,10 @@ export type UserProfileUncheckedUpdateWithoutAuditLogsInput = {
 export type UserProfileCreateManyThesisGroupInput = {
   id: string
   email: string
+  firstName?: string | null
+  middleName?: string | null
+  lastName?: string | null
+  suffix?: string | null
   fullName: string
   contactNumber?: string | null
   role?: $Enums.UserRole
@@ -1200,6 +1400,10 @@ export type UserProfileCreateManyThesisGroupInput = {
 export type UserProfileUpdateWithoutThesisGroupInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -1217,6 +1421,10 @@ export type UserProfileUpdateWithoutThesisGroupInput = {
 export type UserProfileUncheckedUpdateWithoutThesisGroupInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -1234,6 +1442,10 @@ export type UserProfileUncheckedUpdateWithoutThesisGroupInput = {
 export type UserProfileUncheckedUpdateManyWithoutThesisGroupInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  middleName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  suffix?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
   contactNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
@@ -1312,6 +1524,10 @@ export type UserProfileCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime
 export type UserProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
+  firstName?: boolean
+  middleName?: boolean
+  lastName?: boolean
+  suffix?: boolean
   fullName?: boolean
   contactNumber?: boolean
   role?: boolean
@@ -1332,6 +1548,10 @@ export type UserProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalA
 export type UserProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
+  firstName?: boolean
+  middleName?: boolean
+  lastName?: boolean
+  suffix?: boolean
   fullName?: boolean
   contactNumber?: boolean
   role?: boolean
@@ -1345,6 +1565,10 @@ export type UserProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
 export type UserProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
+  firstName?: boolean
+  middleName?: boolean
+  lastName?: boolean
+  suffix?: boolean
   fullName?: boolean
   contactNumber?: boolean
   role?: boolean
@@ -1358,6 +1582,10 @@ export type UserProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 export type UserProfileSelectScalar = {
   id?: boolean
   email?: boolean
+  firstName?: boolean
+  middleName?: boolean
+  lastName?: boolean
+  suffix?: boolean
   fullName?: boolean
   contactNumber?: boolean
   role?: boolean
@@ -1367,7 +1595,7 @@ export type UserProfileSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullName" | "contactNumber" | "role" | "status" | "thesisGroupId" | "createdAt" | "updatedAt", ExtArgs["result"]["userProfile"]>
+export type UserProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "firstName" | "middleName" | "lastName" | "suffix" | "fullName" | "contactNumber" | "role" | "status" | "thesisGroupId" | "createdAt" | "updatedAt", ExtArgs["result"]["userProfile"]>
 export type UserProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   thesisGroup?: boolean | Prisma.UserProfile$thesisGroupArgs<ExtArgs>
   representedGroup?: boolean | Prisma.UserProfile$representedGroupArgs<ExtArgs>
@@ -1399,6 +1627,10 @@ export type $UserProfilePayload<ExtArgs extends runtime.Types.Extensions.Interna
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
+    firstName: string | null
+    middleName: string | null
+    lastName: string | null
+    suffix: string | null
     fullName: string
     contactNumber: string | null
     role: $Enums.UserRole
@@ -1838,6 +2070,10 @@ export interface Prisma__UserProfileClient<T, Null = never, ExtArgs extends runt
 export interface UserProfileFieldRefs {
   readonly id: Prisma.FieldRef<"UserProfile", 'String'>
   readonly email: Prisma.FieldRef<"UserProfile", 'String'>
+  readonly firstName: Prisma.FieldRef<"UserProfile", 'String'>
+  readonly middleName: Prisma.FieldRef<"UserProfile", 'String'>
+  readonly lastName: Prisma.FieldRef<"UserProfile", 'String'>
+  readonly suffix: Prisma.FieldRef<"UserProfile", 'String'>
   readonly fullName: Prisma.FieldRef<"UserProfile", 'String'>
   readonly contactNumber: Prisma.FieldRef<"UserProfile", 'String'>
   readonly role: Prisma.FieldRef<"UserProfile", 'UserRole'>

@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   bookingSchema,
+  buildFullName,
   eventCreationSchema,
   exportQuerySchema,
+  onboardingSchema,
+  passwordUpdateSchema,
   thesisGroupSchema,
 } from "./validation";
 
@@ -119,6 +122,67 @@ describe("runtime validation", () => {
     expect(
       exportQuerySchema.safeParse({ report: "all-secrets", format: "pdf" })
         .success,
+    ).toBe(false);
+  });
+
+  it("normalizes structured onboarding names and email", () => {
+    const result = onboardingSchema.parse({
+      firstName: "  María  ",
+      middleName: "  Dela   Cruz ",
+      lastName: " O’Neil ",
+      suffix: " Jr. ",
+      contactNumber: "+63 900 000 0000",
+      email: " STUDENT@Example.edu ",
+      password: "StrongPassword1!",
+      confirmPassword: "StrongPassword1!",
+    });
+
+    expect(result).toMatchObject({
+      firstName: "María",
+      middleName: "Dela Cruz",
+      lastName: "O’Neil",
+      suffix: "Jr.",
+      email: "student@example.edu",
+    });
+    expect(buildFullName(result)).toBe("María Dela Cruz O’Neil, Jr.");
+  });
+
+  it("requires strong matching onboarding passwords", () => {
+    const base = {
+      firstName: "Student",
+      middleName: "",
+      lastName: "User",
+      suffix: "",
+      contactNumber: "+63 900 000 0000",
+      email: "student@example.edu",
+    };
+    expect(
+      onboardingSchema.safeParse({
+        ...base,
+        password: "weakpassword",
+        confirmPassword: "weakpassword",
+      }).success,
+    ).toBe(false);
+    expect(
+      passwordUpdateSchema.safeParse({
+        password: "StrongPassword1!",
+        confirmPassword: "DifferentPassword1!",
+      }).success,
+    ).toBe(false);
+  });
+
+  it("rejects control and markup characters in names", () => {
+    expect(
+      onboardingSchema.safeParse({
+        firstName: "<Admin>",
+        middleName: "",
+        lastName: "User",
+        suffix: "",
+        contactNumber: "+63 900 000 0000",
+        email: "student@example.edu",
+        password: "StrongPassword1!",
+        confirmPassword: "StrongPassword1!",
+      }).success,
     ).toBe(false);
   });
 });

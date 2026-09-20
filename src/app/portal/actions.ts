@@ -156,7 +156,7 @@ export async function submitBooking(form: FormData) {
     const result = await getEmailProvider().send({
       to: actor.email,
       subject: `TICAP photoshoot booking ${booking.publicReference}`,
-      text: `Your booking is confirmed. Reference: ${booking.publicReference}. Sign in to TLMS for private schedule and venue details.`,
+      text: `Your booking is confirmed. Reference: ${booking.publicReference}. Log in to TLMS for private schedule and venue details.`,
     });
     await db.notification.update({
       where: { id: notification.id },
