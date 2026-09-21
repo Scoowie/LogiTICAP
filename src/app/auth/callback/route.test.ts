@@ -48,9 +48,10 @@ describe("authentication callback", () => {
     expect(response.headers.get("location")).toBe(
       "https://example.com/reset-password",
     );
-    expect(response.headers.get("set-cookie")).toContain(
-      "tlms-password-recovery=verified",
-    );
+    const recoveryCookie = response.headers.get("set-cookie");
+    expect(recoveryCookie).toContain("tlms-password-recovery=verified");
+    expect(recoveryCookie).toContain("SameSite=lax");
+    expect(recoveryCookie).not.toContain("SameSite=strict");
   });
 
   it("keeps older callback links without a flow id compatible", async () => {

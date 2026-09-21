@@ -85,7 +85,7 @@ export async function GET(request: Request) {
     );
     response.cookies.set(PASSWORD_RECOVERY_COOKIE, "verified", {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
       maxAge: 10 * 60,
       path: "/reset-password",

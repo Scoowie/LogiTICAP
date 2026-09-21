@@ -266,7 +266,7 @@ export async function updatePassword(
 
   cookieStore.set(PASSWORD_RECOVERY_COOKIE, "", {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     maxAge: 0,
     path: "/reset-password",
