@@ -1,38 +1,76 @@
 import { NextResponse } from "next/server";
-import { PASSWORD_RECOVERY_COOKIE, safeNextPath } from "@/lib/auth/flow";
+import {
+  authCallbackFailurePath,
+  authCallbackIntentSchema,
+  authCallbackQuerySchema,
+  PASSWORD_RECOVERY_COOKIE,
+  safeNextPath,
+} from "@/lib/auth/flow";
 import { completeOnboarding, prepareLoginProfile } from "@/lib/auth/profile";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const code = url.searchParams.get("code");
-  const intent = url.searchParams.get("intent");
-  const next = safeNextPath(url.searchParams.get("next"));
-  if (!code)
+  const rawQuery = Object.fromEntries(url.searchParams);
+  const intentResult = authCallbackIntentSchema.safeParse(rawQuery.intent);
+  const fallbackIntent = intentResult.success ? intentResult.data : undefined;
+  const queryResult = authCallbackQuerySchema.safeParse(rawQuery);
+
+  if (!queryResult.success) {
+    console.warn("[auth.callback.invalid-query]", {
+      fields: [
+        ...new Set(
+          queryResult.error.issues
+            .map((issue) => issue.path[0])
+            .filter((field): field is string => typeof field === "string"),
+        ),
+      ],
+    });
     return NextResponse.redirect(
-      new URL(
-        intent === "recovery"
-          ? "/forgot-password?error=callback"
-          : "/login?error=callback",
-        url.origin,
-      ),
+      new URL(authCallbackFailurePath(fallbackIntent), url.origin),
     );
+  }
+
+  const {
+    code,
+    intent,
+    next: requestedNext,
+    sb_flow_id: flowId,
+    error_code: errorCode,
+  } = queryResult.data;
+  const next = safeNextPath(requestedNext);
+  if (!code) {
+    console.warn("[auth.callback.missing-code]", {
+      intent: intent ?? "login",
+      errorCode: errorCode ?? "none",
+    });
+    const reason =
+      intent === "recovery" && errorCode === "otp_expired"
+        ? "expired"
+        : "callback";
+    return NextResponse.redirect(
+      new URL(authCallbackFailurePath(intent, reason), url.origin),
+    );
+  }
 
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const { error } = flowId
+    ? await supabase.auth.exchangeCodeForSession(code, { flowId })
+    : await supabase.auth.exchangeCodeForSession(code);
   if (error) {
     console.error("[auth.callback.exchange-failed]", {
       code: error.code,
       status: error.status,
       name: error.name,
+      intent: intent ?? "login",
+      hasFlowId: Boolean(flowId),
     });
+    const reason =
+      intent === "recovery" && error.code === "otp_expired"
+        ? "expired"
+        : "callback";
     return NextResponse.redirect(
-      new URL(
-        intent === "recovery"
-          ? "/forgot-password?error=callback"
-          : "/login?error=callback",
-        url.origin,
-      ),
+      new URL(authCallbackFailurePath(intent, reason), url.origin),
     );
   }
 
@@ -70,11 +108,6 @@ export async function GET(request: Request) {
   }
   await supabase.auth.signOut({ scope: "global" });
   return NextResponse.redirect(
-    new URL(
-      intent === "onboarding"
-        ? "/onboarding?error=callback"
-        : "/login?error=callback",
-      url.origin,
-    ),
+    new URL(authCallbackFailurePath(intent), url.origin),
   );
 }

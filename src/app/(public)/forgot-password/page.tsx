@@ -16,12 +16,14 @@ export default async function ForgotPasswordPage({
           Enter your verified email address. If it belongs to an account, we
           will send a time-limited recovery link.
         </p>
-        {query.error === "callback" && (
+        {(query.error === "callback" || query.error === "expired") && (
           <p
             role="alert"
             className="mt-5 rounded-lg border border-[#8e261c] bg-[#f1d9d3] p-3 text-sm font-semibold text-[#712018]"
           >
-            That recovery link is invalid or expired. Request a new one.
+            {query.error === "expired"
+              ? "That recovery link has expired or was already used. Request a new one."
+              : "That recovery link could not be verified. Request a new one and try again."}
           </p>
         )}
         <PasswordRecoveryForm />

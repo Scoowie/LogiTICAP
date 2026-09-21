@@ -68,7 +68,7 @@ The application intentionally reports a clear environment-validation error if a 
 
 1. Create a Supabase project and retain the project URL and anon/publishable key for the `NEXT_PUBLIC_*` variables.
 2. Copy the pooled connection string to `DATABASE_URL`; copy the direct/session connection string to `DIRECT_URL`. Percent-encode special characters in passwords.
-3. In Authentication, enable email/password authentication and require email confirmation. Configure a minimum password length of 12 with uppercase, lowercase, number, and symbol requirements. Set the production Site URL and allow `/auth/callback` for local and deployed redirect origins.
+3. In Authentication, enable email/password authentication and require email confirmation. Configure a minimum password length of 12 with uppercase, lowercase, number, and symbol requirements. Set the production Site URL and allow the callback plus its PKCE query parameters for local and deployed origins (for example, `http://localhost:3000/auth/callback**` and `https://ticap21-logistics.vercel.app/auth/callback**`).
 4. Configure the confirmation and password-recovery templates and production SMTP for institutional delivery. Authentication mail is owned by Supabase; application transactional mail is owned by the email abstraction/Resend.
 5. Apply `npm run db:deploy`. Confirm the migration revoked `anon`/`authenticated` access and that protected tables are not exposed by the Data API.
 6. Do not place service-role keys or database URLs in `NEXT_PUBLIC_*` variables.
