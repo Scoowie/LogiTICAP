@@ -1,5 +1,5 @@
+import Link from "next/link";
 import { InfoPage, TextCard } from "@/components/info-page";
-import { dataPrivacyAgreementSections } from "@/lib/privacy-agreement";
 
 export default function PoliciesPage() {
   return (
@@ -34,22 +34,17 @@ export default function PoliciesPage() {
             Only data necessary for logistics operations is collected and access
             is role-limited.
           </li>
+          <li>
+            Review the dedicated{" "}
+            <Link
+              href="/privacy"
+              className="font-semibold text-[#153f6f] underline underline-offset-4"
+            >
+              TLMS Privacy Notice and Consent
+            </Link>{" "}
+            for processing purposes, safeguards, and data-subject rights.
+          </li>
         </ul>
-      </TextCard>
-      <TextCard title="Data Privacy Agreement">
-        <div className="space-y-4">
-          {dataPrivacyAgreementSections.map((section) => (
-            <section key={section.title}>
-              <h3 className="font-bold text-[#4c3a27]">{section.title}</h3>
-              <p className="mt-1">{section.body}</p>
-            </section>
-          ))}
-          <p>
-            By accepting this agreement during account creation, you agree to
-            the collection and use of your information for these described TLMS
-            purposes.
-          </p>
-        </div>
       </TextCard>
     </InfoPage>
   );

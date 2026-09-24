@@ -7,6 +7,7 @@ const links = [
   ["Photoshoot", "/photoshoot"],
   ["Schedule", "/schedule"],
   ["Policies", "/policies"],
+  ["Privacy", "/privacy"],
   ["FAQ", "/faq"],
   ["Contact", "/contact"],
 ];
@@ -81,7 +82,26 @@ export function PublicFooter() {
   return (
     <footer className="mt-20 border-t border-[#b69a5e] bg-[#292923] text-[#f3ead2]">
       <div className="container-page flex flex-col gap-4 py-10 text-sm sm:flex-row sm:items-end sm:justify-between">
-        <p>© TICAP Logistics Management System</p>
+        <div>
+          <p>© TICAP Logistics Management System</p>
+          <nav
+            aria-label="Footer policies"
+            className="mt-3 flex flex-wrap gap-x-4 gap-y-2"
+          >
+            <Link
+              href="/privacy"
+              className="text-[#dbc98f] underline-offset-4 hover:underline"
+            >
+              Privacy notice
+            </Link>
+            <Link
+              href="/policies"
+              className="text-[#dbc98f] underline-offset-4 hover:underline"
+            >
+              Booking policies
+            </Link>
+          </nav>
+        </div>
         <p className="border-l border-[#b69a5e] pl-3 font-[Cinzel] text-xs tracking-wider text-[#dbc98f] uppercase">
           Unofficial TICAP Logistics portal
         </p>

@@ -98,10 +98,10 @@ export const onboardingSchema = z
     password: passwordSchema,
     confirmPassword: z.string(),
     privacyViewed: z.literal("true", {
-      error: "Open and review the Data Privacy Agreement",
+      error: "Open and review the TLMS Privacy Notice and Consent",
     }),
     privacyAccepted: z.literal("on", {
-      error: "Accept the Data Privacy Agreement to create an account",
+      error: "Accept the TLMS Privacy Notice and Consent to create an account",
     }),
   })
   .superRefine((input, context) => {
