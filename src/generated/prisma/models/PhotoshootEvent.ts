@@ -53,6 +53,7 @@ export type PhotoshootEventMinAggregateOutputType = {
   slotDurationMinutes: number | null
   defaultSlotCapacity: number | null
   isPublic: boolean | null
+  closedAt: Date | null
   createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -75,6 +76,7 @@ export type PhotoshootEventMaxAggregateOutputType = {
   slotDurationMinutes: number | null
   defaultSlotCapacity: number | null
   isPublic: boolean | null
+  closedAt: Date | null
   createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -97,6 +99,7 @@ export type PhotoshootEventCountAggregateOutputType = {
   slotDurationMinutes: number
   defaultSlotCapacity: number
   isPublic: number
+  closedAt: number
   createdById: number
   createdAt: number
   updatedAt: number
@@ -131,6 +134,7 @@ export type PhotoshootEventMinAggregateInputType = {
   slotDurationMinutes?: true
   defaultSlotCapacity?: true
   isPublic?: true
+  closedAt?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -153,6 +157,7 @@ export type PhotoshootEventMaxAggregateInputType = {
   slotDurationMinutes?: true
   defaultSlotCapacity?: true
   isPublic?: true
+  closedAt?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -175,6 +180,7 @@ export type PhotoshootEventCountAggregateInputType = {
   slotDurationMinutes?: true
   defaultSlotCapacity?: true
   isPublic?: true
+  closedAt?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -284,6 +290,7 @@ export type PhotoshootEventGroupByOutputType = {
   slotDurationMinutes: number
   defaultSlotCapacity: number
   isPublic: boolean
+  closedAt: Date | null
   createdById: string
   createdAt: Date
   updatedAt: Date
@@ -329,6 +336,7 @@ export type PhotoshootEventWhereInput = {
   slotDurationMinutes?: Prisma.IntFilter<"PhotoshootEvent"> | number
   defaultSlotCapacity?: Prisma.IntFilter<"PhotoshootEvent"> | number
   isPublic?: Prisma.BoolFilter<"PhotoshootEvent"> | boolean
+  closedAt?: Prisma.DateTimeNullableFilter<"PhotoshootEvent"> | Date | string | null
   createdById?: Prisma.UuidFilter<"PhotoshootEvent"> | string
   createdAt?: Prisma.DateTimeFilter<"PhotoshootEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PhotoshootEvent"> | Date | string
@@ -355,6 +363,7 @@ export type PhotoshootEventOrderByWithRelationInput = {
   slotDurationMinutes?: Prisma.SortOrder
   defaultSlotCapacity?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
+  closedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -384,6 +393,7 @@ export type PhotoshootEventWhereUniqueInput = Prisma.AtLeast<{
   slotDurationMinutes?: Prisma.IntFilter<"PhotoshootEvent"> | number
   defaultSlotCapacity?: Prisma.IntFilter<"PhotoshootEvent"> | number
   isPublic?: Prisma.BoolFilter<"PhotoshootEvent"> | boolean
+  closedAt?: Prisma.DateTimeNullableFilter<"PhotoshootEvent"> | Date | string | null
   createdById?: Prisma.UuidFilter<"PhotoshootEvent"> | string
   createdAt?: Prisma.DateTimeFilter<"PhotoshootEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PhotoshootEvent"> | Date | string
@@ -410,6 +420,7 @@ export type PhotoshootEventOrderByWithAggregationInput = {
   slotDurationMinutes?: Prisma.SortOrder
   defaultSlotCapacity?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
+  closedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -440,6 +451,7 @@ export type PhotoshootEventScalarWhereWithAggregatesInput = {
   slotDurationMinutes?: Prisma.IntWithAggregatesFilter<"PhotoshootEvent"> | number
   defaultSlotCapacity?: Prisma.IntWithAggregatesFilter<"PhotoshootEvent"> | number
   isPublic?: Prisma.BoolWithAggregatesFilter<"PhotoshootEvent"> | boolean
+  closedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PhotoshootEvent"> | Date | string | null
   createdById?: Prisma.UuidWithAggregatesFilter<"PhotoshootEvent"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PhotoshootEvent"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PhotoshootEvent"> | Date | string
@@ -461,6 +473,7 @@ export type PhotoshootEventCreateInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -487,6 +500,7 @@ export type PhotoshootEventUncheckedCreateInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -511,6 +525,7 @@ export type PhotoshootEventUpdateInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -537,6 +552,7 @@ export type PhotoshootEventUncheckedUpdateInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -562,6 +578,7 @@ export type PhotoshootEventCreateManyInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -583,6 +600,7 @@ export type PhotoshootEventUpdateManyMutationInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -605,6 +623,7 @@ export type PhotoshootEventUncheckedUpdateManyInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -637,6 +656,7 @@ export type PhotoshootEventCountOrderByAggregateInput = {
   slotDurationMinutes?: Prisma.SortOrder
   defaultSlotCapacity?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
+  closedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -664,6 +684,7 @@ export type PhotoshootEventMaxOrderByAggregateInput = {
   slotDurationMinutes?: Prisma.SortOrder
   defaultSlotCapacity?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
+  closedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -686,6 +707,7 @@ export type PhotoshootEventMinOrderByAggregateInput = {
   slotDurationMinutes?: Prisma.SortOrder
   defaultSlotCapacity?: Prisma.SortOrder
   isPublic?: Prisma.SortOrder
+  closedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -805,6 +827,7 @@ export type PhotoshootEventCreateWithoutServiceInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -829,6 +852,7 @@ export type PhotoshootEventUncheckedCreateWithoutServiceInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -883,6 +907,7 @@ export type PhotoshootEventScalarWhereInput = {
   slotDurationMinutes?: Prisma.IntFilter<"PhotoshootEvent"> | number
   defaultSlotCapacity?: Prisma.IntFilter<"PhotoshootEvent"> | number
   isPublic?: Prisma.BoolFilter<"PhotoshootEvent"> | boolean
+  closedAt?: Prisma.DateTimeNullableFilter<"PhotoshootEvent"> | Date | string | null
   createdById?: Prisma.UuidFilter<"PhotoshootEvent"> | string
   createdAt?: Prisma.DateTimeFilter<"PhotoshootEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PhotoshootEvent"> | Date | string
@@ -904,6 +929,7 @@ export type PhotoshootEventCreateWithoutDatesInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -929,6 +955,7 @@ export type PhotoshootEventUncheckedCreateWithoutDatesInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -968,6 +995,7 @@ export type PhotoshootEventUpdateWithoutDatesInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -993,6 +1021,7 @@ export type PhotoshootEventUncheckedUpdateWithoutDatesInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1016,6 +1045,7 @@ export type PhotoshootEventCreateWithoutBookingsInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1041,6 +1071,7 @@ export type PhotoshootEventUncheckedCreateWithoutBookingsInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1080,6 +1111,7 @@ export type PhotoshootEventUpdateWithoutBookingsInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1105,6 +1137,7 @@ export type PhotoshootEventUncheckedUpdateWithoutBookingsInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1128,6 +1161,7 @@ export type PhotoshootEventCreateWithoutAssignmentsInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1153,6 +1187,7 @@ export type PhotoshootEventUncheckedCreateWithoutAssignmentsInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1192,6 +1227,7 @@ export type PhotoshootEventUpdateWithoutAssignmentsInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1217,6 +1253,7 @@ export type PhotoshootEventUncheckedUpdateWithoutAssignmentsInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1240,6 +1277,7 @@ export type PhotoshootEventCreateManyServiceInput = {
   slotDurationMinutes?: number
   defaultSlotCapacity?: number
   isPublic?: boolean
+  closedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1261,6 +1299,7 @@ export type PhotoshootEventUpdateWithoutServiceInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1285,6 +1324,7 @@ export type PhotoshootEventUncheckedUpdateWithoutServiceInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1309,6 +1349,7 @@ export type PhotoshootEventUncheckedUpdateManyWithoutServiceInput = {
   slotDurationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   defaultSlotCapacity?: Prisma.IntFieldUpdateOperationsInput | number
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  closedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1380,6 +1421,7 @@ export type PhotoshootEventSelect<ExtArgs extends runtime.Types.Extensions.Inter
   slotDurationMinutes?: boolean
   defaultSlotCapacity?: boolean
   isPublic?: boolean
+  closedAt?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1407,6 +1449,7 @@ export type PhotoshootEventSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   slotDurationMinutes?: boolean
   defaultSlotCapacity?: boolean
   isPublic?: boolean
+  closedAt?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1430,6 +1473,7 @@ export type PhotoshootEventSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   slotDurationMinutes?: boolean
   defaultSlotCapacity?: boolean
   isPublic?: boolean
+  closedAt?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1453,12 +1497,13 @@ export type PhotoshootEventSelectScalar = {
   slotDurationMinutes?: boolean
   defaultSlotCapacity?: boolean
   isPublic?: boolean
+  closedAt?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PhotoshootEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "serviceId" | "title" | "slug" | "description" | "venue" | "preparationInstructions" | "mediaDepartmentNotes" | "status" | "bookingOpensAt" | "bookingClosesAt" | "rescheduleDeadline" | "cancellationDeadline" | "slotDurationMinutes" | "defaultSlotCapacity" | "isPublic" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["photoshootEvent"]>
+export type PhotoshootEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "serviceId" | "title" | "slug" | "description" | "venue" | "preparationInstructions" | "mediaDepartmentNotes" | "status" | "bookingOpensAt" | "bookingClosesAt" | "rescheduleDeadline" | "cancellationDeadline" | "slotDurationMinutes" | "defaultSlotCapacity" | "isPublic" | "closedAt" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["photoshootEvent"]>
 export type PhotoshootEventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   service?: boolean | Prisma.PhotoshootEvent$serviceArgs<ExtArgs>
   dates?: boolean | Prisma.PhotoshootEvent$datesArgs<ExtArgs>
@@ -1498,6 +1543,7 @@ export type $PhotoshootEventPayload<ExtArgs extends runtime.Types.Extensions.Int
     slotDurationMinutes: number
     defaultSlotCapacity: number
     isPublic: boolean
+    closedAt: Date | null
     createdById: string
     createdAt: Date
     updatedAt: Date
@@ -1944,6 +1990,7 @@ export interface PhotoshootEventFieldRefs {
   readonly slotDurationMinutes: Prisma.FieldRef<"PhotoshootEvent", 'Int'>
   readonly defaultSlotCapacity: Prisma.FieldRef<"PhotoshootEvent", 'Int'>
   readonly isPublic: Prisma.FieldRef<"PhotoshootEvent", 'Boolean'>
+  readonly closedAt: Prisma.FieldRef<"PhotoshootEvent", 'DateTime'>
   readonly createdById: Prisma.FieldRef<"PhotoshootEvent", 'String'>
   readonly createdAt: Prisma.FieldRef<"PhotoshootEvent", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PhotoshootEvent", 'DateTime'>

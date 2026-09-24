@@ -173,6 +173,7 @@ model PhotoshootEvent {
   slotDurationMinutes     Int               @default(20)
   defaultSlotCapacity     Int               @default(1)
   isPublic                Boolean           @default(false)
+  closedAt                DateTime?         @db.Timestamptz(3)
   createdById             String            @db.Uuid
   createdAt               DateTime          @default(now()) @db.Timestamptz(3)
   updatedAt               DateTime          @updatedAt @db.Timestamptz(3)
@@ -182,6 +183,7 @@ model PhotoshootEvent {
   assignments             EventAssignment[]
 
   @@index([status, bookingOpensAt, bookingClosesAt])
+  @@index([status, closedAt])
 }
 
 model EventDate {

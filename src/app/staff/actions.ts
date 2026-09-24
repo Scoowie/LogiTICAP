@@ -9,6 +9,10 @@ import { writeAudit } from "@/lib/audit";
 import { requirePermission } from "@/lib/auth/session";
 import { canAssignRole, ROLES } from "@/lib/auth/permissions";
 import { getDb } from "@/lib/db";
+import {
+  canChangeEventStatus,
+  getNextEventClosedAt,
+} from "@/lib/event-archive";
 import { eventCreationSchema, safeText, uuid } from "@/lib/validation";
 import { getEmailProvider } from "@/lib/email";
 import { cancelBooking, rescheduleBooking } from "@/lib/booking-service";
@@ -309,23 +313,38 @@ export async function changeEventStatus(form: FormData) {
       },
     });
     if (!event) throw new Error("Event not found.");
+    if (!canChangeEventStatus(event.status, input.status))
+      throw new Error("This event status cannot be changed.");
     if (
       input.status === "OPEN" &&
       (event.dates.length < 1 ||
         event.dates.some((date) => date._count.slots === 0))
     )
       throw new Error("An open event requires at least one date with slots.");
+    const nextClosedAt = getNextEventClosedAt(input.status, event.closedAt);
     await tx.photoshootEvent.update({
       where: { id: event.id },
-      data: { status: input.status, isPublic: input.status === "OPEN" },
+      data: {
+        status: input.status,
+        isPublic: input.status === "OPEN",
+        closedAt: nextClosedAt,
+      },
     });
     await writeAudit(tx, {
       actorId: actor.id,
       action: `event.${input.status.toLowerCase()}`,
       targetType: "PhotoshootEvent",
       targetId: event.id,
-      previousValues: { status: event.status, isPublic: event.isPublic },
-      newValues: { status: input.status, isPublic: input.status === "OPEN" },
+      previousValues: {
+        status: event.status,
+        isPublic: event.isPublic,
+        closedAt: event.closedAt?.toISOString() ?? null,
+      },
+      newValues: {
+        status: input.status,
+        isPublic: input.status === "OPEN",
+        closedAt: nextClosedAt?.toISOString() ?? null,
+      },
       reason: input.reason,
     });
   });

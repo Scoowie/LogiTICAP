@@ -183,6 +183,7 @@ export const PhotoshootEventScalarFieldEnum = {
   slotDurationMinutes: 'slotDurationMinutes',
   defaultSlotCapacity: 'defaultSlotCapacity',
   isPublic: 'isPublic',
+  closedAt: 'closedAt',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

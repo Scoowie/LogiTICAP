@@ -1,11 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import { Card, EmptyState, Status, WorkspaceHeader } from "@/components/ui";
 import { ConfirmButton } from "@/components/confirm-button";
+import { EventDateFields } from "@/components/event-date-fields";
+import type { Prisma } from "@/generated/prisma/client";
 import { hasPermission, type Permission } from "@/lib/auth/permissions";
 import { requireActor } from "@/lib/auth/session";
 import { formatManilaDateTime } from "@/lib/date";
 import { getDb } from "@/lib/db";
+import {
+  eventArchiveViewSchema,
+  getClosedEventArchiveCutoff,
+  type EventArchiveView,
+} from "@/lib/event-archive";
 import {
   administrativelyChangeBooking,
   changeAccountStatus,
@@ -93,7 +101,7 @@ export default async function StaffSection({
   searchParams,
 }: {
   params: Promise<{ section: string }>;
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; view?: string }>;
 }) {
   const actor = await requireActor();
   const { section } = await params;
@@ -101,15 +109,47 @@ export default async function StaffSection({
   if (!meta) notFound();
   if (meta.permission && !hasPermission(actor.role, meta.permission))
     notFound();
-  const query = (await searchParams).q?.slice(0, 120) ?? "";
+  const resolvedSearchParams = await searchParams;
+  const query = resolvedSearchParams.q?.slice(0, 120) ?? "";
+  const eventArchiveView = eventArchiveViewSchema.parse(
+    resolvedSearchParams.view,
+  );
   const db = getDb();
   const eventScope =
     actor.role === "LOGISTICS_MEMBER"
       ? { assignments: { some: { userId: actor.id } } }
       : {};
+  const eventArchiveCutoff = getClosedEventArchiveCutoff();
+  const archivedEventFilter: Prisma.PhotoshootEventWhereInput = {
+    OR: [
+      { status: "ARCHIVED" },
+      {
+        status: "CLOSED",
+        closedAt: { lte: eventArchiveCutoff },
+      },
+    ],
+  };
+  const eventArchiveFilter: Prisma.PhotoshootEventWhereInput =
+    eventArchiveView === "archived"
+      ? archivedEventFilter
+      : {
+          AND: [
+            { status: { not: "ARCHIVED" } },
+            {
+              OR: [
+                { status: { not: "CLOSED" } },
+                { closedAt: null },
+                { closedAt: { gt: eventArchiveCutoff } },
+              ],
+            },
+          ],
+        };
   const events = ["events", "schedule", "assignments"].includes(section)
     ? await db.photoshootEvent.findMany({
-        where: eventScope,
+        where: {
+          ...eventScope,
+          ...(section === "events" ? eventArchiveFilter : {}),
+        },
         include: {
           dates: {
             include: { slots: { orderBy: { startsAt: "asc" } } },
@@ -245,8 +285,8 @@ export default async function StaffSection({
             <Card>
               <h2 className="text-lg font-bold">Create photoshoot event</h2>
               <p className="muted mt-1 text-sm">
-                Starts as a draft. Enter one required date and an optional
-                second date; slots are generated in Philippine Time.
+                Starts as a draft. Enter one or more event dates; slots are
+                generated in Philippine Time.
               </p>
               <form
                 action={createEvent}
@@ -324,19 +364,7 @@ export default async function StaffSection({
                     required
                   />
                 </label>
-                <label className="text-sm font-bold">
-                  Tentative date 1
-                  <input
-                    className={inputClass}
-                    type="date"
-                    name="dates"
-                    required
-                  />
-                </label>
-                <label className="text-sm font-bold">
-                  Tentative date 2 (optional)
-                  <input className={inputClass} type="date" name="dates" />
-                </label>
+                <EventDateFields />
                 <label className="text-sm font-bold">
                   Daily start
                   <input
@@ -387,166 +415,193 @@ export default async function StaffSection({
                 </button>
               </form>
             </Card>
-            <EventList events={events} />
+            <EventList events={events} archiveView={eventArchiveView} />
           </>
         )}
         {section === "schedule" &&
           (events.length
-            ? events.map((event) => (
-                <Card key={event.id}>
-                  <div className="flex flex-wrap justify-between gap-3">
-                    <h2 className="text-lg font-bold">{event.title}</h2>
-                    <Status>{event.status}</Status>
-                  </div>
-                  {event.dates.map((date) => (
-                    <div key={date.id} className="mt-5">
-                      <h3 className="font-bold">
-                        {date.date.toLocaleDateString("en-PH", {
-                          timeZone: "UTC",
-                          dateStyle: "long",
-                        })}
-                      </h3>
-                      <div className="mt-2 overflow-x-auto">
-                        <table className="w-full min-w-[620px] text-left text-sm">
-                          <thead>
-                            <tr className="border-b">
-                              <th className="p-2">Time</th>
-                              <th className="p-2">Capacity</th>
-                              <th className="p-2">Status</th>
-                              <th className="p-2">Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {date.slots.map((slot) => (
-                              <tr
-                                key={slot.id}
-                                className="border-b border-[#b69a5e]"
-                              >
-                                <td className="p-2">
-                                  {formatManilaDateTime(slot.startsAt)}
-                                </td>
-                                <td className="p-2">
-                                  {slot.reservedCount} / {slot.capacity}
-                                </td>
-                                <td className="p-2">
-                                  <Status
-                                    tone={
-                                      slot.status === "AVAILABLE"
-                                        ? "success"
-                                        : "warning"
-                                    }
-                                  >
-                                    {slot.status}
-                                  </Status>
-                                </td>
-                                <td className="p-2">
-                                  <form
-                                    action={changeSlot}
-                                    className="flex gap-2"
-                                  >
-                                    <input
-                                      type="hidden"
-                                      name="slotId"
-                                      value={slot.id}
-                                    />
-                                    <input
-                                      type="hidden"
-                                      name="action"
-                                      value={
-                                        slot.status === "BLOCKED"
-                                          ? "reopen"
-                                          : "block"
-                                      }
-                                    />
-                                    <input
-                                      className="min-h-9 min-w-0 rounded border px-2"
-                                      name="reason"
-                                      required
-                                      maxLength={500}
-                                      aria-label="Reason"
-                                      placeholder="Required reason"
-                                    />
-                                    <button className={buttonClass}>
-                                      {slot.status === "BLOCKED"
-                                        ? "Reopen"
-                                        : "Block"}
-                                    </button>
-                                  </form>
-                                  <details className="mt-2">
-                                    <summary className="cursor-pointer font-semibold text-[#4c3a27]">
-                                      Edit or delete
-                                    </summary>
-                                    <form
-                                      action={editSlot}
-                                      className="mt-2 flex gap-2"
+            ? events.map((event) => {
+                const slotCount = event.dates.reduce(
+                  (sum, date) => sum + date.slots.length,
+                  0,
+                );
+
+                return (
+                  <Card key={event.id}>
+                    <details className="group">
+                      <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 rounded-lg [&::-webkit-details-marker]:hidden">
+                        <div className="min-w-0">
+                          <h2 className="text-lg font-bold">{event.title}</h2>
+                          <p className="muted mt-1 text-sm">
+                            {event.venue} · {event.dates.length}{" "}
+                            {event.dates.length === 1 ? "date" : "dates"} ·{" "}
+                            {slotCount} {slotCount === 1 ? "slot" : "slots"}
+                          </p>
+                        </div>
+                        <div className="flex shrink-0 items-center gap-3">
+                          <Status>{event.status}</Status>
+                          <ChevronDown
+                            aria-hidden="true"
+                            className="size-5 text-[#4c3a27] transition-transform group-open:rotate-180 motion-reduce:transition-none"
+                          />
+                        </div>
+                      </summary>
+                      <div className="mt-5 border-t border-[#b69a5e] pt-1">
+                        {event.dates.map((date) => (
+                          <div key={date.id} className="mt-5">
+                            <h3 className="font-bold">
+                              {date.date.toLocaleDateString("en-PH", {
+                                timeZone: "UTC",
+                                dateStyle: "long",
+                              })}
+                            </h3>
+                            <div className="mt-2 overflow-x-auto">
+                              <table className="w-full min-w-[620px] text-left text-sm">
+                                <thead>
+                                  <tr className="border-b">
+                                    <th className="p-2">Time</th>
+                                    <th className="p-2">Capacity</th>
+                                    <th className="p-2">Status</th>
+                                    <th className="p-2">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {date.slots.map((slot) => (
+                                    <tr
+                                      key={slot.id}
+                                      className="border-b border-[#b69a5e]"
                                     >
-                                      <input
-                                        type="hidden"
-                                        name="slotId"
-                                        value={slot.id}
-                                      />
-                                      <input
-                                        type="number"
-                                        name="capacity"
-                                        min={Math.max(1, slot.reservedCount)}
-                                        max={100}
-                                        defaultValue={slot.capacity}
-                                        required
-                                        aria-label="Slot capacity"
-                                        className="min-h-9 w-20 rounded border px-2"
-                                      />
-                                      <input
-                                        name="reason"
-                                        required
-                                        maxLength={500}
-                                        aria-label="Edit reason"
-                                        placeholder="Reason"
-                                        className="min-h-9 min-w-0 rounded border px-2"
-                                      />
-                                      <button className={buttonClass}>
-                                        Save
-                                      </button>
-                                    </form>
-                                    <form
-                                      action={changeSlot}
-                                      className="mt-2 flex gap-2"
-                                    >
-                                      <input
-                                        type="hidden"
-                                        name="slotId"
-                                        value={slot.id}
-                                      />
-                                      <input
-                                        type="hidden"
-                                        name="action"
-                                        value="delete"
-                                      />
-                                      <input
-                                        name="reason"
-                                        required
-                                        maxLength={500}
-                                        aria-label="Delete reason"
-                                        placeholder="Delete reason"
-                                        className="min-h-9 min-w-0 rounded border px-2"
-                                      />
-                                      <ConfirmButton
-                                        className="hex-btn hex-btn--danger"
-                                        message="Remove this empty slot from all schedules?"
-                                      >
-                                        Delete
-                                      </ConfirmButton>
-                                    </form>
-                                  </details>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                                      <td className="p-2">
+                                        {formatManilaDateTime(slot.startsAt)}
+                                      </td>
+                                      <td className="p-2">
+                                        {slot.reservedCount} / {slot.capacity}
+                                      </td>
+                                      <td className="p-2">
+                                        <Status
+                                          tone={
+                                            slot.status === "AVAILABLE"
+                                              ? "success"
+                                              : "warning"
+                                          }
+                                        >
+                                          {slot.status}
+                                        </Status>
+                                      </td>
+                                      <td className="p-2">
+                                        <form
+                                          action={changeSlot}
+                                          className="flex gap-2"
+                                        >
+                                          <input
+                                            type="hidden"
+                                            name="slotId"
+                                            value={slot.id}
+                                          />
+                                          <input
+                                            type="hidden"
+                                            name="action"
+                                            value={
+                                              slot.status === "BLOCKED"
+                                                ? "reopen"
+                                                : "block"
+                                            }
+                                          />
+                                          <input
+                                            className="min-h-9 min-w-0 rounded border px-2"
+                                            name="reason"
+                                            required
+                                            maxLength={500}
+                                            aria-label="Reason"
+                                            placeholder="Required reason"
+                                          />
+                                          <button className={buttonClass}>
+                                            {slot.status === "BLOCKED"
+                                              ? "Reopen"
+                                              : "Block"}
+                                          </button>
+                                        </form>
+                                        <details className="mt-2">
+                                          <summary className="cursor-pointer font-semibold text-[#4c3a27]">
+                                            Edit or delete
+                                          </summary>
+                                          <form
+                                            action={editSlot}
+                                            className="mt-2 flex gap-2"
+                                          >
+                                            <input
+                                              type="hidden"
+                                              name="slotId"
+                                              value={slot.id}
+                                            />
+                                            <input
+                                              type="number"
+                                              name="capacity"
+                                              min={Math.max(
+                                                1,
+                                                slot.reservedCount,
+                                              )}
+                                              max={100}
+                                              defaultValue={slot.capacity}
+                                              required
+                                              aria-label="Slot capacity"
+                                              className="min-h-9 w-20 rounded border px-2"
+                                            />
+                                            <input
+                                              name="reason"
+                                              required
+                                              maxLength={500}
+                                              aria-label="Edit reason"
+                                              placeholder="Reason"
+                                              className="min-h-9 min-w-0 rounded border px-2"
+                                            />
+                                            <button className={buttonClass}>
+                                              Save
+                                            </button>
+                                          </form>
+                                          <form
+                                            action={changeSlot}
+                                            className="mt-2 flex gap-2"
+                                          >
+                                            <input
+                                              type="hidden"
+                                              name="slotId"
+                                              value={slot.id}
+                                            />
+                                            <input
+                                              type="hidden"
+                                              name="action"
+                                              value="delete"
+                                            />
+                                            <input
+                                              name="reason"
+                                              required
+                                              maxLength={500}
+                                              aria-label="Delete reason"
+                                              placeholder="Delete reason"
+                                              className="min-h-9 min-w-0 rounded border px-2"
+                                            />
+                                            <ConfirmButton
+                                              className="hex-btn hex-btn--danger"
+                                              message="Remove this empty slot from all schedules?"
+                                            >
+                                              Delete
+                                            </ConfirmButton>
+                                          </form>
+                                        </details>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    </div>
-                  ))}
-                </Card>
-              ))
+                    </details>
+                  </Card>
+                );
+              })
             : section === "schedule" && (
                 <EmptyState title="No events">
                   Create a photoshoot event to generate dates and slots.
@@ -1079,6 +1134,7 @@ export default async function StaffSection({
 
 function EventList({
   events,
+  archiveView,
 }: {
   events: Array<{
     id: string;
@@ -1088,52 +1144,96 @@ function EventList({
     dates: Array<{ id: string; slots: unknown[] }>;
     assignments: unknown[];
   }>;
+  archiveView?: EventArchiveView;
 }) {
-  return events.length ? (
-    <div className="grid gap-4">
-      {events.map((event) => (
-        <Card key={event.id}>
-          <div className="flex flex-wrap justify-between gap-3">
-            <div>
-              <h2 className="text-lg font-bold">{event.title}</h2>
-              <p className="muted text-sm">
-                {event.venue} · {event.dates.length} dates ·{" "}
-                {event.dates.reduce((sum, date) => sum + date.slots.length, 0)}{" "}
-                slots · {event.assignments.length} assigned staff
-              </p>
-            </div>
-            <Status>{event.status}</Status>
+  return (
+    <>
+      {archiveView && (
+        <div className="hex-panel flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="font-bold text-[#4c3a27]">Event records</p>
+            <p className="muted text-sm">
+              Closed events move to Archived 72 hours after booking is closed.
+            </p>
           </div>
-          {["DRAFT", "CLOSED", "OPEN"].includes(event.status) && (
-            <form
-              action={changeEventStatus}
-              className="mt-4 flex flex-wrap gap-2"
+          <nav aria-label="Event record views" className="flex flex-wrap gap-2">
+            <Link
+              href="/staff/events"
+              aria-current={archiveView === "active" ? "page" : undefined}
+              className={`hex-btn ${archiveView === "active" ? "" : "hex-btn--secondary"}`}
             >
-              <input type="hidden" name="eventId" value={event.id} />
-              <input
-                type="hidden"
-                name="status"
-                value={event.status === "OPEN" ? "CLOSED" : "OPEN"}
-              />
-              <input
-                name="reason"
-                required
-                maxLength={500}
-                placeholder="Required reason"
-                className="min-h-10 min-w-0 flex-1 rounded border px-3"
-              />
-              <button className={buttonClass}>
-                {event.status === "OPEN" ? "Close booking" : "Open booking"}
-              </button>
-            </form>
-          )}
-        </Card>
-      ))}
-    </div>
-  ) : (
-    <EmptyState title="No events">
-      Create the first configurable event when dates and venue are ready.
-    </EmptyState>
+              Active events
+            </Link>
+            <Link
+              href="/staff/events?view=archived"
+              aria-current={archiveView === "archived" ? "page" : undefined}
+              className={`hex-btn ${archiveView === "archived" ? "" : "hex-btn--secondary"}`}
+            >
+              Archived events
+            </Link>
+          </nav>
+        </div>
+      )}
+      {events.length ? (
+        <div className="grid gap-4">
+          {events.map((event) => (
+            <Card key={event.id}>
+              <div className="flex flex-wrap justify-between gap-3">
+                <div>
+                  <h2 className="text-lg font-bold">{event.title}</h2>
+                  <p className="muted text-sm">
+                    {event.venue} · {event.dates.length} dates ·{" "}
+                    {event.dates.reduce(
+                      (sum, date) => sum + date.slots.length,
+                      0,
+                    )}{" "}
+                    slots · {event.assignments.length} assigned staff
+                  </p>
+                </div>
+                <Status>{event.status}</Status>
+              </div>
+              {["DRAFT", "CLOSED", "OPEN"].includes(event.status) && (
+                <form
+                  action={changeEventStatus}
+                  className="mt-4 flex flex-wrap gap-2"
+                >
+                  <input type="hidden" name="eventId" value={event.id} />
+                  <input
+                    type="hidden"
+                    name="status"
+                    value={event.status === "OPEN" ? "CLOSED" : "OPEN"}
+                  />
+                  <input
+                    name="reason"
+                    required
+                    maxLength={500}
+                    placeholder="Required reason"
+                    className="min-h-10 min-w-0 flex-1 rounded border px-3"
+                  />
+                  <button className={buttonClass}>
+                    {event.status === "OPEN" ? "Close booking" : "Open booking"}
+                  </button>
+                </form>
+              )}
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <EmptyState
+          title={
+            archiveView === "archived"
+              ? "No archived events"
+              : archiveView === "active"
+                ? "No active events"
+                : "No events"
+          }
+        >
+          {archiveView === "archived"
+            ? "Events closed for at least three days will appear here."
+            : "Create the first configurable event when dates and venue are ready."}
+        </EmptyState>
+      )}
+    </>
   );
 }
 

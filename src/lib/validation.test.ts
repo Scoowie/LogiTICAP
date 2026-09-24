@@ -32,7 +32,7 @@ describe("runtime validation", () => {
     endTime: "17:00",
   };
 
-  it("allows one event date while rejecting an event without dates", () => {
+  it("allows up to 30 unique event dates", () => {
     expect(
       eventCreationSchema.safeParse({ ...event, dates: ["2026-10-20"] })
         .success,
@@ -40,9 +40,23 @@ describe("runtime validation", () => {
     expect(
       eventCreationSchema.safeParse({
         ...event,
-        dates: ["2026-10-20", "2026-10-21"],
+        dates: ["2026-10-20", "2026-10-21", "2026-10-22"],
       }).success,
     ).toBe(true);
+    expect(
+      eventCreationSchema.safeParse({
+        ...event,
+        dates: ["2026-10-20", "2026-10-20"],
+      }).success,
+    ).toBe(false);
+    expect(
+      eventCreationSchema.safeParse({
+        ...event,
+        dates: Array.from({ length: 31 }, (_, index) =>
+          new Date(Date.UTC(2026, 9, 1 + index)).toISOString().slice(0, 10),
+        ),
+      }).success,
+    ).toBe(false);
     expect(eventCreationSchema.safeParse({ ...event, dates: [] }).success).toBe(
       false,
     );

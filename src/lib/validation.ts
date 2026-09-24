@@ -151,7 +151,13 @@ export const eventCreationSchema = z
     cancellationDeadline: manilaLocalDateTime,
     slotDurationMinutes: z.coerce.number().int().min(5).max(480),
     capacity: z.coerce.number().int().min(1).max(100),
-    dates: z.array(z.iso.date()).min(1).max(30),
+    dates: z
+      .array(z.iso.date())
+      .min(1)
+      .max(30)
+      .refine((dates) => new Set(dates).size === dates.length, {
+        message: "Event dates must be unique",
+      }),
     startTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
     endTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/),
   })
