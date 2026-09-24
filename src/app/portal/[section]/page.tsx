@@ -1,6 +1,12 @@
 import { notFound, redirect } from "next/navigation";
 import { Card, EmptyState, Status, WorkspaceHeader } from "@/components/ui";
 import { ConfirmButton } from "@/components/confirm-button";
+import {
+  AppointmentSlotFields,
+  RescheduleSlotField,
+  type AppointmentEventOption,
+  type AppointmentSlotOption,
+} from "@/components/appointment-slot-fields";
 import { ThesisGroupForm } from "@/components/thesis-group-form";
 import { getDb } from "@/lib/db";
 import { requireActor } from "@/lib/auth/session";
@@ -17,7 +23,7 @@ const content = {
     "Maintain your group details and structured member list.",
   ],
   booking: [
-    "My Photoshoot Booking",
+    "Event Appointments",
     "Complete the guided reservation workflow and manage the group’s active booking.",
   ],
   notifications: [
@@ -71,6 +77,8 @@ export default async function StudentSection({
           event: {
             include: {
               dates: {
+                where: { isActive: true },
+                orderBy: { date: "asc" },
                 include: {
                   slots: {
                     where: {
@@ -99,6 +107,7 @@ export default async function StudentSection({
           include: {
             dates: {
               where: { isActive: true },
+              orderBy: { date: "asc" },
               include: {
                 slots: {
                   where: { status: "AVAILABLE", startsAt: { gt: new Date() } },
@@ -109,6 +118,49 @@ export default async function StudentSection({
           },
         })
       : [];
+  const toSlotOption = (slot: {
+    id: string;
+    startsAt: Date;
+    endsAt: Date;
+    capacity: number;
+    reservedCount: number;
+  }): AppointmentSlotOption => ({
+    id: slot.id,
+    startsAt: slot.startsAt.toISOString(),
+    endsAt: slot.endsAt.toISOString(),
+    remainingCapacity: slot.capacity - slot.reservedCount,
+  });
+  const appointmentEvents: AppointmentEventOption[] = openEvents
+    .map((event) => ({
+      id: event.id,
+      title: event.title,
+      slots: event.dates
+        .flatMap((date) => date.slots)
+        .filter((slot) => slot.reservedCount < slot.capacity)
+        .sort(
+          (left, right) => left.startsAt.getTime() - right.startsAt.getTime(),
+        )
+        .map(toSlotOption),
+    }))
+    .filter((event) => event.slots.length > 0)
+    .sort(
+      (left, right) =>
+        new Date(left.slots[0].startsAt).getTime() -
+        new Date(right.slots[0].startsAt).getTime(),
+    );
+  const rescheduleSlots: AppointmentSlotOption[] = activeBooking
+    ? activeBooking.event.dates
+        .flatMap((date) => date.slots)
+        .filter(
+          (slot) =>
+            slot.id !== activeBooking.currentSlotId &&
+            slot.reservedCount < slot.capacity,
+        )
+        .sort(
+          (left, right) => left.startsAt.getTime() - right.startsAt.getTime(),
+        )
+        .map(toSlotOption)
+    : [];
   const notifications =
     section === "notifications"
       ? await getDb().notification.findMany({
@@ -230,25 +282,7 @@ export default async function StudentSection({
                       name="bookingId"
                       value={activeBooking.id}
                     />
-                    <label className="text-sm font-bold">
-                      New schedule
-                      <select name="newSlotId" required className={inputClass}>
-                        <option value="">Choose another available slot</option>
-                        {activeBooking.event.dates.flatMap((date) =>
-                          date.slots
-                            .filter(
-                              (slot) =>
-                                slot.id !== activeBooking.currentSlotId &&
-                                slot.reservedCount < slot.capacity,
-                            )
-                            .map((slot) => (
-                              <option key={slot.id} value={slot.id}>
-                                {formatManilaDateTime(slot.startsAt)}
-                              </option>
-                            )),
-                        )}
-                      </select>
-                    </label>
+                    <RescheduleSlotField slots={rescheduleSlots} />
                     <label className="text-sm font-bold">
                       Reason
                       <input
@@ -258,14 +292,21 @@ export default async function StudentSection({
                         className={inputClass}
                       />
                     </label>
-                    <ConfirmButton
-                      name="action"
-                      value="reschedule"
-                      className="hex-btn"
-                      message="Move this booking to the selected schedule?"
-                    >
-                      Reschedule booking
-                    </ConfirmButton>
+                    {rescheduleSlots.length ? (
+                      <ConfirmButton
+                        name="action"
+                        value="reschedule"
+                        className="hex-btn"
+                        message="Move this booking to the selected schedule?"
+                      >
+                        Reschedule booking
+                      </ConfirmButton>
+                    ) : (
+                      <p className="muted text-sm" role="status">
+                        No alternative appointment schedules are currently
+                        available.
+                      </p>
+                    )}
                   </form>
                   <form
                     action={manageOwnBooking}
@@ -302,7 +343,7 @@ export default async function StudentSection({
               Use My Thesis Group to add structured member and representative
               information.
             </EmptyState>
-          ) : openEvents.length ? (
+          ) : appointmentEvents.length ? (
             <Card>
               <ol className="mb-8 grid gap-2 text-xs font-semibold tracking-wide text-[#4c3a27] uppercase sm:grid-cols-5">
                 <li>1 Identity verified</li>
@@ -325,34 +366,7 @@ export default async function StudentSection({
                   name="idempotencyKey"
                   value={crypto.randomUUID()}
                 />
-                <label className="text-sm font-bold">
-                  Photoshoot event
-                  <select name="eventId" required className={inputClass}>
-                    {openEvents.map((event) => (
-                      <option key={event.id} value={event.id}>
-                        {event.title}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="text-sm font-bold">
-                  Available date and time
-                  <select name="slotId" required className={inputClass}>
-                    <option value="">Choose a slot</option>
-                    {openEvents.flatMap((event) =>
-                      event.dates.flatMap((date) =>
-                        date.slots
-                          .filter((slot) => slot.reservedCount < slot.capacity)
-                          .map((slot) => (
-                            <option key={slot.id} value={slot.id}>
-                              {formatManilaDateTime(slot.startsAt)} ·{" "}
-                              {slot.capacity - slot.reservedCount} available
-                            </option>
-                          )),
-                      ),
-                    )}
-                  </select>
-                </label>
+                <AppointmentSlotFields events={appointmentEvents} />
                 <label className="text-sm font-bold">
                   Alternative schedule preference (optional)
                   <input

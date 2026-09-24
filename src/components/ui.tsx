@@ -93,9 +93,11 @@ export function Status({
 export function EmptyState({
   title,
   children,
+  action,
 }: {
   title: string;
   children: React.ReactNode;
+  action?: React.ReactNode;
 }) {
   return (
     <div className="hex-diagram rounded-xl border border-[#b69a5e] bg-[#fbf6e8] p-8 text-center shadow-[0_12px_35px_rgba(33,29,24,.14)] sm:p-12">
@@ -107,6 +109,7 @@ export function EmptyState({
         {title}
       </h2>
       <p className="mx-auto mt-3 max-w-xl text-sm text-[#615848]">{children}</p>
+      {action && <div className="mt-5 flex justify-center">{action}</div>}
     </div>
   );
 }

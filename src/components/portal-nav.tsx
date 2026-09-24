@@ -43,7 +43,7 @@ const studentLinks: NavItem[] = [
   { label: "Dashboard", href: "/portal", icon: LayoutDashboard },
   { label: "My Profile", href: "/portal/profile", icon: UserRound },
   { label: "My Thesis Group", href: "/portal/group", icon: UsersRound },
-  { label: "My Photoshoot Booking", href: "/portal/booking", icon: Camera },
+  { label: "Event Appointments", href: "/portal/booking", icon: Camera },
   { label: "Notifications", href: "/portal/notifications", icon: Bell },
   { label: "Logistics Services", href: "/portal/services", icon: Boxes },
   { label: "Help", href: "/portal/help", icon: CircleHelp },

@@ -1,5 +1,11 @@
 import { redirect } from "next/navigation";
-import { Card, EmptyState, Status, WorkspaceHeader } from "@/components/ui";
+import {
+  Button,
+  Card,
+  EmptyState,
+  Status,
+  WorkspaceHeader,
+} from "@/components/ui";
 import { formatManilaDateTime } from "@/lib/date";
 import { getDb } from "@/lib/db";
 import { requireActor } from "@/lib/auth/session";
@@ -79,9 +85,12 @@ export default async function PortalDashboard() {
                 ? "No active photoshoot booking"
                 : "Complete your thesis group first"
             }
+            action={
+              <Button href="/portal/booking">View Event Appointments</Button>
+            }
           >
             {actor.thesisGroupId
-              ? "Open My Photoshoot Booking to choose an active event and available slot."
+              ? "Open Event Appointments to choose an active event and available slot."
               : "Add your group and structured member list before reserving a schedule."}
           </EmptyState>
         )}

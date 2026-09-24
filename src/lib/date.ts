@@ -18,3 +18,10 @@ export function formatManilaDateTime(value: Date | string) {
     timeStyle: "short",
   }).format(new Date(value));
 }
+
+export function formatManilaTime(value: Date | string) {
+  return new Intl.DateTimeFormat("en-PH", {
+    timeZone: TIME_ZONE,
+    timeStyle: "short",
+  }).format(new Date(value));
+}
