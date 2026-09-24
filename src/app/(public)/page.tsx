@@ -26,6 +26,7 @@ export default async function Home() {
     getDb().announcement.findMany({
       where: {
         isPublic: true,
+        archivedAt: null,
         publishedAt: { lte: now },
         OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
       },

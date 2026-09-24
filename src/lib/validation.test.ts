@@ -149,6 +149,8 @@ describe("runtime validation", () => {
       email: " STUDENT@Example.edu ",
       password: "StrongPassword1!",
       confirmPassword: "StrongPassword1!",
+      privacyViewed: "true",
+      privacyAccepted: "on",
     });
 
     expect(result).toMatchObject({
@@ -169,6 +171,8 @@ describe("runtime validation", () => {
       suffix: "",
       contactNumber: "+63 900 000 0000",
       email: "student@example.edu",
+      privacyViewed: "true",
+      privacyAccepted: "on",
     };
     expect(
       onboardingSchema.safeParse({
@@ -196,7 +200,31 @@ describe("runtime validation", () => {
         email: "student@example.edu",
         password: "StrongPassword1!",
         confirmPassword: "StrongPassword1!",
+        privacyViewed: "true",
+        privacyAccepted: "on",
       }).success,
     ).toBe(false);
+  });
+
+  it("requires the privacy agreement to be viewed and accepted", () => {
+    const base = {
+      firstName: "Student",
+      middleName: "",
+      lastName: "User",
+      suffix: "",
+      contactNumber: "+63 900 000 0000",
+      email: "student@example.edu",
+      password: "StrongPassword1!",
+      confirmPassword: "StrongPassword1!",
+    };
+
+    expect(onboardingSchema.safeParse(base).success).toBe(false);
+    expect(
+      onboardingSchema.safeParse({
+        ...base,
+        privacyViewed: "true",
+        privacyAccepted: "on",
+      }).success,
+    ).toBe(true);
   });
 });

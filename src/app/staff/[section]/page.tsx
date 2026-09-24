@@ -10,12 +10,17 @@ import { requireActor } from "@/lib/auth/session";
 import { formatManilaDateTime } from "@/lib/date";
 import { getDb } from "@/lib/db";
 import {
+  announcementArchiveViewSchema,
+  type AnnouncementArchiveView,
+} from "@/lib/announcement-archive";
+import {
   eventArchiveViewSchema,
   getClosedEventArchiveCutoff,
   type EventArchiveView,
 } from "@/lib/event-archive";
 import {
   administrativelyChangeBooking,
+  archiveAnnouncement,
   changeAccountStatus,
   changeAssignment,
   changeEventStatus,
@@ -112,6 +117,9 @@ export default async function StaffSection({
   const resolvedSearchParams = await searchParams;
   const query = resolvedSearchParams.q?.slice(0, 120) ?? "";
   const eventArchiveView = eventArchiveViewSchema.parse(
+    resolvedSearchParams.view,
+  );
+  const announcementArchiveView = announcementArchiveViewSchema.parse(
     resolvedSearchParams.view,
   );
   const db = getDb();
@@ -243,6 +251,10 @@ export default async function StaffSection({
   const announcements =
     section === "announcements"
       ? await db.announcement.findMany({
+          where:
+            announcementArchiveView === "archived"
+              ? { archivedAt: { not: null } }
+              : { archivedAt: null },
           orderBy: { createdAt: "desc" },
           take: 30,
         })
@@ -834,27 +846,58 @@ export default async function StaffSection({
                 </ConfirmButton>
               </form>
             </Card>
+            <AnnouncementArchiveTabs activeView={announcementArchiveView} />
             {announcements.length ? (
               <div className="grid gap-3">
                 {announcements.map((item) => (
                   <Card key={item.id}>
-                    <div className="flex justify-between gap-3">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
                       <h2 className="font-bold">{item.title}</h2>
-                      <Status>
-                        {item.isPublic
-                          ? "PUBLIC"
-                          : (item.audience ?? "AUTHENTICATED")}
-                      </Status>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {item.archivedAt && <Status>Archived</Status>}
+                        <Status>
+                          {item.isPublic
+                            ? "PUBLIC"
+                            : (item.audience ?? "AUTHENTICATED")}
+                        </Status>
+                      </div>
                     </div>
                     <p className="muted mt-2 text-sm whitespace-pre-wrap">
                       {item.body}
                     </p>
+                    {item.archivedAt ? (
+                      <p className="muted mt-4 text-xs">
+                        Archived {formatManilaDateTime(item.archivedAt)}
+                      </p>
+                    ) : actor.role === "SUPERADMIN" ? (
+                      <form action={archiveAnnouncement} className="mt-4">
+                        <input
+                          type="hidden"
+                          name="announcementId"
+                          value={item.id}
+                        />
+                        <ConfirmButton
+                          className="hex-btn hex-btn--secondary"
+                          message={`Archive “${item.title}”? It will be removed from public and student announcement feeds.`}
+                        >
+                          Archive announcement
+                        </ConfirmButton>
+                      </form>
+                    ) : null}
                   </Card>
                 ))}
               </div>
             ) : (
-              <EmptyState title="No announcements published">
-                Create the first public or role-targeted logistics notice.
+              <EmptyState
+                title={
+                  announcementArchiveView === "archived"
+                    ? "No archived announcements"
+                    : "No active announcements published"
+                }
+              >
+                {announcementArchiveView === "archived"
+                  ? "Announcements archived by a superadmin will appear here."
+                  : "Create the first public or role-targeted logistics notice."}
               </EmptyState>
             )}
           </>
@@ -1129,6 +1172,31 @@ export default async function StaffSection({
         )}
       </div>
     </div>
+  );
+}
+
+function AnnouncementArchiveTabs({
+  activeView,
+}: {
+  activeView: AnnouncementArchiveView;
+}) {
+  return (
+    <nav className="flex flex-wrap gap-2" aria-label="Announcement views">
+      {(["active", "archived"] as const).map((view) => (
+        <Link
+          key={view}
+          href={`/staff/announcements?view=${view}`}
+          className={
+            activeView === view ? "hex-btn" : "hex-btn hex-btn--secondary"
+          }
+          aria-current={activeView === view ? "page" : undefined}
+        >
+          {view === "active"
+            ? "Active announcements"
+            : "Archived announcements"}
+        </Link>
+      ))}
+    </nav>
   );
 }
 

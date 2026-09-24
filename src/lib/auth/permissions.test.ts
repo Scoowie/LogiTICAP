@@ -21,4 +21,8 @@ describe("role permissions", () => {
     expect(hasPermission("SUPERADMIN", "exports:restricted")).toBe(true);
     expect(canAssignRole("SUPERADMIN", "SUPERADMIN")).toBe(true);
   });
+  it("reserves announcement archiving for superadmins", () => {
+    expect(hasPermission("SUPERADMIN", "announcements:archive")).toBe(true);
+    expect(hasPermission("ADMIN", "announcements:archive")).toBe(false);
+  });
 });

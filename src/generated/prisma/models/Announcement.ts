@@ -32,6 +32,7 @@ export type AnnouncementMinAggregateOutputType = {
   isPublic: boolean | null
   publishedAt: Date | null
   expiresAt: Date | null
+  archivedAt: Date | null
   createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -45,6 +46,7 @@ export type AnnouncementMaxAggregateOutputType = {
   isPublic: boolean | null
   publishedAt: Date | null
   expiresAt: Date | null
+  archivedAt: Date | null
   createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -58,6 +60,7 @@ export type AnnouncementCountAggregateOutputType = {
   isPublic: number
   publishedAt: number
   expiresAt: number
+  archivedAt: number
   createdById: number
   createdAt: number
   updatedAt: number
@@ -73,6 +76,7 @@ export type AnnouncementMinAggregateInputType = {
   isPublic?: true
   publishedAt?: true
   expiresAt?: true
+  archivedAt?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -86,6 +90,7 @@ export type AnnouncementMaxAggregateInputType = {
   isPublic?: true
   publishedAt?: true
   expiresAt?: true
+  archivedAt?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -99,6 +104,7 @@ export type AnnouncementCountAggregateInputType = {
   isPublic?: true
   publishedAt?: true
   expiresAt?: true
+  archivedAt?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -185,6 +191,7 @@ export type AnnouncementGroupByOutputType = {
   isPublic: boolean
   publishedAt: Date | null
   expiresAt: Date | null
+  archivedAt: Date | null
   createdById: string
   createdAt: Date
   updatedAt: Date
@@ -219,6 +226,7 @@ export type AnnouncementWhereInput = {
   isPublic?: Prisma.BoolFilter<"Announcement"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
   expiresAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
   createdById?: Prisma.UuidFilter<"Announcement"> | string
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
@@ -232,6 +240,7 @@ export type AnnouncementOrderByWithRelationInput = {
   isPublic?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -248,6 +257,7 @@ export type AnnouncementWhereUniqueInput = Prisma.AtLeast<{
   isPublic?: Prisma.BoolFilter<"Announcement"> | boolean
   publishedAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
   expiresAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableFilter<"Announcement"> | Date | string | null
   createdById?: Prisma.UuidFilter<"Announcement"> | string
   createdAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Announcement"> | Date | string
@@ -261,6 +271,7 @@ export type AnnouncementOrderByWithAggregationInput = {
   isPublic?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  archivedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -280,6 +291,7 @@ export type AnnouncementScalarWhereWithAggregatesInput = {
   isPublic?: Prisma.BoolWithAggregatesFilter<"Announcement"> | boolean
   publishedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Announcement"> | Date | string | null
   expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Announcement"> | Date | string | null
+  archivedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Announcement"> | Date | string | null
   createdById?: Prisma.UuidWithAggregatesFilter<"Announcement"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Announcement"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Announcement"> | Date | string
@@ -293,6 +305,7 @@ export type AnnouncementCreateInput = {
   isPublic?: boolean
   publishedAt?: Date | string | null
   expiresAt?: Date | string | null
+  archivedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -306,6 +319,7 @@ export type AnnouncementUncheckedCreateInput = {
   isPublic?: boolean
   publishedAt?: Date | string | null
   expiresAt?: Date | string | null
+  archivedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -319,6 +333,7 @@ export type AnnouncementUpdateInput = {
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -332,6 +347,7 @@ export type AnnouncementUncheckedUpdateInput = {
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -345,6 +361,7 @@ export type AnnouncementCreateManyInput = {
   isPublic?: boolean
   publishedAt?: Date | string | null
   expiresAt?: Date | string | null
+  archivedAt?: Date | string | null
   createdById: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -358,6 +375,7 @@ export type AnnouncementUpdateManyMutationInput = {
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -371,6 +389,7 @@ export type AnnouncementUncheckedUpdateManyInput = {
   isPublic?: Prisma.BoolFieldUpdateOperationsInput | boolean
   publishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  archivedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -384,6 +403,7 @@ export type AnnouncementCountOrderByAggregateInput = {
   isPublic?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -397,6 +417,7 @@ export type AnnouncementMaxOrderByAggregateInput = {
   isPublic?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -410,6 +431,7 @@ export type AnnouncementMinOrderByAggregateInput = {
   isPublic?: Prisma.SortOrder
   publishedAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  archivedAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -429,6 +451,7 @@ export type AnnouncementSelect<ExtArgs extends runtime.Types.Extensions.Internal
   isPublic?: boolean
   publishedAt?: boolean
   expiresAt?: boolean
+  archivedAt?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -442,6 +465,7 @@ export type AnnouncementSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   isPublic?: boolean
   publishedAt?: boolean
   expiresAt?: boolean
+  archivedAt?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -455,6 +479,7 @@ export type AnnouncementSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   isPublic?: boolean
   publishedAt?: boolean
   expiresAt?: boolean
+  archivedAt?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -468,12 +493,13 @@ export type AnnouncementSelectScalar = {
   isPublic?: boolean
   publishedAt?: boolean
   expiresAt?: boolean
+  archivedAt?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AnnouncementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "body" | "audience" | "isPublic" | "publishedAt" | "expiresAt" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["announcement"]>
+export type AnnouncementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "body" | "audience" | "isPublic" | "publishedAt" | "expiresAt" | "archivedAt" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["announcement"]>
 
 export type $AnnouncementPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Announcement"
@@ -486,6 +512,7 @@ export type $AnnouncementPayload<ExtArgs extends runtime.Types.Extensions.Intern
     isPublic: boolean
     publishedAt: Date | null
     expiresAt: Date | null
+    archivedAt: Date | null
     createdById: string
     createdAt: Date
     updatedAt: Date
@@ -919,6 +946,7 @@ export interface AnnouncementFieldRefs {
   readonly isPublic: Prisma.FieldRef<"Announcement", 'Boolean'>
   readonly publishedAt: Prisma.FieldRef<"Announcement", 'DateTime'>
   readonly expiresAt: Prisma.FieldRef<"Announcement", 'DateTime'>
+  readonly archivedAt: Prisma.FieldRef<"Announcement", 'DateTime'>
   readonly createdById: Prisma.FieldRef<"Announcement", 'String'>
   readonly createdAt: Prisma.FieldRef<"Announcement", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Announcement", 'DateTime'>

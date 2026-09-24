@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import {
   logIn,
   onboard,
@@ -9,6 +9,7 @@ import {
   updatePassword,
 } from "@/app/(public)/auth-actions";
 import { initialAuthFormState, type AuthFormState } from "@/lib/auth/flow";
+import { PrivacyAgreementGate } from "@/components/privacy-agreement-gate";
 
 function FormMessage({ state }: { state: AuthFormState }) {
   if (state.status === "idle") return null;
@@ -54,6 +55,7 @@ export function OnboardingForm() {
     onboard,
     initialAuthFormState,
   );
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   return (
     <form action={action} className="mt-7 grid gap-5 sm:grid-cols-2">
       <div className="sm:col-span-2">
@@ -167,9 +169,14 @@ export function OnboardingForm() {
         />
         <FieldError state={state} name="confirmPassword" />
       </label>
+      <PrivacyAgreementGate
+        disabled={pending}
+        fieldErrors={state.fieldErrors}
+        onAcceptanceChange={setPrivacyAccepted}
+      />
       <button
         type="submit"
-        disabled={pending}
+        disabled={pending || !privacyAccepted}
         className="hex-btn disabled:cursor-wait disabled:opacity-70 sm:col-span-2"
       >
         {pending ? "Creating account…" : "Create account"}

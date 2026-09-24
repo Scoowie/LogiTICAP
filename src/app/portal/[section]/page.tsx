@@ -173,6 +173,7 @@ export default async function StudentSection({
     section === "notifications"
       ? await getDb().announcement.findMany({
           where: {
+            archivedAt: null,
             publishedAt: { lte: new Date() },
             OR: [{ audience: null }, { audience: actor.role }],
           },

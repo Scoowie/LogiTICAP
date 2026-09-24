@@ -19,6 +19,7 @@ import {
   passwordResetRequestSchema,
   passwordUpdateSchema,
 } from "@/lib/validation";
+import { DATA_PRIVACY_AGREEMENT_VERSION } from "@/lib/privacy-agreement";
 
 function providerFailure(error: {
   code?: string;
@@ -86,7 +87,16 @@ export async function onboard(
     password,
     options: {
       emailRedirectTo: `${appOrigin()}/auth/callback?intent=onboarding`,
-      data: { firstName, middleName, lastName, suffix, contactNumber },
+      data: {
+        firstName,
+        middleName,
+        lastName,
+        suffix,
+        contactNumber,
+        privacyAgreementAccepted: true,
+        privacyAgreementVersion: DATA_PRIVACY_AGREEMENT_VERSION,
+        privacyAgreementAcceptedAt: new Date().toISOString(),
+      },
     },
   });
 

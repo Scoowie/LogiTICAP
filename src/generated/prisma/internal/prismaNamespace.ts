@@ -1865,6 +1865,7 @@ export const AnnouncementScalarFieldEnum = {
   isPublic: 'isPublic',
   publishedAt: 'publishedAt',
   expiresAt: 'expiresAt',
+  archivedAt: 'archivedAt',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

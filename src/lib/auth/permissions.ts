@@ -13,6 +13,7 @@ export type Permission =
   | "checkin:manage"
   | "assignments:manage"
   | "announcements:manage"
+  | "announcements:archive"
   | "exports:standard"
   | "exports:restricted"
   | "users:manage"
@@ -28,6 +29,7 @@ const matrix: Record<AppRole, ReadonlySet<Permission>> = {
     "checkin:manage",
     "assignments:manage",
     "announcements:manage",
+    "announcements:archive",
     "exports:standard",
     "exports:restricted",
     "users:manage",

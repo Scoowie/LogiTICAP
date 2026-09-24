@@ -97,6 +97,12 @@ export const onboardingSchema = z
     email: normalizedEmail,
     password: passwordSchema,
     confirmPassword: z.string(),
+    privacyViewed: z.literal("true", {
+      error: "Open and review the Data Privacy Agreement",
+    }),
+    privacyAccepted: z.literal("on", {
+      error: "Accept the Data Privacy Agreement to create an account",
+    }),
   })
   .superRefine((input, context) => {
     if (!fullNameFits(input)) {

@@ -18,6 +18,7 @@ import { getEmailProvider } from "@/lib/email";
 import { cancelBooking, rescheduleBooking } from "@/lib/booking-service";
 import { notifyBookingChange } from "@/lib/booking-notifications";
 import { appOrigin } from "@/lib/env";
+import { canArchiveAnnouncement } from "@/lib/announcement-archive";
 
 function formStrings(form: FormData, key: string) {
   return form
@@ -464,6 +465,44 @@ export async function publishAnnouncement(form: FormData) {
     });
   });
   revalidatePath("/staff/announcements");
+  revalidatePath("/");
+}
+
+const archiveAnnouncementSchema = z.object({ announcementId: uuid });
+
+export async function archiveAnnouncement(form: FormData) {
+  const actor = await requirePermission("announcements:archive");
+  const input = archiveAnnouncementSchema.parse(Object.fromEntries(form));
+  const db = getDb();
+
+  await db.$transaction(async (tx) => {
+    const item = await tx.announcement.findUnique({
+      where: { id: input.announcementId },
+      select: { id: true, title: true, archivedAt: true },
+    });
+    if (!item || !canArchiveAnnouncement(actor.role, item.archivedAt))
+      throw new Error("This announcement cannot be archived.");
+
+    const archivedAt = new Date();
+    const result = await tx.announcement.updateMany({
+      where: { id: item.id, archivedAt: null },
+      data: { archivedAt },
+    });
+    if (result.count !== 1)
+      throw new Error("This announcement is no longer available to archive.");
+
+    await writeAudit(tx, {
+      actorId: actor.id,
+      action: "announcement.archived",
+      targetType: "Announcement",
+      targetId: item.id,
+      previousValues: { archivedAt: null },
+      newValues: { archivedAt, title: item.title },
+    });
+  });
+
+  revalidatePath("/staff/announcements");
+  revalidatePath("/portal/notifications");
   revalidatePath("/");
 }
 
